@@ -1,0 +1,5 @@
+{
+  "name": "@idle-arcade/backend",
+  "private": true,
+  "type": "module"
+}
