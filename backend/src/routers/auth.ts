@@ -1,7 +1,12 @@
 import { fromNodeHeaders } from "better-auth/node";
 import { auth } from "../auth.js";
 import { credentialsSchema, loginSchema } from "../schemas/auth.js";
-import { forwardAuthHeaders, placeholderEmail, toTRPCError } from "../trpc/auth-glue.js";
+import {
+  forwardAuthHeaders,
+  placeholderEmail,
+  toLoginTRPCError,
+  toTRPCError,
+} from "../trpc/auth-glue.js";
 import { protectedProcedure, publicProcedure, router } from "../trpc/init.js";
 
 const toPublicUser = (user: { id: string; name: string }) => ({ id: user.id, username: user.name });
@@ -36,7 +41,7 @@ export const authRouter = router({
       forwardAuthHeaders(ctx.res, headers);
       return toPublicUser(response.user);
     } catch (error) {
-      throw toTRPCError(error);
+      throw toLoginTRPCError(error);
     }
   }),
 

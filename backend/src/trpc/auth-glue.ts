@@ -19,6 +19,9 @@ const TAKEN = [
   "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL",
 ];
 
+const invalidCredentials = () =>
+  new TRPCError({ code: "UNAUTHORIZED", message: "Invalid username or password" });
+
 /** Map Better Auth errors to tRPC errors. Credential failures share one message. */
 export function toTRPCError(error: unknown): TRPCError {
   if (!(error instanceof APIError)) {
@@ -26,7 +29,7 @@ export function toTRPCError(error: unknown): TRPCError {
   }
   const code = String(error.body?.code ?? "");
   if (INVALID_CREDENTIALS.includes(code) || error.status === "UNAUTHORIZED") {
-    return new TRPCError({ code: "UNAUTHORIZED", message: "Invalid username or password" });
+    return invalidCredentials();
   }
   if (TAKEN.includes(code)) {
     return new TRPCError({ code: "CONFLICT", message: "Username is already taken" });
@@ -35,4 +38,11 @@ export function toTRPCError(error: unknown): TRPCError {
     return new TRPCError({ code: "BAD_REQUEST", message: error.body?.message ?? error.message });
   }
   return new TRPCError({ code: "INTERNAL_SERVER_ERROR", cause: error });
+}
+
+/** Like toTRPCError, but any client error during login (e.g. "username too short") is reported
+ * as invalid credentials, so login never reveals more than "wrong username or password". */
+export function toLoginTRPCError(error: unknown): TRPCError {
+  const mapped = toTRPCError(error);
+  return mapped.code === "BAD_REQUEST" ? invalidCredentials() : mapped;
 }
