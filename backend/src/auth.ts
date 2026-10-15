@@ -15,8 +15,8 @@ export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   secret: env.BETTER_AUTH_SECRET,
   // Note: we call auth.api.* from tRPC, which bypasses Better Auth's HTTP router. Its origin
-  // check and built-in rate limiter therefore do not apply; CSRF is covered by SameSite=Lax
-  // cookies plus tRPC requiring JSON bodies.
+  // check and built-in rate limiter therefore do not apply. CSRF is covered by SameSite=Lax
+  // cookies plus tRPC requiring JSON bodies; rate limiting lives in src/trpc/rate-limit.ts.
   database: prismaAdapter(prisma, { provider: "mysql" }),
   emailAndPassword: {
     enabled: true,

@@ -118,6 +118,9 @@ Browser ── /, /darts, … ──▶ Vite dev server (local) / nginx (Docker)
     never shown and no email is ever sent.
   - Usernames: 3–20 characters, letters/numbers/underscore, unique case-insensitively. Passwords:
     8–128 characters. Every failed login returns the same "Invalid username or password".
+  - Calling `auth.api.*` bypasses Better Auth's own rate limiter, so `auth.login` (10 per 5 min)
+    and `auth.register` (5 per hour) are limited per client IP by `backend/src/trpc/rate-limit.ts`.
+    The counters are in memory, which is fine for a single backend instance.
   - Use `protectedProcedure` for anything that needs a logged-in player.
 - **Frontend routing and data:** TanStack Router (file-based, type-safe) with TanStack Query via
   `@trpc/tanstack-react-query`. Proposed in issue #21 for the frontend contributors to confirm.
