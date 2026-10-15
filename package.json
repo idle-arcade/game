@@ -16,7 +16,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "db:migrate": "npm run db:migrate -w @idle-arcade/backend",
+    "db:migrate": "npm run db:migrate -w @idle-arcade/backend --",
     "db:generate": "npm run db:generate -w @idle-arcade/backend",
     "db:studio": "npm run db:studio -w @idle-arcade/backend"
   },
