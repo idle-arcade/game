@@ -6,3 +6,4 @@ backend/src/generated/
 *.log
 .DS_Store
 .tanstack/
+.playwright-mcp/
