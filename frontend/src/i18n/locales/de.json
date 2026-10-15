@@ -1,0 +1,38 @@
+{
+  "app": {
+    "title": "IDLE Arcade"
+  },
+  "language": {
+    "label": "Sprache",
+    "en": "English",
+    "de": "Deutsch"
+  },
+  "entry": {
+    "username": "Anzeigename",
+    "password": "Passwort",
+    "login": "Login",
+    "register": "Registrieren"
+  },
+  "validation": {
+    "required": "Bitte fülle dieses Feld aus.",
+    "tooShort": "Mindestens {{min}} Zeichen.",
+    "tooLong": "Höchstens {{max}} Zeichen.",
+    "usernameFormat": "Nur Buchstaben, Zahlen und Unterstriche sind erlaubt."
+  },
+  "auth": {
+    "logout": "Logout",
+    "errors": {
+      "invalidCredentials": "Anzeigename oder Passwort ist falsch.",
+      "usernameTaken": "Dieser Anzeigename ist bereits vergeben.",
+      "tooManyAttempts": "Zu viele Versuche. Bitte warte ein paar Minuten und versuche es erneut.",
+      "invalidInput": "Bitte überprüfe deine Eingaben.",
+      "unknown": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+    }
+  },
+  "legal": {
+    "imprint": "Impressum",
+    "terms": "AGB",
+    "privacy": "Datenschutz",
+    "comingSoon": "Folgt bald"
+  }
+}
