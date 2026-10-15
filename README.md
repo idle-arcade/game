@@ -124,6 +124,11 @@ Browser ── /, /darts, … ──▶ Vite dev server (local) / nginx (Docker)
   - Use `protectedProcedure` for anything that needs a logged-in player.
 - **Frontend routing and data:** TanStack Router (file-based, type-safe) with TanStack Query via
   `@trpc/tanstack-react-query`. Proposed in issue #21 for the frontend contributors to confirm.
+- **Translations:** react-i18next with English (default) and German in `frontend/src/i18n/locales/`.
+  The player's choice is stored in `localStorage`; there is no browser-language detection, so
+  first visits are English. Keys are type-checked against `en.json`, and a key missing from
+  `de.json` is a type error. The backend sends English messages; the frontend translates errors by
+  their tRPC error code.
 - **Database:** MySQL 8.4 with Prisma 7 (driver adapter `@prisma/adapter-mariadb`).
 - **npm install scripts:** npm 11 blocks dependency install scripts unless they are listed under
   `allowScripts` in the root `package.json` (currently Prisma and esbuild). After upgrading those
@@ -138,6 +143,9 @@ register it in `backend/src/trpc/router.ts`). The frontend sees it immediately t
 
 **Add a room/page:** create a file in `frontend/src/routes/_game/` (e.g. `fishing.tsx`); the Vite
 plugin regenerates `routeTree.gen.ts` automatically while `npm run dev` is running.
+
+**Add UI text:** add the key to `frontend/src/i18n/locales/en.json` and `de.json`, then use
+`const { t } = useTranslation()` and `t("section.key")` in the component.
 
 **Change the database:** edit `backend/prisma/schema.prisma`, then run `npm run db:migrate -- --name <change>`
 and commit the generated migration.
