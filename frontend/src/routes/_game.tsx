@@ -1,6 +1,7 @@
 // Auth guard + placeholder shell for all rooms; the real header/navigation is #46.
-import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/react-router";
-import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { LogoutButton } from "../features/auth/LogoutButton";
 import { trpc } from "../lib/trpc";
 
 export const Route = createFileRoute("/_game")({
@@ -13,16 +14,6 @@ export const Route = createFileRoute("/_game")({
 
 function GameLayout() {
   const { data: me } = useSuspenseQuery(trpc.auth.me.queryOptions());
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-  const logout = useMutation(
-    trpc.auth.logout.mutationOptions({
-      onSettled: async () => {
-        queryClient.setQueryData(trpc.auth.me.queryKey(), null);
-        await navigate({ to: "/" });
-      },
-    }),
-  );
 
   return (
     <div className="min-h-screen">
@@ -34,9 +25,7 @@ function GameLayout() {
           </Link>
         </nav>
         <span className="ml-auto">{me?.username}</span>
-        <button className="rounded border px-2" onClick={() => logout.mutate()}>
-          Logout
-        </button>
+        <LogoutButton />
       </header>
       <Outlet />
     </div>
