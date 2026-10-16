@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 
-type ButtonVariant = "primary" | "secondary";
+type ButtonVariant = "primary" | "secondary" | "ghost";
 
 type ButtonProps = ComponentProps<"button"> & {
   variant?: ButtonVariant;
@@ -9,6 +9,7 @@ type ButtonProps = ComponentProps<"button"> & {
 const variantClasses: Record<ButtonVariant, string> = {
   primary: "bg-neutral-900 text-white hover:bg-neutral-700",
   secondary: "border border-neutral-400 bg-white text-neutral-900 hover:bg-neutral-100",
+  ghost: "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900",
 };
 
 export function Button({ variant = "primary", type = "button", className, ...props }: ButtonProps) {
