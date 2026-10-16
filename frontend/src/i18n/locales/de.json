@@ -2,6 +2,9 @@
   "app": {
     "title": "IDLE Arcade"
   },
+  "common": {
+    "comingSoon": "Folgt bald"
+  },
   "language": {
     "label": "Sprache",
     "en": "English",
@@ -32,7 +35,17 @@
   "legal": {
     "imprint": "Impressum",
     "terms": "AGB",
-    "privacy": "Datenschutz",
-    "comingSoon": "Folgt bald"
+    "privacy": "Datenschutz"
+  },
+  "rooms": {
+    "darts": "Darts",
+    "scratchCards": "Rubbellose",
+    "fishing": "Angeln",
+    "gatcha": "Gatcha"
+  },
+  "shell": {
+    "navLabel": "Räume",
+    "locked": "Noch nicht freigeschaltet",
+    "highscores": "Highscores"
   }
 }

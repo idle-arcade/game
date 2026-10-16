@@ -22,7 +22,7 @@ export function LegalFooter({ onOpen }: LegalFooterProps) {
             type="button"
             className="underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:no-underline disabled:opacity-60"
             disabled={!onOpen}
-            title={onOpen ? undefined : t("legal.comingSoon")}
+            title={onOpen ? undefined : t("common.comingSoon")}
             onClick={() => onOpen?.(document)}
           >
             {t(`legal.${document}`)}
