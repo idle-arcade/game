@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1020" viewBox="0 0 1440 1020" role="img" aria-label="UML use-case diagram for IDLE Arcade">
+<rect width="1440" height="1020" fill="#ffffff"/>
+<text x="720" y="48" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#172B4D">IDLE Arcade — UML Use-Case Diagram</text>
+<text x="720" y="83" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="400" fill="#64748B">Functional overview · planned system capabilities</text>
+<rect x="205" y="131" width="1025" height="789" rx="2" fill="#FAFCFF" stroke="#344767" stroke-width="2"/>
+<rect x="635" y="117" width="166" height="29" fill="#FAFCFF"/>
+<text x="718" y="132" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="600" fill="#243954">«system» IDLE Arcade</text>
+<text x="427" y="210" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#526D8A">ACCOUNT ACCESS</text>
+<text x="910" y="210" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#526D8A">GAMEPLAY &amp; PROGRESSION</text>
+<line x1="305" y1="231" x2="548" y2="231" stroke="#CBD5E1" stroke-width="1"/>
+<line x1="772" y1="231" x2="1049" y2="231" stroke="#CBD5E1" stroke-width="1"/>
+<path d="M 674 240 L 674 860" stroke="#D9E2EE" stroke-dasharray="5 7" stroke-width="1" fill="none"/>
+<line x1="137" y1="476" x2="316.0" y2="331" stroke="#6B7A90" stroke-width="1.5"/>
+<line x1="137" y1="476" x2="316.0" y2="438" stroke="#6B7A90" stroke-width="1.5"/>
+<line x1="137" y1="476" x2="306.0" y2="545" stroke="#6B7A90" stroke-width="1.5"/>
+<line x1="1295" y1="540" x2="1037.5" y2="263" stroke="#6B7A90" stroke-width="1.5"/>
+<line x1="1295" y1="540" x2="1037.5" y2="335" stroke="#6B7A90" stroke-width="1.5"/>
+<line x1="1295" y1="540" x2="1037.5" y2="407" stroke="#6B7A90" stroke-width="1.5"/>
+<line x1="1295" y1="540" x2="1037.5" y2="479" stroke="#6B7A90" stroke-width="1.5"/>
+<line x1="1295" y1="540" x2="1037.5" y2="551" stroke="#6B7A90" stroke-width="1.5"/>
+<line x1="1295" y1="540" x2="1037.5" y2="623" stroke="#6B7A90" stroke-width="1.5"/>
+<line x1="1295" y1="540" x2="1037.5" y2="695" stroke="#6B7A90" stroke-width="1.5"/>
+<line x1="1295" y1="540" x2="1037.5" y2="767" stroke="#6B7A90" stroke-width="1.5"/>
+<line x1="1295" y1="540" x2="1037.5" y2="839" stroke="#6B7A90" stroke-width="1.5"/>
+<ellipse cx="425" cy="331" rx="110.0" ry="25" fill="#FFFFFF" stroke="#446582" stroke-width="1.7"/>
+<text x="425" y="331" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="16.5" font-weight="500" fill="#263A51">Register</text>
+<ellipse cx="425" cy="438" rx="110.0" ry="25" fill="#FFFFFF" stroke="#446582" stroke-width="1.7"/>
+<text x="425" y="438" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="16.5" font-weight="500" fill="#263A51">Log in</text>
+<ellipse cx="425" cy="545" rx="120.0" ry="25" fill="#FFFFFF" stroke="#446582" stroke-width="1.7"/>
+<text x="425" y="545" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="16.5" font-weight="500" fill="#263A51">View legal information</text>
+<ellipse cx="911" cy="263" rx="127.5" ry="25" fill="#FFFFFF" stroke="#446582" stroke-width="1.7"/>
+<text x="911" y="263" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="15.5" font-weight="500" fill="#263A51">Complete or skip onboarding</text>
+<ellipse cx="911" cy="335" rx="127.5" ry="25" fill="#FFFFFF" stroke="#446582" stroke-width="1.7"/>
+<text x="911" y="335" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="16.5" font-weight="500" fill="#263A51">Navigate between rooms</text>
+<ellipse cx="911" cy="407" rx="127.5" ry="25" fill="#FFFFFF" stroke="#446582" stroke-width="1.7"/>
+<text x="911" y="407" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="16.5" font-weight="500" fill="#263A51">Play an arcade room</text>
+<ellipse cx="911" cy="479" rx="127.5" ry="25" fill="#FFFFFF" stroke="#446582" stroke-width="1.7"/>
+<text x="911" y="479" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="15.5" font-weight="500" fill="#263A51">View room progress and currency</text>
+<ellipse cx="911" cy="551" rx="127.5" ry="25" fill="#FFFFFF" stroke="#446582" stroke-width="1.7"/>
+<text x="911" y="551" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="16.5" font-weight="500" fill="#263A51">Purchase room upgrades</text>
+<ellipse cx="911" cy="623" rx="127.5" ry="25" fill="#FFFFFF" stroke="#446582" stroke-width="1.7"/>
+<text x="911" y="623" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="16.5" font-weight="500" fill="#263A51">Enable idle automation</text>
+<ellipse cx="911" cy="695" rx="127.5" ry="25" fill="#FFFFFF" stroke="#446582" stroke-width="1.7"/>
+<text x="911" y="695" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="16.5" font-weight="500" fill="#263A51">Unlock the next room</text>
+<ellipse cx="911" cy="767" rx="127.5" ry="25" fill="#FFFFFF" stroke="#446582" stroke-width="1.7"/>
+<text x="911" y="767" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="15.5" font-weight="500" fill="#263A51">View room-specific highscores</text>
+<ellipse cx="911" cy="839" rx="127.5" ry="25" fill="#FFFFFF" stroke="#446582" stroke-width="1.7"/>
+<text x="911" y="839" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="16.5" font-weight="500" fill="#263A51">Log out</text>
+<circle cx="112.5" cy="442" r="15" stroke="#243954" stroke-width="2.5" fill="#FFFFFF"/>
+<line x1="112.5" y1="457" x2="112.5" y2="498" stroke="#243954" stroke-width="2.5"/>
+<line x1="87.5" y1="476" x2="137.5" y2="476" stroke="#243954" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="112.5" y1="498" x2="91.5" y2="520" stroke="#243954" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="112.5" y1="498" x2="133.5" y2="520" stroke="#243954" stroke-width="2.5" stroke-linecap="round"/>
+<text x="112.5" y="542" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="600" fill="#172B4D">Visitor</text>
+<circle cx="1320.5" cy="506" r="15" stroke="#243954" stroke-width="2.5" fill="#FFFFFF"/>
+<line x1="1320.5" y1="521" x2="1320.5" y2="562" stroke="#243954" stroke-width="2.5"/>
+<line x1="1295.5" y1="540" x2="1345.5" y2="540" stroke="#243954" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="1320.5" y1="562" x2="1299.5" y2="584" stroke="#243954" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="1320.5" y1="562" x2="1341.5" y2="584" stroke="#243954" stroke-width="2.5" stroke-linecap="round"/>
+<text x="1320.5" y="606" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="600" fill="#172B4D">Player</text>
+<text x="720" y="970" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="400" fill="#64748B">Conceptual requirements view — implementation status and game-rule details are not shown.</text>
+</svg>
