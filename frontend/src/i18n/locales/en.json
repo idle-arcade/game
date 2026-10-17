@@ -35,7 +35,14 @@
   "legal": {
     "imprint": "Imprint",
     "terms": "Terms",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "close": "Close",
+    "placeholder": "Placeholder only — this content is unfinished and has not been legally reviewed. It is not a complete legal document.",
+    "content": {
+      "imprint": "Placeholder for the imprint. Operator and contact details will be added after legal review.",
+      "privacy": "Placeholder for the privacy policy. Information about data processing and privacy rights will be added after legal review.",
+      "terms": "Placeholder for the terms and conditions. Conditions for using IDLE Arcade will be added after legal review."
+    }
   },
   "onboarding": {
     "steps": {
