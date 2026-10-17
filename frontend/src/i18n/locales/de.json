@@ -35,7 +35,14 @@
   "legal": {
     "imprint": "Impressum",
     "terms": "AGB",
-    "privacy": "Datenschutz"
+    "privacy": "Datenschutz",
+    "close": "Schließen",
+    "placeholder": "Nur ein Platzhalter — dieser Inhalt ist unfertig und wurde nicht rechtlich geprüft. Dies ist kein vollständiges Rechtsdokument.",
+    "content": {
+      "imprint": "Platzhalter für das Impressum. Angaben zum Betreiber und Kontakt werden nach rechtlicher Prüfung ergänzt.",
+      "privacy": "Platzhalter für die Datenschutzerklärung. Informationen zur Datenverarbeitung und zu Datenschutzrechten werden nach rechtlicher Prüfung ergänzt.",
+      "terms": "Platzhalter für die Allgemeinen Geschäftsbedingungen. Bedingungen für die Nutzung von IDLE Arcade werden nach rechtlicher Prüfung ergänzt."
+    }
   },
   "rooms": {
     "darts": "Darts",
