@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LanguageSelect } from "../../components/LanguageSelect";
 import { EntryForm } from "./EntryForm";
-import { LegalFooter } from "./LegalFooter";
+import { LegalFooter, type LegalDocument } from "./LegalFooter";
+import { LegalModal } from "./LegalModal";
 import { useEntryForm } from "./useEntryForm";
 
 /** Combined login/register entry screen (mockup: "Combined Login and Register Screen"). */
 export function EntryScreen() {
   const { t } = useTranslation();
   const form = useEntryForm();
+  const [legalDocument, setLegalDocument] = useState<LegalDocument | null>(null);
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center gap-6 bg-neutral-100 p-4 pt-16">
@@ -26,7 +29,10 @@ export function EntryScreen() {
           onRegister={form.register}
         />
       </main>
-      <LegalFooter />
+      <LegalFooter onOpen={setLegalDocument} />
+      {legalDocument && (
+        <LegalModal document={legalDocument} onClose={() => setLegalDocument(null)} />
+      )}
     </div>
   );
 }

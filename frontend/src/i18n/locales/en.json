@@ -2,6 +2,9 @@
   "app": {
     "title": "IDLE Arcade"
   },
+  "common": {
+    "comingSoon": "Coming soon"
+  },
   "language": {
     "label": "Language",
     "en": "English",
@@ -33,6 +36,43 @@
     "imprint": "Imprint",
     "terms": "Terms",
     "privacy": "Privacy",
-    "comingSoon": "Coming soon"
+    "close": "Close",
+    "placeholder": "Placeholder only — this content is unfinished and has not been legally reviewed. It is not a complete legal document.",
+    "content": {
+      "imprint": "Placeholder for the imprint. Operator and contact details will be added after legal review.",
+      "privacy": "Placeholder for the privacy policy. Information about data processing and privacy rights will be added after legal review.",
+      "terms": "Placeholder for the terms and conditions. Conditions for using IDLE Arcade will be added after legal review."
+    }
+  },
+  "onboarding": {
+    "steps": {
+      "welcome": {
+        "title": "Welcome to IDLE Arcade!",
+        "description": "IDLE Arcade is a room-based idle arcade. Each room is planned to offer a different game. The room navigation shows which rooms are available and which are still locked."
+      },
+      "darts": {
+        "title": "Start with Darts",
+        "description": "Darts is your first available room. In the planned Darts game, you will be able to earn coins. The room is currently a placeholder while gameplay is being developed."
+      },
+      "progression": {
+        "title": "Upgrade & Unlock",
+        "description": "Planned progression will let you use earned coins for upgrades and unlock more rooms as you advance. Upgrades, progression, and room unlocking are still being developed."
+      }
+    },
+    "step": "{{current}}/{{total}}",
+    "continue": "Continue",
+    "skip": "Skip",
+    "startPlaying": "Start Playing"
+  },
+  "rooms": {
+    "darts": "Darts",
+    "scratchCards": "Scratch Cards",
+    "fishing": "Fishing",
+    "gatcha": "Gatcha"
+  },
+  "shell": {
+    "navLabel": "Rooms",
+    "locked": "Not unlocked yet",
+    "highscores": "Highscores"
   }
 }

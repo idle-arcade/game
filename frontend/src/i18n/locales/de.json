@@ -2,6 +2,9 @@
   "app": {
     "title": "IDLE Arcade"
   },
+  "common": {
+    "comingSoon": "Folgt bald"
+  },
   "language": {
     "label": "Sprache",
     "en": "English",
@@ -33,6 +36,43 @@
     "imprint": "Impressum",
     "terms": "AGB",
     "privacy": "Datenschutz",
-    "comingSoon": "Folgt bald"
+    "close": "Schließen",
+    "placeholder": "Nur ein Platzhalter — dieser Inhalt ist unfertig und wurde nicht rechtlich geprüft. Dies ist kein vollständiges Rechtsdokument.",
+    "content": {
+      "imprint": "Platzhalter für das Impressum. Angaben zum Betreiber und Kontakt werden nach rechtlicher Prüfung ergänzt.",
+      "privacy": "Platzhalter für die Datenschutzerklärung. Informationen zur Datenverarbeitung und zu Datenschutzrechten werden nach rechtlicher Prüfung ergänzt.",
+      "terms": "Platzhalter für die Allgemeinen Geschäftsbedingungen. Bedingungen für die Nutzung von IDLE Arcade werden nach rechtlicher Prüfung ergänzt."
+    }
+  },
+  "onboarding": {
+    "steps": {
+      "welcome": {
+        "title": "Willkommen bei IDLE Arcade!",
+        "description": "IDLE Arcade ist eine Idle-Spielhalle mit mehreren Räumen. Für jeden Raum ist ein anderes Spiel geplant. Die Raumnavigation zeigt dir, welche Räume verfügbar und welche noch gesperrt sind."
+      },
+      "darts": {
+        "title": "Starte mit Darts",
+        "description": "Darts ist dein erster verfügbarer Raum. Im geplanten Darts-Spiel wirst du Münzen verdienen können. Der Raum ist derzeit ein Platzhalter, während das Spiel entwickelt wird."
+      },
+      "progression": {
+        "title": "Verbessern & Freischalten",
+        "description": "Geplant ist, dass du verdiente Münzen für Verbesserungen einsetzen und mit deinem Fortschritt weitere Räume freischalten kannst. Verbesserungen, Fortschritt und das Freischalten von Räumen werden noch entwickelt."
+      }
+    },
+    "step": "{{current}}/{{total}}",
+    "continue": "Weiter",
+    "skip": "Überspringen",
+    "startPlaying": "Spiel starten"
+  },
+  "rooms": {
+    "darts": "Darts",
+    "scratchCards": "Rubbellose",
+    "fishing": "Angeln",
+    "gatcha": "Gatcha"
+  },
+  "shell": {
+    "navLabel": "Räume",
+    "locked": "Noch nicht freigeschaltet",
+    "highscores": "Highscores"
   }
 }
