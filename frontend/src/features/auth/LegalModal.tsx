@@ -2,6 +2,7 @@ import { useEffect, useId, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../components/ui/Button";
 import type { LegalDocument } from "./LegalFooter";
+import { LegalContent } from "./LegalContent";
 
 type LegalModalProps = {
   document: LegalDocument;
@@ -12,7 +13,6 @@ export function LegalModal({ document: legalDocument, onClose }: LegalModalProps
   const { t } = useTranslation();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
-  const descriptionId = useId();
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -29,7 +29,6 @@ export function LegalModal({ document: legalDocument, onClose }: LegalModalProps
     <dialog
       ref={dialogRef}
       aria-labelledby={titleId}
-      aria-describedby={descriptionId}
       onClose={(event) => {
         // Strict Mode can reopen the dialog before a cleanup close event arrives.
         if (!event.currentTarget.open) onClose();
@@ -46,16 +45,13 @@ export function LegalModal({ document: legalDocument, onClose }: LegalModalProps
           event.currentTarget.close();
         }
       }}
-      className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-lg bg-white p-6 text-neutral-900 shadow-lg backdrop:bg-black/50"
+      className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-2xl overflow-y-auto rounded-lg bg-white p-6 text-neutral-900 shadow-lg backdrop:bg-black/50"
     >
       <div className="flex flex-col gap-6">
         <h2 id={titleId} className="text-2xl font-bold">
           {t(`legal.${legalDocument}`)}
         </h2>
-        <p id={descriptionId} className="text-sm text-neutral-600">
-          {t("legal.placeholder")}
-        </p>
-        <p>{t(`legal.content.${legalDocument}`)}</p>
+        <LegalContent document={legalDocument} />
         <Button autoFocus className="self-end" onClick={() => dialogRef.current?.close()}>
           {t("legal.close")}
         </Button>

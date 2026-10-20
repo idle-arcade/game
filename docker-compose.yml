@@ -35,6 +35,10 @@ services:
     build:
       context: .
       dockerfile: frontend/Dockerfile
+    environment:
+      RYBBIT_ENABLED: ${RYBBIT_ENABLED:-false}
+      RYBBIT_ENDPOINT: ${RYBBIT_ENDPOINT:-}
+      RYBBIT_SITE_ID: ${RYBBIT_SITE_ID:-}
     ports:
       - "${APP_PORT:-8080}:80"
     depends_on:
