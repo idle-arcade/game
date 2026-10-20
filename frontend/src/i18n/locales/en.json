@@ -59,7 +59,7 @@
       },
       "analytics": {
         "title": "Optional usage analytics with Rybbit",
-        "body": "Only when you explicitly consent and confirm that you are at least 16 do we send usage data to our self-hosted Rybbit instance at ry.idle-arcade.craftingservices.de. No analytics requests are sent without consent. You can register, log in and play without consenting. This version does not offer a parental-consent analytics flow for under-16s; please leave analytics off if you are under 16.\n\nWe use analytics to understand game and introduction usage and improve the service. We record page views of the entry page and Darts room, and completion or skipping of the introduction with a fixed step name. Payloads contain the public path, hostname, event type and, for introduction events, the step. The connection also exposes the IP address, user agent and timestamp to the analytics server. Rybbit may derive approximate location/device information and pseudonymous visitor/session associations. Being cookieless does not by itself make this anonymous.\n\nWe do not send usernames, account IDs, passwords, session tokens, form values, URL query parameters, URL fragments or referrers to Rybbit. Session replay, automatic click capture and account-linked profiles are not part of this integration. Only authorized project members may access the analytics dashboard.\n\nThe legal bases are Article 6(1)(a) GDPR and, where device information is accessed, Section 25(1) TDDDG. Withdraw consent at any time using “Analytics settings” at the bottom of each page. The login checkbox is hidden while consent is valid. Withdrawal does not affect the lawfulness of earlier processing. Declining does not affect the game."
+        "body": "Only when you explicitly consent and confirm that you are at least 16 do we send usage data to our self-hosted Rybbit instance at ry.idle-arcade.craftingservices.de. No analytics requests are sent without consent. You can register, log in and play without consenting. This version does not offer a parental-consent analytics flow for under-16s; please leave analytics off if you are under 16.\n\nWe use analytics to understand game and introduction usage and improve the service. We record page views of the entry page and Darts room, and completion or skipping of the introduction with a fixed step name. Payloads contain the public path, hostname, event type and, for introduction events, the step. The connection also exposes the IP address, user agent and timestamp to the analytics server. Rybbit may derive approximate location/device information and pseudonymous visitor/session associations. Being cookieless does not by itself make this anonymous.\n\nWe do not send usernames, account IDs, passwords, session tokens, form values, URL query parameters, URL fragments or referrers to Rybbit. Session replay, automatic click capture and account-linked profiles are not part of this integration. Only authorized project members may access the analytics dashboard.\n\nThe legal bases are Article 6(1)(a) GDPR and, where device information is accessed, Section 25(1) TDDDG. Withdraw consent at any time with the switch below. The login checkbox is hidden while consent is valid. Withdrawal does not affect the lawfulness of earlier processing. Declining does not affect the game."
       },
       "retention": {
         "title": "Retention and deletion",
@@ -107,16 +107,6 @@
     "highscores": "Highscores"
   },
   "analytics": {
-    "settings": "Analytics settings",
-    "title": "Optional usage analytics",
-    "description": "With your consent, we record page views and whether you finish or skip the introduction using our self-hosted Rybbit instance on German infrastructure. This also processes IP addresses and browser information. No analytics cookies or links to your game account. Usage events: 30 days.",
-    "active": "Analytics is enabled. You can withdraw consent at any time.",
-    "inactive": "Analytics is disabled. You can use the game without consenting.",
-    "age": "I am at least 16 years old.",
-    "withdraw": "Withdraw consent",
-    "reject": "Continue without analytics",
-    "accept": "Allow analytics",
-    "optIn": "I am at least 16 and consent to optional usage analytics with Rybbit.",
-    "optional": "Optional. Rybbit records page views and introduction usage, plus IP and browser data, on our server in Germany. Events are retained for 30 days. You can log in and play with this unchecked. Withdraw at any time in Analytics settings."
+    "optIn": "I am at least 16 and consent to optional usage analytics"
   }
 }
