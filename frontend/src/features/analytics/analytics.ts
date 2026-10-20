@@ -26,6 +26,3 @@ analytics.sync();
 window.addEventListener("storage", (event) => {
   if (event.key === CHOICE_KEY || event.key === null) analytics.sync(true);
 });
-window.addEventListener("focus", () => analytics.sync());
-// Notice expired consent even if the page stays open.
-setInterval(() => analytics.sync(), 60_000);
