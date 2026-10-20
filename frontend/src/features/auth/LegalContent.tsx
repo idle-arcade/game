@@ -1,4 +1,6 @@
+import { useSyncExternalStore } from "react";
 import { useTranslation } from "react-i18next";
+import { analytics } from "../analytics/analytics";
 import type { LegalDocument } from "./LegalFooter";
 
 const SECTIONS = [
@@ -32,6 +34,24 @@ function Contact() {
   );
 }
 
+function AnalyticsSwitch() {
+  const { t } = useTranslation();
+  const choice = useSyncExternalStore(analytics.subscribe, analytics.getChoice);
+  if (!analytics.available) return null;
+  return (
+    <label className="flex items-start gap-2">
+      <input
+        type="checkbox"
+        role="switch"
+        className="mt-1"
+        checked={choice === "accepted"}
+        onChange={(event) => analytics.choose(event.target.checked ? "accepted" : "rejected")}
+      />
+      <span>{t("analytics.optIn")}</span>
+    </label>
+  );
+}
+
 export function LegalContent({ document }: { document: LegalDocument }) {
   const { t } = useTranslation();
   if (document === "terms") return null;
@@ -50,6 +70,7 @@ export function LegalContent({ document }: { document: LegalDocument }) {
           <h3 className="text-base font-semibold">{t(`legal.privacySections.${section}.title`)}</h3>
           {section === "controller" && <Contact />}
           <p className="whitespace-pre-line">{t(`legal.privacySections.${section}.body`)}</p>
+          {section === "analytics" && <AnalyticsSwitch />}
           {section === "rights" && (
             <a
               className="underline"

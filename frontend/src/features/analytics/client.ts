@@ -3,33 +3,40 @@ export const CHOICE_KEY = "idle-arcade.analytics.v1";
 export const CHOICE_MAX_AGE = 180 * 24 * 60 * 60 * 1000;
 
 type Config = { enabled: boolean; endpoint: string; siteId: string };
+export type RybbitApi = { event: (name: string, properties?: Record<string, string>) => void };
 type Dependencies = {
-  storage: Pick<Storage, "getItem" | "setItem">;
-  fetch: typeof fetch;
-  hostname: string;
+  storage: Pick<Storage, "getItem" | "setItem" | "removeItem">;
   now: () => number;
+  loadScript: (src: string, siteId: string) => void;
+  reload: () => void;
+  rybbit: () => RybbitApi | undefined;
 };
 
-// Deliberately allow only public routes and fixed events, never arbitrary URLs or properties.
-const PATHS = new Set(["/", "/darts"]);
+// Keys the Rybbit script may store after consent (older versions always store the visitor ID).
+const RYBBIT_KEYS = ["rybbit-visitor-id", "rybbit-user-id"];
+
 export type OnboardingOutcome = "completed" | "skipped";
 export type OnboardingStep = "welcome" | "darts" | "progression";
 
-export function createAnalytics(config: Config, dependencies: Dependencies) {
-  const listeners = new Set<() => void>();
-  const pending = new Set<AbortController>();
-  let lastPath: string | undefined;
-  let memoryChoice: { choice: AnalyticsChoice; expires: number } | undefined;
-  let endpoint = "";
+/** Accepts the API base (https://host/api) or, for older settings, its /track endpoint. */
+function scriptUrl(endpoint: string) {
   try {
-    const url = new URL(config.endpoint);
-    if (url.protocol === "https:" && !url.username && !url.password && !url.search && !url.hash) {
-      endpoint = url.href;
-    }
+    const url = new URL(endpoint);
+    if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash)
+      return "";
+    return `${url.origin}${url.pathname.replace(/\/track\/?$/, "").replace(/\/$/, "")}/script.js`;
   } catch {
     // Missing or invalid configuration disables analytics without affecting the game.
+    return "";
   }
-  const available = config.enabled && !!endpoint && /^[a-zA-Z0-9_-]+$/.test(config.siteId);
+}
+
+export function createAnalytics(config: Config, dependencies: Dependencies) {
+  const listeners = new Set<() => void>();
+  let memoryChoice: { choice: AnalyticsChoice; expires: number } | undefined;
+  let loaded = false;
+  const src = scriptUrl(config.endpoint);
+  const available = config.enabled && !!src && /^[a-zA-Z0-9_-]+$/.test(config.siteId);
 
   function getChoice(): AnalyticsChoice {
     if (memoryChoice)
@@ -52,20 +59,33 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
     }
   }
 
-  function stop() {
-    for (const controller of pending) controller.abort();
-    pending.clear();
-    lastPath = undefined;
-  }
-
   function sync(fromStorage = false) {
     if (fromStorage) memoryChoice = undefined;
-    if (getChoice() !== "accepted") stop();
+    if (getChoice() === "accepted") {
+      // The script tracks the current page on load and later route changes by itself.
+      if (available && !loaded) {
+        loaded = true;
+        dependencies.loadScript(src, config.siteId);
+      }
+    } else {
+      // Also clears what an earlier consent left behind, e.g. after it expired.
+      for (const key of RYBBIT_KEYS) {
+        try {
+          dependencies.storage.removeItem(key);
+        } catch {
+          // Nothing to remove if browser storage is blocked.
+        }
+      }
+      if (loaded) {
+        // A loaded script can't be stopped; reloading is the only reliable way to end tracking.
+        dependencies.reload();
+        return;
+      }
+    }
     for (const listener of listeners) listener();
   }
 
   function choose(choice: "accepted" | "rejected") {
-    if (getChoice() !== "accepted") lastPath = undefined;
     memoryChoice = { choice, expires: dependencies.now() + CHOICE_MAX_AGE };
     try {
       dependencies.storage.setItem(CHOICE_KEY, JSON.stringify(memoryChoice));
@@ -73,37 +93,6 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
       // The choice remains effective in this tab if browser storage is blocked.
     }
     sync();
-  }
-
-  function send(pathname: string, extra: Record<string, string>) {
-    if (!available || getChoice() !== "accepted" || !PATHS.has(pathname)) return;
-    const controller = new AbortController();
-    pending.add(controller);
-    const timeout = setTimeout(() => controller.abort(), 3000);
-    try {
-      void dependencies
-        .fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "omit",
-          referrerPolicy: "no-referrer",
-          signal: controller.signal,
-          body: JSON.stringify({
-            site_id: config.siteId,
-            hostname: dependencies.hostname,
-            pathname,
-            ...extra,
-          }),
-        })
-        .catch(() => undefined)
-        .finally(() => {
-          clearTimeout(timeout);
-          pending.delete(controller);
-        });
-    } catch {
-      clearTimeout(timeout);
-      pending.delete(controller);
-    }
   }
 
   return {
@@ -117,24 +106,15 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
         listeners.delete(listener);
       };
     },
-    pageview(pathname: string) {
-      if (!available || getChoice() !== "accepted" || !PATHS.has(pathname) || pathname === lastPath)
-        return;
-      lastPath = pathname;
-      send(pathname, { type: "pageview" });
-    },
     onboarding(outcome: OnboardingOutcome, step: OnboardingStep) {
       // Runtime checks also protect callers outside TypeScript.
       if (
+        !loaded ||
         !["completed", "skipped"].includes(outcome) ||
         !["welcome", "darts", "progression"].includes(step)
       )
         return;
-      send("/darts", {
-        type: "custom_event",
-        event_name: `onboarding_${outcome}`,
-        properties: JSON.stringify({ step }),
-      });
+      dependencies.rybbit()?.event(`onboarding_${outcome}`, { step });
     },
   };
 }
