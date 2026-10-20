@@ -1,0 +1,140 @@
+name: Preview images
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Keep both image publications and deployments in order. Never cancel a rollout.
+concurrency:
+  group: preview-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      backend: ${{ steps.publish.outputs.backend }}
+      frontend: ${{ steps.publish.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - name: Build backend
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: backend/Dockerfile
+          load: true
+          tags: idle-backend:test
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,scope=backend,mode=max
+      - name: Build frontend
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: frontend/Dockerfile
+          load: true
+          tags: idle-frontend:test
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,scope=frontend,mode=max
+      - name: Smoke-test the built stack
+        env:
+          BACKEND_IMAGE: idle-backend:test
+          FRONTEND_IMAGE: idle-frontend:test
+          MYSQL_ROOT_PASSWORD: ci-root-password
+          MYSQL_PASSWORD: ci-password
+          BETTER_AUTH_SECRET: ci-only-secret-at-least-32-characters
+          PREVIEW_URL: http://127.0.0.1:8080
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/ports.yml" <<'YAML'
+          services:
+            frontend:
+              ports:
+                - "127.0.0.1:8080:80"
+          YAML
+          compose=(docker compose -p ci-preview -f deploy/compose.yml -f "$RUNNER_TEMP/ports.yml")
+          trap '"${compose[@]}" logs --no-color; "${compose[@]}" down -v' EXIT
+          "${compose[@]}" up -d --wait --wait-timeout 180
+          curl --fail --silent --show-error --output /dev/null --max-time 10 "$PREVIEW_URL/"
+          curl --fail --silent --show-error --max-time 10 "$PREVIEW_URL/trpc/health.check" |
+            jq -e '.result.data.status == "ok"'
+      - name: Sign in to GHCR
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish validated images
+        id: publish
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          repository="${REPOSITORY,,}"
+          for service in backend frontend; do
+            image="ghcr.io/${repository}-${service}"
+            docker tag "idle-${service}:test" "${image}:sha-${GITHUB_SHA}"
+            docker push "${image}:sha-${GITHUB_SHA}"
+            docker tag "idle-${service}:test" "${image}:latest"
+            docker push "${image}:latest"
+            digest=$(docker buildx imagetools inspect "${image}:sha-${GITHUB_SHA}" --format '{{json .Manifest}}' | jq -r '.digest')
+            [[ "$digest" =~ ^sha256:[a-f0-9]{64}$ ]]
+            echo "${service}=${image}@${digest}" >> "$GITHUB_OUTPUT"
+            echo "${service}: ${image}@${digest}" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+  deploy:
+    name: Request preview rollout
+    needs: images
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.DOKPLOY_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: preview
+      url: https://idle-arcade.craftingservices.de
+    steps:
+      - uses: actions/checkout@v7
+      - name: Select immutable images in Dokploy
+        env:
+          DOKPLOY_URL: ${{ vars.DOKPLOY_URL }}
+          DOKPLOY_COMPOSE_ID: ${{ vars.DOKPLOY_COMPOSE_ID }}
+          DOKPLOY_API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
+          BACKEND_IMAGE: ${{ needs.images.outputs.backend }}
+          FRONTEND_IMAGE: ${{ needs.images.outputs.frontend }}
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --output /dev/null --max-time 30 \
+            --proto '=https' \
+            -X POST "${DOKPLOY_URL%/}/api/compose.update" \
+            -H "x-api-key: $DOKPLOY_API_KEY" \
+            -H 'Content-Type: application/json' \
+            --data "$(jq -n --arg id "$DOKPLOY_COMPOSE_ID" \
+              --arg backend "$BACKEND_IMAGE" --arg frontend "$FRONTEND_IMAGE" \
+              --rawfile compose deploy/compose.yml \
+              '{composeId: $id, composeFile: ($compose
+                | split("${BACKEND_IMAGE:?selected by CI}") | join($backend)
+                | split("${FRONTEND_IMAGE:?selected by CI}") | join($frontend))}')"
+      - name: Trigger Dokploy rollout
+        uses: benbristow/dokploy-deploy-action@0.2.2
+        with:
+          dokploy_url: ${{ vars.DOKPLOY_URL }}
+          api_token: ${{ secrets.DOKPLOY_API_KEY }}
+          application_id: ${{ vars.DOKPLOY_COMPOSE_ID }}
+          service_type: compose

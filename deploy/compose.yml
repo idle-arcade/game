@@ -1,0 +1,58 @@
+# Dokploy Raw Compose. CI replaces only the two image placeholders with digests.
+# Runtime secrets stay in Dokploy's Environment tab.
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set in Dokploy}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-idle_arcade}
+      MYSQL_USER: ${MYSQL_USER:-idle}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set in Dokploy}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  backend:
+    image: ${BACKEND_IMAGE:?selected by CI}
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: mysql://${MYSQL_USER:-idle}:${MYSQL_PASSWORD:?set in Dokploy}@mysql:3306/${MYSQL_DATABASE:-idle_arcade}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?set in Dokploy}
+      BETTER_AUTH_URL: ${PREVIEW_URL:?set in Dokploy}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/trpc/health.check').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 5s
+      timeout: 5s
+      start_period: 30s
+      retries: 30
+
+  frontend:
+    image: ${FRONTEND_IMAGE:?selected by CI}
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  mysql-data:
