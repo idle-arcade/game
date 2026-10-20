@@ -35,13 +35,44 @@
   "legal": {
     "imprint": "Imprint",
     "terms": "Terms",
-    "privacy": "Privacy",
+    "privacy": "Privacy notice",
     "close": "Close",
-    "placeholder": "Placeholder only — this content is unfinished and has not been legally reviewed. It is not a complete legal document.",
-    "content": {
-      "imprint": "Placeholder for the imprint. Operator and contact details will be added after legal review.",
-      "privacy": "Placeholder for the privacy policy. Information about data processing and privacy rights will be added after legal review.",
-      "terms": "Placeholder for the terms and conditions. Conditions for using IDLE Arcade will be added after legal review."
+    "operator": "Service provider / information under Section 5 DDG",
+    "updated": "Last updated: 21 October 2026",
+    "authority": "Complain to LDI NRW",
+    "privacySections": {
+      "controller": {
+        "title": "Controller",
+        "body": "This notice covers IDLE Arcade, including the preview at idle-arcade.craftingservices.de. Contact the controller using the details above for privacy questions or to exercise your rights."
+      },
+      "hosting": {
+        "title": "Hosting, delivery and security",
+        "body": "We operate the game on German infrastructure provided by netcup and Index Hosting. These hosting providers may access data as needed to provide their services and act as processors under Article 28 GDPR where required.\n\nConnections involve IP addresses, timestamps, requested resources, HTTP status codes and browser information. Technical server and error logs support secure operation and troubleshooting. We also use IP-based counters held in server memory to limit login and registration attempts (counting windows: five minutes for login and one hour for registration).\n\nDelivery and use of the game rely on Article 6(1)(b) GDPR. Abuse prevention and operational security rely on Article 6(1)(f); our legitimate interest is a secure, functioning service."
+      },
+      "account": {
+        "title": "Registration and login",
+        "body": "A game account requires a chosen username and password. Please use a pseudonym where possible and avoid information about others. We store the username, internal account IDs, a password hash, and creation/update timestamps. The password is processed for verification but is not stored as a plain-text account password.\n\nThe authentication library also uses a technical placeholder email address generated from the username with the .invalid ending. We do not ask for a real email address or send messages to this placeholder. Session records include an ID, session token, expiry/creation timestamps and, where available, IP address and user agent.\n\nThis enables account registration, login and account association under Article 6(1)(b) GDPR. Required credentials are necessary to create an account. The current prototype does not yet store game progress or provide public leaderboards. We will update this notice when these features are added. There is no automated decision-making producing legal or similarly significant effects."
+      },
+      "storage": {
+        "title": "Cookies and browser storage",
+        "body": "The authentication library sets technically necessary session cookies, including better-auth.session_token, potentially prefixed with __Secure- over HTTPS. The regular session lifetime is seven days and may be renewed with continued use. Logging out ends the current session.\n\nLocal browser storage holds the language under idle-arcade.language and, after your choice, the analytics preference under idle-arcade.analytics.v1. Language persists until changed or cleared. The analytics choice expires after 180 days; analytics then stays off until you consent again. Session storage holds idle-arcade.onboarding-dismissed until the browser tab session ends to remember that you closed the introduction. When storage is blocked, choices may only apply in the open tab.\n\nThese storage operations provide the requested login, language and interface behavior and manage your privacy choice (Section 25(2)(2) TDDDG). Associated personal-data processing relies on Article 6(1)(b) GDPR for login and Article 6(1)(f) for preferences; our interest is to honor your choices. Rybbit itself sets no analytics cookies in this integration."
+      },
+      "analytics": {
+        "title": "Optional usage analytics with Rybbit",
+        "body": "Only when you explicitly consent and confirm that you are at least 16 do we send usage data to our self-hosted Rybbit instance at ry.idle-arcade.craftingservices.de. No analytics requests are sent without consent. You can register, log in and play without consenting. This version does not offer a parental-consent analytics flow for under-16s; please leave analytics off if you are under 16.\n\nWe use analytics to understand game and introduction usage and improve the service. We record page views of the entry page and Darts room, and completion or skipping of the introduction with a fixed step name. Payloads contain the public path, hostname, event type and, for introduction events, the step. The connection also exposes the IP address, user agent and timestamp to the analytics server. Rybbit may derive approximate location/device information and pseudonymous visitor/session associations. Being cookieless does not by itself make this anonymous.\n\nWe do not send usernames, account IDs, passwords, session tokens, form values, URL query parameters, URL fragments or referrers to Rybbit. Session replay, automatic click capture and account-linked profiles are not part of this integration. Only authorized project members may access the analytics dashboard.\n\nThe legal bases are Article 6(1)(a) GDPR and, where device information is accessed, Section 25(1) TDDDG. Withdraw consent at any time using “Analytics settings” at the bottom of each page. The login checkbox is hidden while consent is valid. Withdrawal does not affect the lawfulness of earlier processing. Declining does not affect the game."
+      },
+      "retention": {
+        "title": "Retention and deletion",
+        "body": "Account data is retained while the account exists and is needed to provide it. Request account deletion using the email address above; there is currently no dedicated delete button. We delete associated personal data unless legal retention requirements or a specific need to defend legal claims prevents this.\n\nSessions have the validity described above; technical database entries may remain until cleanup. IP-based counters exist only in memory and disappear no later than a backend restart. Logs are retained only as needed for troubleshooting and security, or until an investigation into a specific security incident is complete. Backups are overwritten through backup rotation; deletions must be reapplied following a restore.\n\nRybbit usage events have a planned retention of 30 days. Analytics must only be enabled once that period is configured and verified on the self-hosted instance. Withdrawal stops further events and does not automatically request deletion of existing data; contact us to request deletion."
+      },
+      "contact": {
+        "title": "Contact and recipients",
+        "body": "When you contact us by email or telephone, we process the contact details and content you provide to handle your request. Article 6(1)(b) GDPR applies to account or contractual inquiries; otherwise Article 6(1)(f) applies based on our interest in responding. Requests are deleted after handling unless continuing duties or legitimate evidentiary needs require retention.\n\nData is accessible only to people and technical providers who need it for the stated purposes, and to authorities where legally required (Article 6(1)(c) GDPR). No transfers of game or analytics data outside the European Economic Area are planned for this deployment."
+      },
+      "rights": {
+        "title": "Your privacy rights",
+        "body": "Subject to GDPR conditions, you have rights of access (Article 15), rectification (16), erasure (17), restriction (18) and portability (20). You can withdraw consent at any time for the future (Article 7(3)).\n\nRIGHT TO OBJECT: Where processing relies on legitimate interests under Article 6(1)(f), you may object on grounds relating to your particular situation (Article 21).\n\nYou may complain to a supervisory authority (Article 77), particularly where you habitually live, work or suspect an infringement. The authority for the operator in Hagen is the State Commissioner for Data Protection and Freedom of Information North Rhine-Westphalia (LDI NRW)."
+      }
     }
   },
   "onboarding": {
@@ -74,5 +105,18 @@
     "navLabel": "Rooms",
     "locked": "Not unlocked yet",
     "highscores": "Highscores"
+  },
+  "analytics": {
+    "settings": "Analytics settings",
+    "title": "Optional usage analytics",
+    "description": "With your consent, we record page views and whether you finish or skip the introduction using our self-hosted Rybbit instance on German infrastructure. This also processes IP addresses and browser information. No analytics cookies or links to your game account. Usage events: 30 days.",
+    "active": "Analytics is enabled. You can withdraw consent at any time.",
+    "inactive": "Analytics is disabled. You can use the game without consenting.",
+    "age": "I am at least 16 years old.",
+    "withdraw": "Withdraw consent",
+    "reject": "Continue without analytics",
+    "accept": "Allow analytics",
+    "optIn": "I am at least 16 and consent to optional usage analytics with Rybbit.",
+    "optional": "Optional. Rybbit records page views and introduction usage, plus IP and browser data, on our server in Germany. Events are retained for 30 days. You can log in and play with this unchecked. Withdraw at any time in Analytics settings."
   }
 }

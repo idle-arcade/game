@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState, type RefObject } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../components/ui/Button";
+import { analytics } from "../analytics/analytics";
 
 type OnboardingModalProps = {
   onClose: () => void;
@@ -38,13 +39,14 @@ export function OnboardingModal({ onClose, returnFocusRef }: OnboardingModalProp
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         event.preventDefault();
+        analytics.onboarding("skipped", step);
         onClose();
       }
     }
 
     document.addEventListener("keydown", handleKeyDown, true);
     return () => document.removeEventListener("keydown", handleKeyDown, true);
-  }, [onClose]);
+  }, [onClose, step]);
 
   return (
     <dialog
@@ -53,6 +55,7 @@ export function OnboardingModal({ onClose, returnFocusRef }: OnboardingModalProp
       aria-describedby={descriptionId}
       onCancel={(event) => {
         event.preventDefault();
+        analytics.onboarding("skipped", step);
         onClose();
       }}
       onClose={(event) => {
@@ -75,13 +78,21 @@ export function OnboardingModal({ onClose, returnFocusRef }: OnboardingModalProp
         </h2>
         <p id={descriptionId}>{t(`onboarding.steps.${step}.description`)}</p>
         <div className="flex flex-wrap justify-end gap-3">
-          <Button variant="secondary" onClick={onClose}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              analytics.onboarding("skipped", step);
+              onClose();
+            }}
+          >
             {t("onboarding.skip")}
           </Button>
           <Button
             onClick={() => {
-              if (isLastStep) onClose();
-              else setStepIndex(stepIndex + 1);
+              if (isLastStep) {
+                analytics.onboarding("completed", step);
+                onClose();
+              } else setStepIndex(stepIndex + 1);
             }}
           >
             {t(isLastStep ? "onboarding.startPlaying" : "onboarding.continue")}

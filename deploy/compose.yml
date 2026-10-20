@@ -44,6 +44,10 @@ services:
 
   frontend:
     image: ${FRONTEND_IMAGE:?selected by CI}
+    environment:
+      RYBBIT_ENABLED: ${RYBBIT_ENABLED:-false}
+      RYBBIT_ENDPOINT: ${RYBBIT_ENDPOINT:-}
+      RYBBIT_SITE_ID: ${RYBBIT_SITE_ID:-}
     depends_on:
       backend:
         condition: service_healthy

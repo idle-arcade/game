@@ -35,13 +35,44 @@
   "legal": {
     "imprint": "Impressum",
     "terms": "AGB",
-    "privacy": "Datenschutz",
+    "privacy": "Datenschutzerklärung",
     "close": "Schließen",
-    "placeholder": "Nur ein Platzhalter — dieser Inhalt ist unfertig und wurde nicht rechtlich geprüft. Dies ist kein vollständiges Rechtsdokument.",
-    "content": {
-      "imprint": "Platzhalter für das Impressum. Angaben zum Betreiber und Kontakt werden nach rechtlicher Prüfung ergänzt.",
-      "privacy": "Platzhalter für die Datenschutzerklärung. Informationen zur Datenverarbeitung und zu Datenschutzrechten werden nach rechtlicher Prüfung ergänzt.",
-      "terms": "Platzhalter für die Allgemeinen Geschäftsbedingungen. Bedingungen für die Nutzung von IDLE Arcade werden nach rechtlicher Prüfung ergänzt."
+    "operator": "Diensteanbieter / Angaben gemäß § 5 DDG",
+    "updated": "Stand: 21. Oktober 2026",
+    "authority": "Beschwerde bei der LDI NRW",
+    "privacySections": {
+      "controller": {
+        "title": "Verantwortlicher",
+        "body": "Diese Datenschutzerklärung gilt für IDLE Arcade einschließlich der Vorschau unter idle-arcade.craftingservices.de. Bei Fragen zum Datenschutz oder zur Ausübung deiner Rechte erreichst du den Verantwortlichen über die oben genannten Kontaktdaten."
+      },
+      "hosting": {
+        "title": "Bereitstellung, Hosting und Sicherheit",
+        "body": "Wir betreiben das Spiel auf deutscher Infrastruktur von netcup und Index Hosting. Diese Hosting-Dienstleister können im Rahmen der technischen Bereitstellung auf Daten zugreifen und werden, soweit erforderlich, als Auftragsverarbeiter nach Art. 28 DSGVO eingesetzt.\n\nBei Verbindungen werden insbesondere IP-Adresse, Zeitpunkt, angeforderte Ressource, HTTP-Status und Browserinformationen verarbeitet. Technische Server- und Fehlerprotokolle dienen dem sicheren Betrieb und der Fehleranalyse. Zur Begrenzung von Anmelde- und Registrierungsversuchen verwenden wir außerdem IP-bezogene Zähler im Arbeitsspeicher des Servers (Zählfenster: fünf Minuten für die Anmeldung und eine Stunde für die Registrierung).\n\nRechtsgrundlage für die Auslieferung und Nutzung des Spiels ist Art. 6 Abs. 1 lit. b DSGVO. Für die Abwehr von Missbrauch und die Betriebssicherheit ist es Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse ist ein sicheres und funktionsfähiges Angebot."
+      },
+      "account": {
+        "title": "Registrierung und Anmeldung",
+        "body": "Für ein Spielkonto benötigen wir einen frei gewählten Benutzernamen und ein Passwort. Verwende möglichst ein Pseudonym und keine Angaben über andere Personen. Wir speichern den Benutzernamen, interne Konto-IDs, einen Passwort-Hash sowie Erstellungs- und Änderungszeitpunkte. Das Passwort wird zur Prüfung verarbeitet, aber nicht im Klartext als Kontopasswort gespeichert.\n\nDie Anmeldebibliothek verwendet zusätzlich eine aus dem Benutzernamen erzeugte technische Platzhalter-E-Mail-Adresse mit der Endung .invalid. Wir fragen keine echte E-Mail-Adresse ab und versenden darüber keine Nachrichten. Sitzungsdaten umfassen eine Sitzungskennung, einen Sitzungstoken, Ablauf- und Erstellungszeitpunkte sowie gegebenenfalls IP-Adresse und User-Agent.\n\nDiese Daten ermöglichen Registrierung, Anmeldung und Zuordnung des Kontos (Art. 6 Abs. 1 lit. b DSGVO). Ohne die erforderlichen Zugangsdaten können wir kein Konto bereitstellen. Der aktuelle Prototyp enthält noch keine Speicherung von Spielständen oder öffentliche Bestenlisten. Wenn solche Funktionen hinzukommen, passen wir diese Informationen an. Es findet keine automatisierte Entscheidung mit rechtlicher oder vergleichbar erheblicher Wirkung statt."
+      },
+      "storage": {
+        "title": "Cookies und Browserspeicher",
+        "body": "Für die Anmeldung setzt die Anmeldebibliothek technisch erforderliche Sitzungscookies (insbesondere better-auth.session_token, bei HTTPS gegebenenfalls mit __Secure- vorangestellt). Die reguläre Sitzungslaufzeit beträgt sieben Tage und kann bei weiterer Nutzung verlängert werden. Eine Abmeldung beendet die aktuelle Sitzung.\n\nIm lokalen Browserspeicher speichern wir die Sprache unter idle-arcade.language und, nach deiner Auswahl, die Analyseentscheidung unter idle-arcade.analytics.v1. Die Sprache bleibt bis zu einer Änderung oder Löschung erhalten. Die Analyseentscheidung gilt für 180 Tage; danach bleibt die Analyse bis zu einer erneuten Einwilligung ausgeschaltet. Im Sitzungsspeicher merkt sich idle-arcade.onboarding-dismissed bis zum Ende der Browser-Tab-Sitzung, ob die Einführung geschlossen wurde. Wenn dein Browser das Speichern verhindert, gelten die Entscheidungen gegebenenfalls nur im geöffneten Tab.\n\nDiese Speicherzugriffe dienen der ausdrücklich gewünschten Anmeldung, Spracheinstellung und Bedienung sowie der Verwaltung deiner Datenschutzentscheidung (§ 25 Abs. 2 Nr. 2 TDDDG). Die zugehörige Verarbeitung personenbezogener Daten stützt sich auf Art. 6 Abs. 1 lit. b DSGVO für die Anmeldung und auf Art. 6 Abs. 1 lit. f DSGVO für die Speicherung deiner Einstellungen. Unser Interesse ist, deine Auswahl zu beachten. Rybbit selbst setzt in dieser Integration keine Analyse-Cookies."
+      },
+      "analytics": {
+        "title": "Freiwillige Nutzungsanalyse mit Rybbit",
+        "body": "Nur wenn du ausdrücklich zustimmst und bestätigst, mindestens 16 Jahre alt zu sein, senden wir Nutzungsdaten an unsere selbst betriebene Rybbit-Instanz unter ry.idle-arcade.craftingservices.de. Ohne Einwilligung werden keine Analyseanfragen gesendet. Registrierung, Anmeldung und Spielen sind auch ohne Einwilligung möglich. Für unter 16-Jährige bieten wir in dieser Version keine Analyse mit elterlicher Einwilligung an; bitte lasse die Analyse ausgeschaltet.\n\nZweck ist, die Nutzung des Spiels und der Einführung zu verstehen und das Angebot zu verbessern. Wir erfassen Seitenaufrufe der Startseite und des Darts-Raums sowie das Abschließen oder Überspringen der Einführung einschließlich des festen Schrittnamens. Übermittelt werden der öffentliche Seitenpfad, der Hostname, der Ereignistyp und bei diesen Einführungsereignissen der Schritt. Durch die Verbindung erhält der Analyseserver außerdem IP-Adresse, User-Agent und Zeitpunkt. Rybbit kann daraus ungefähre Standort- und Geräteinformationen sowie pseudonyme Besucher- und Sitzungszuordnungen ableiten. Diese Daten sind nicht allein deshalb anonym, weil keine Cookies verwendet werden.\n\nWir senden keine Benutzernamen, Konto-IDs, Passwörter, Sitzungstoken, Formulareingaben, URL-Suchparameter, URL-Fragmente oder Referrer an Rybbit. Sitzungsaufzeichnungen, automatische Klickerfassung und kontobezogene Nutzerprofile sind nicht Bestandteil dieser Integration. Zugriff auf die Auswertung erhalten nur berechtigte Projektmitglieder.\n\nRechtsgrundlagen sind Art. 6 Abs. 1 lit. a DSGVO und, soweit ein Zugriff auf Endgeräteinformationen betroffen ist, § 25 Abs. 1 TDDDG. Du kannst deine Einwilligung jederzeit über „Analyse-Einstellungen“ am Seitenende widerrufen. Das Häkchen auf der Anmeldeseite wird bei gültiger Einwilligung ausgeblendet. Bereits rechtmäßig erfolgte Verarbeitung bleibt davon unberührt. Eine Ablehnung beeinträchtigt das Spiel nicht."
+      },
+      "retention": {
+        "title": "Speicherdauer und Löschung",
+        "body": "Kontodaten speichern wir, solange dein Konto besteht und für dessen Bereitstellung benötigt wird. Du kannst die Löschung über die oben genannte E-Mail-Adresse verlangen; ein eigener Löschbutton ist derzeit nicht vorhanden. Soweit keine gesetzlichen Aufbewahrungspflichten oder konkret erforderliche Rechtsverteidigung entgegenstehen, löschen wir die zugehörigen personenbezogenen Daten.\n\nSitzungen haben die oben genannte Gültigkeitsdauer; technische Datenbankeinträge können bis zur Bereinigung erhalten bleiben. IP-bezogene Begrenzungszähler liegen nur im Arbeitsspeicher und gehen spätestens beim Neustart des Backend-Prozesses verloren. Protokolle werden nur so lange aufbewahrt, wie sie zur Fehleranalyse und Betriebssicherheit benötigt werden; bei einem konkreten Sicherheitsvorfall bis zum Abschluss der erforderlichen Untersuchung. Sicherungskopien werden im Rahmen der Sicherungsrotation überschrieben; im Wiederherstellungsfall sind Löschungen erneut zu berücksichtigen.\n\nFür Rybbit-Nutzungsereignisse ist eine Aufbewahrung von 30 Tagen vorgesehen. Die Analyse darf erst aktiviert werden, wenn diese Frist in der selbst gehosteten Instanz eingerichtet und überprüft ist. Der Widerruf stoppt weitere Ereignisse und ist kein automatischer Löschauftrag für bereits gespeicherte Daten. Wende dich für einen Löschwunsch an uns."
+      },
+      "contact": {
+        "title": "Kontaktaufnahme und Empfänger",
+        "body": "Wenn du uns per E-Mail oder Telefon kontaktierst, verarbeiten wir deine mitgeteilten Kontakt- und Inhaltsdaten zur Bearbeitung der Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO bei konto- oder vertragsbezogenen Anliegen, ansonsten Art. 6 Abs. 1 lit. f DSGVO aufgrund unseres Interesses an der Beantwortung. Wir löschen Anfragen nach abschließender Bearbeitung, soweit keine fortbestehenden Pflichten oder berechtigten Nachweiszwecke entgegenstehen.\n\nDaten erhalten nur Personen und technische Dienstleister, die sie für die genannten Zwecke benötigen, sowie Behörden, wenn eine rechtliche Verpflichtung besteht (Art. 6 Abs. 1 lit. c DSGVO). Für Spiel- und Analysedaten ist in dieser Bereitstellung keine Übermittlung außerhalb des Europäischen Wirtschaftsraums vorgesehen."
+      },
+      "rights": {
+        "title": "Deine Datenschutzrechte",
+        "body": "Du hast nach Maßgabe der DSGVO Rechte auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18) und Datenübertragbarkeit (Art. 20). Eine Einwilligung kannst du jederzeit mit Wirkung für die Zukunft widerrufen (Art. 7 Abs. 3).\n\nWIDERSPRUCHSRECHT: Soweit wir Daten aufgrund berechtigter Interessen nach Art. 6 Abs. 1 lit. f DSGVO verarbeiten, kannst du aus Gründen, die sich aus deiner besonderen Situation ergeben, widersprechen (Art. 21).\n\nDu kannst dich bei einer Datenschutzaufsichtsbehörde beschweren (Art. 77), insbesondere an deinem gewöhnlichen Aufenthaltsort, Arbeitsplatz oder am Ort eines vermuteten Verstoßes. Für den Betreiber in Hagen ist dies die Landesbeauftragte für Datenschutz und Informationsfreiheit Nordrhein-Westfalen (LDI NRW)."
+      }
     }
   },
   "onboarding": {
@@ -74,5 +105,18 @@
     "navLabel": "Räume",
     "locked": "Noch nicht freigeschaltet",
     "highscores": "Highscores"
+  },
+  "analytics": {
+    "settings": "Analyse-Einstellungen",
+    "title": "Freiwillige Nutzungsanalyse",
+    "description": "Mit deiner Einwilligung erfassen wir Seitenaufrufe und ob du die Einführung abschließt oder überspringst. Dafür betreiben wir Rybbit auf deutscher Infrastruktur selbst. Dabei werden auch IP-Adresse und Browserinformationen verarbeitet. Keine Analyse-Cookies und keine Verknüpfung mit deinem Spielkonto. Nutzungsereignisse: 30 Tage.",
+    "active": "Die Analyse ist eingeschaltet. Du kannst deine Einwilligung jederzeit widerrufen.",
+    "inactive": "Die Analyse ist ausgeschaltet. Du kannst das Spiel ohne Einwilligung nutzen.",
+    "age": "Ich bin mindestens 16 Jahre alt.",
+    "withdraw": "Einwilligung widerrufen",
+    "reject": "Ohne Analyse fortfahren",
+    "accept": "Analyse erlauben",
+    "optIn": "Ich bin mindestens 16 Jahre alt und willige in die freiwillige Nutzungsanalyse mit Rybbit ein.",
+    "optional": "Optional. Rybbit erfasst Seitenaufrufe und die Nutzung der Einführung sowie IP- und Browserdaten auf unserem Server in Deutschland. Ereignisse werden 30 Tage gespeichert. Ohne Häkchen kannst du dich genauso anmelden und spielen. Jederzeit über die Analyse-Einstellungen widerrufbar."
   }
 }

@@ -5,6 +5,7 @@ import { Button } from "../../components/ui/Button";
 import { TextField } from "../../components/ui/TextField";
 import type { AuthErrorKey } from "./authErrors";
 import type { CredentialField, FieldError, FieldErrors } from "./validation";
+import { AnalyticsOptIn } from "../analytics/AnalyticsOptIn";
 
 type EntryFormProps = {
   values: Credentials;
@@ -67,6 +68,7 @@ export function EntryForm({
         </p>
       )}
 
+      <AnalyticsOptIn />
       <div className="flex gap-3">
         <Button variant="secondary" className="flex-1" disabled={pending} onClick={onRegister}>
           {t("entry.register")}

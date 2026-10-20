@@ -9,6 +9,9 @@ RUN npm ci
 RUN npm run build -w @idle-arcade/frontend
 
 FROM nginx:1.29-alpine
+RUN apk add --no-cache jq
+COPY frontend/docker-entrypoint.d/40-runtime-config.sh /docker-entrypoint.d/40-runtime-config.sh
+RUN chmod +x /docker-entrypoint.d/40-runtime-config.sh
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/frontend/dist /usr/share/nginx/html
 EXPOSE 80
