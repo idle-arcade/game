@@ -3,7 +3,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import type { Credentials } from "@idle-arcade/backend/schemas/auth";
 import { trpc } from "../../lib/trpc";
-import { authErrorKey, type AuthErrorKey } from "./authErrors";
+import { authErrorKey, authFailureReason, type AuthErrorKey } from "./authErrors";
+import { analytics } from "../analytics/analytics";
+import type { AuthAction } from "../analytics/client";
 import {
   CREDENTIAL_FIELDS,
   validateLogin,
@@ -13,6 +15,13 @@ import {
 } from "./validation";
 
 type PublicUser = { id: string; username: string };
+
+const VALIDATION_REASONS = {
+  "validation.required": "required",
+  "validation.tooShort": "too_short",
+  "validation.tooLong": "too_long",
+  "validation.usernameFormat": "invalid_format",
+} as const;
 
 /** State and behaviour of the entry screen; the components only render what this returns. */
 export function useEntryForm() {
@@ -25,15 +34,29 @@ export function useEntryForm() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const onSuccess = async (user: PublicUser) => {
+  const onSuccess = async (action: AuthAction, user: PublicUser) => {
+    analytics.authSuccess(action);
     queryClient.clear(); // never carry cached data over from a previous player
     queryClient.setQueryData(trpc.auth.me.queryKey(), user);
     await navigate({ to: "/darts" });
   };
-  const onError = (error: unknown) => setFormError(authErrorKey(error));
+  const onError = (action: AuthAction, error: unknown) => {
+    analytics.authFailure(action, authFailureReason(error));
+    setFormError(authErrorKey(error));
+  };
 
-  const login = useMutation(trpc.auth.login.mutationOptions({ onSuccess, onError }));
-  const register = useMutation(trpc.auth.register.mutationOptions({ onSuccess, onError }));
+  const login = useMutation(
+    trpc.auth.login.mutationOptions({
+      onSuccess: (user) => onSuccess("login", user),
+      onError: (error) => onError("login", error),
+    }),
+  );
+  const register = useMutation(
+    trpc.auth.register.mutationOptions({
+      onSuccess: (user) => onSuccess("register", user),
+      onError: (error) => onError("register", error),
+    }),
+  );
   const pending = login.isPending || register.isPending;
 
   function setValue(field: CredentialField, value: string) {
@@ -41,7 +64,7 @@ export function useEntryForm() {
     setFieldErrors((current) => ({ ...current, [field]: undefined }));
   }
 
-  function submit(action: "login" | "register") {
+  function submit(action: AuthAction) {
     if (pending) return;
     setFormError(null);
     const errors = action === "login" ? validateLogin(values) : validateRegistration(values);
@@ -49,6 +72,10 @@ export function useEntryForm() {
 
     const firstInvalid = CREDENTIAL_FIELDS.find((field) => errors[field]);
     if (firstInvalid) {
+      analytics.authFailure(action, "validation_failed", {
+        username: errors.username && VALIDATION_REASONS[errors.username.key],
+        password: errors.password && VALIDATION_REASONS[errors.password.key],
+      });
       (firstInvalid === "username" ? usernameRef : passwordRef).current?.focus();
       return;
     }

@@ -15,8 +15,29 @@ type Dependencies = {
 // Keys the Rybbit script may store after consent (older versions always store the visitor ID).
 const RYBBIT_KEYS = ["rybbit-visitor-id", "rybbit-user-id"];
 
-export type OnboardingOutcome = "completed" | "skipped";
-export type OnboardingStep = "welcome" | "darts" | "progression";
+const ONBOARDING_OUTCOMES = ["completed", "skipped"] as const;
+export type OnboardingOutcome = (typeof ONBOARDING_OUTCOMES)[number];
+
+const ONBOARDING_STEPS = ["welcome", "darts", "progression"] as const;
+export type OnboardingStep = (typeof ONBOARDING_STEPS)[number];
+
+const AUTH_ACTIONS = ["login", "register"] as const;
+export type AuthAction = (typeof AUTH_ACTIONS)[number];
+
+const AUTH_FAILURE_REASONS = [
+  "validation_failed",
+  "invalid_credentials",
+  "username_taken",
+  "rate_limited",
+  "invalid_input",
+  "server_error",
+  "request_failed",
+  "unknown",
+] as const;
+export type AuthFailureReason = (typeof AUTH_FAILURE_REASONS)[number];
+
+const VALIDATION_REASONS = ["required", "too_short", "too_long", "invalid_format"] as const;
+export type AuthValidationReason = (typeof VALIDATION_REASONS)[number];
 
 /** Accepts the API base (https://host/api) or, for older settings, its /track endpoint. */
 function scriptUrl(endpoint: string) {
@@ -95,6 +116,15 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
     sync();
   }
 
+  function sendEvent(name: string, properties?: Record<string, string>) {
+    if (!available || !loaded || getChoice() !== "accepted") return;
+    try {
+      dependencies.rybbit()?.event(name, properties);
+    } catch {
+      // Analytics failures must not interrupt authentication or gameplay.
+    }
+  }
+
   return {
     available,
     getChoice,
@@ -106,15 +136,32 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
         listeners.delete(listener);
       };
     },
+    authSuccess(action: AuthAction) {
+      if (!AUTH_ACTIONS.includes(action)) return;
+      sendEvent(action);
+    },
+    authFailure(
+      action: AuthAction,
+      reason: AuthFailureReason,
+      validation?: { username?: AuthValidationReason; password?: AuthValidationReason },
+    ) {
+      if (!AUTH_ACTIONS.includes(action) || !AUTH_FAILURE_REASONS.includes(reason)) return;
+      const properties: Record<string, string> = { reason };
+      if (reason === "validation_failed") {
+        if (validation?.username && VALIDATION_REASONS.includes(validation.username)) {
+          properties.username_error = validation.username;
+        }
+        if (validation?.password && VALIDATION_REASONS.includes(validation.password)) {
+          properties.password_error = validation.password;
+        }
+      }
+      sendEvent(`${action}_failed`, properties);
+    },
     onboarding(outcome: OnboardingOutcome, step: OnboardingStep) {
       // Runtime checks also protect callers outside TypeScript.
-      if (
-        !loaded ||
-        !["completed", "skipped"].includes(outcome) ||
-        !["welcome", "darts", "progression"].includes(step)
-      )
+      if (!loaded || !ONBOARDING_OUTCOMES.includes(outcome) || !ONBOARDING_STEPS.includes(step))
         return;
-      dependencies.rybbit()?.event(`onboarding_${outcome}`, { step });
+      sendEvent(`onboarding_${outcome}`, { step });
     },
   };
 }
