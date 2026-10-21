@@ -56,6 +56,7 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
   const listeners = new Set<() => void>();
   let memoryChoice: { choice: AnalyticsChoice; expires: number } | undefined;
   let loaded = false;
+  let correlationId: string | undefined;
   const src = scriptUrl(config.endpoint);
   const available = config.enabled && !!src && /^[a-zA-Z0-9_-]+$/.test(config.siteId);
 
@@ -89,6 +90,7 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
         dependencies.loadScript(src, config.siteId);
       }
     } else {
+      correlationId = undefined;
       // Also clears what an earlier consent left behind, e.g. after it expired.
       for (const key of RYBBIT_KEYS) {
         try {
@@ -107,6 +109,7 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
   }
 
   function choose(choice: "accepted" | "rejected") {
+    if (getChoice() !== "accepted") correlationId = undefined;
     memoryChoice = { choice, expires: dependencies.now() + CHOICE_MAX_AGE };
     try {
       dependencies.storage.setItem(CHOICE_KEY, JSON.stringify(memoryChoice));
@@ -116,10 +119,30 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
     sync();
   }
 
+  function getCorrelationId(): string | undefined {
+    if (!available || !loaded || getChoice() !== "accepted") {
+      correlationId = undefined;
+      return undefined;
+    }
+    try {
+      const rybbit = dependencies.rybbit();
+      if (!rybbit) return undefined;
+      if (!correlationId) {
+        const id = crypto.randomUUID();
+        rybbit.event("telemetry_link", { correlation_id: id });
+        correlationId = id;
+      }
+      return correlationId;
+    } catch {
+      return undefined;
+    }
+  }
+
   function sendEvent(name: string, properties?: Record<string, string>) {
     if (!available || !loaded || getChoice() !== "accepted") return;
     try {
-      dependencies.rybbit()?.event(name, properties);
+      const id = getCorrelationId();
+      dependencies.rybbit()?.event(name, { ...properties, ...(id && { correlation_id: id }) });
     } catch {
       // Analytics failures must not interrupt authentication or gameplay.
     }
@@ -128,6 +151,7 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
   return {
     available,
     getChoice,
+    getCorrelationId,
     choose,
     sync,
     subscribe(listener: () => void) {

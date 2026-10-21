@@ -14,6 +14,7 @@ export const analytics = createAnalytics(rybbitConfig, {
     script.src = src;
     script.defer = true;
     script.dataset.siteId = siteId;
+    script.addEventListener("load", () => analytics.getCorrelationId());
     document.head.append(script);
   },
   reload: () => window.location.reload(),

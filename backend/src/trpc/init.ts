@@ -5,6 +5,7 @@ import { z, ZodError } from "zod";
 import { auth } from "../auth.js";
 import { env } from "../env.js";
 import { forwardAuthHeaders } from "./auth-glue.js";
+import { observeProcedure } from "../observability/trpc.js";
 
 async function readSession({ req, res }: CreateExpressContextOptions) {
   try {
@@ -50,8 +51,10 @@ const t = initTRPC.context<Context>().create({
 
 export const router = t.router;
 export const middleware = t.middleware;
-export const publicProcedure = t.procedure;
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+export const publicProcedure = t.procedure.use(({ path, type, ctx, next }) =>
+  observeProcedure(path, type, ctx.req.headers, next),
+);
+export const protectedProcedure = publicProcedure.use(({ ctx, next }) => {
   if (!ctx.session || !ctx.user) throw new TRPCError({ code: "UNAUTHORIZED" });
   return next({ ctx: { ...ctx, session: ctx.session, user: ctx.user } });
 });

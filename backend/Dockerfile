@@ -20,4 +20,4 @@ COPY --from=build /app/backend/prisma ./backend/prisma
 COPY --from=build /app/backend/prisma.config.ts ./backend/prisma.config.ts
 WORKDIR /app/backend
 EXPOSE 3000
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node --import ./dist/instrumentation.js dist/index.js"]
