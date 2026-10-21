@@ -136,6 +136,9 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
         listeners.delete(listener);
       };
     },
+    logout() {
+      sendEvent("logout");
+    },
     authSuccess(action: AuthAction) {
       if (!AUTH_ACTIONS.includes(action)) return;
       sendEvent(action);

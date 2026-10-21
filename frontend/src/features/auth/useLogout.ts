@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { trpc } from "../../lib/trpc";
+import { analytics } from "../analytics/analytics";
 
 /** Ends the session and drops all cached player data, then returns to the entry screen. */
 export function useLogout() {
@@ -9,6 +10,7 @@ export function useLogout() {
 
   const mutation = useMutation(
     trpc.auth.logout.mutationOptions({
+      onSuccess: () => analytics.logout(),
       // Also on error (e.g. an already expired session): the UI must end up logged out.
       onSettled: async () => {
         queryClient.clear();
