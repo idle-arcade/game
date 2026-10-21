@@ -1,0 +1,52 @@
+# Optional Collector Contrib configuration for the future Dokploy observability stack.
+# Receivers must be reachable only over the private application network.
+# TEMPO_OTLP_HTTP_ENDPOINT: e.g. http://tempo:4318
+# PROMETHEUS_REMOTE_WRITE_ENDPOINT: e.g. http://prometheus:9090/api/v1/write
+# Prometheus needs --web.enable-remote-write-receiver.
+# Container stdout/stderr -> Loki and host/container metrics are configured on the host agent.
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 128
+    spike_limit_mib: 32
+  transform/privacy:
+    error_mode: propagate
+    trace_statements:
+      - context: span
+        statements:
+          - keep_keys(attributes, ["http.request.method", "http.response.status_code", "http.method", "http.status_code", "http.route", "http.scheme", "http.flavor", "network.protocol.version", "rpc.system", "rpc.method", "rpc.operation.type", "rpc.error.code", "error.type", "rybbit.correlation_id"])
+      - context: spanevent
+        statements:
+          - keep_keys(attributes, [])
+    metric_statements:
+      - context: datapoint
+        statements:
+          - keep_keys(attributes, ["rpc.system", "rpc.method", "rpc.operation.type", "rpc.error.code", "http.request.method", "http.response.status_code", "http.route", "network.protocol.version", "url.scheme", "error.type", "nodejs.eventloop.state", "v8js.gc.type", "v8js.heap.space.name", "v8js.resource.type"])
+  batch: {}
+
+exporters:
+  otlphttp/tempo:
+    endpoint: ${env:TEMPO_OTLP_HTTP_ENDPOINT}
+  prometheusremotewrite:
+    endpoint: ${env:PROMETHEUS_REMOTE_WRITE_ENDPOINT}
+    resource_to_telemetry_conversion:
+      enabled: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, transform/privacy, batch]
+      exporters: [otlphttp/tempo]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, transform/privacy, batch]
+      exporters: [prometheusremotewrite]
