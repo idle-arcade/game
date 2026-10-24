@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronDownIcon } from "../../components/icons";
 import { Button } from "../../components/ui/Button";
+import { analytics } from "../analytics/analytics";
 
 type Entry = { name: string; score: number; isYou?: boolean };
 
@@ -53,7 +54,10 @@ export function HighscoresMenu() {
         className="flex items-center gap-1 text-sm"
         aria-expanded={open}
         aria-controls={panelId}
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => {
+          if (!open) analytics.highscoresViewed();
+          setOpen(!open);
+        }}
       >
         {t("shell.highscores")}
         <span className={`inline-flex transition-transform ${open ? "rotate-180" : ""}`}>

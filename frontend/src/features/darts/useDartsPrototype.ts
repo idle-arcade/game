@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { analytics } from "../analytics/analytics";
 
 export const COOLDOWN_MS = 5000;
 const BASE_DARTS = 3;
@@ -72,6 +73,7 @@ export function useDartsPrototype() {
     if (bought === 0) return;
     setCoins(budget);
     setLevels((l) => ({ ...l, [id]: level }));
+    analytics.upgradePurchased(id, bought, level);
   }
 
   return { coins, dartsLeft, maxDarts, reloading, targets, levels, throwDart, buy };
