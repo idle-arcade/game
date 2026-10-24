@@ -15,7 +15,7 @@ export function GameShell({ children }: GameShellProps) {
         <GameHeader />
         <RoomNav />
       </div>
-      <main className="flex-1 p-4">{children}</main>
+      <main className="flex flex-1 flex-col">{children}</main>
     </div>
   );
 }

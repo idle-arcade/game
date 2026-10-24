@@ -101,10 +101,28 @@
     "fishing": "Angeln",
     "gatcha": "Gatcha"
   },
+  "darts": {
+    "hintClick": "Klicken für 1 🪙",
+    "hintHit": "Triff den 🔴 für 10 🪙",
+    "throw": "Dart werfen",
+    "reloading": "Darts werden nachgeladen…",
+    "upgrades": "Upgrades",
+    "locked": "Noch nicht freigeschaltet",
+    "upgrade": {
+      "betterDarts": "Bessere Darts",
+      "moreDarts": "Mehr Darts"
+    }
+  },
   "shell": {
     "navLabel": "Räume",
     "locked": "Noch nicht freigeschaltet",
     "highscores": "Highscores"
+  },
+  "highscores": {
+    "title": "Highscores",
+    "name": "Name",
+    "score": "Punkte",
+    "you": "DU"
   },
   "analytics": {
     "optIn": "Ich bin mindestens 16 Jahre alt und willige in die freiwillige Nutzungsanalyse ein"
