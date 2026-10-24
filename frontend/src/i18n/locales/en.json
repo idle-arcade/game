@@ -101,10 +101,29 @@
     "fishing": "Fishing",
     "gatcha": "Gatcha"
   },
+  "darts": {
+    "hintClick": "Click to gain 1 🪙",
+    "hintHit": "Hit the 🔴 to gain 10 🪙",
+    "throw": "Throw dart",
+    "reloading": "Reloading darts…",
+    "upgrades": "Upgrades",
+    "locked": "Not unlocked yet",
+    "upgrade": {
+      "betterDarts": "Better Darts",
+      "moreDarts": "More Darts"
+    }
+  },
+
   "shell": {
     "navLabel": "Rooms",
     "locked": "Not unlocked yet",
     "highscores": "Highscores"
+  },
+  "highscores": {
+    "title": "Highscores",
+    "name": "Name",
+    "score": "Score",
+    "you": "YOU"
   },
   "analytics": {
     "optIn": "I am at least 16 and consent to optional usage analytics"
