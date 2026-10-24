@@ -1,3 +1,6 @@
+import type { Language } from "../../i18n";
+import type { UpgradeId } from "../darts/useDartsPrototype";
+
 export type AnalyticsChoice = "unset" | "accepted" | "rejected";
 export const CHOICE_KEY = "idle-arcade.analytics.v1";
 export const CHOICE_MAX_AGE = 180 * 24 * 60 * 60 * 1000;
@@ -189,6 +192,18 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
       if (!loaded || !ONBOARDING_OUTCOMES.includes(outcome) || !ONBOARDING_STEPS.includes(step))
         return;
       sendEvent(`onboarding_${outcome}`, { step });
+    },
+    appLoaded(language: Language) {
+      sendEvent("app_loaded", { language });
+    },
+    languageChanged(from: Language, to: Language) {
+      sendEvent("language_changed", { from, to });
+    },
+    highscoresViewed() {
+      sendEvent("dummy_highscores_viewed");
+    },
+    upgradePurchased(upgrade: UpgradeId, amount: number, level: number) {
+      sendEvent("dummy_upgrade_purchased", { upgrade, amount: String(amount), level: String(level) });
     },
   };
 }
