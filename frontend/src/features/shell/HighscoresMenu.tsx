@@ -64,12 +64,12 @@ export function HighscoresMenu() {
       {open && (
         <div
           id={panelId}
-          className="absolute right-0 top-full z-50 mt-2 w-72 rounded-2xl border border-white/70 bg-neutral-900 p-3 text-white shadow-lg"
+          className="absolute right-0 top-full z-50 mt-2 w-72 rounded-lg border border-neutral-200 bg-white p-3 text-neutral-900 shadow-lg"
         >
           <table className="w-full text-sm">
             <caption className="sr-only">{t("shell.highscores")}</caption>
             <thead>
-            <tr className="border-b border-white/40 text-left text-neutral-400">
+            <tr className="border-b border-neutral-200 text-left text-neutral-500">
               <th scope="col" className="w-8 py-1 font-normal">#</th>
               <th scope="col" className="py-1 font-normal">{t("highscores.name")}</th>
               <th scope="col" className="py-1 text-right font-normal">{t("highscores.score")}</th>
@@ -80,7 +80,7 @@ export function HighscoresMenu() {
               <tr
                 key={e.name}
                 aria-current={e.isYou ? "true" : undefined}
-                className={e.isYou ? "bg-amber-900/40 outline outline-1 outline-amber-500" : ""}
+                className={e.isYou ? "bg-amber-50 outline outline-1 outline-amber-400" : ""}
               >
                 <td className="px-1 py-0.5">{i + 1}</td>
                 <td className="py-0.5">{e.isYou ? t("highscores.you") : e.name}</td>
