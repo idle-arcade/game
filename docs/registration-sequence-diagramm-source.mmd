@@ -1,0 +1,18 @@
+title Registrierung eines Nutzers
+
+actor Nutzer
+participant Frontend (React)
+participant Backend (tRPC)
+participant Better Auth
+participant MySQL (Prisma)
+
+Nutzer->>Frontend (React): Benutzername und Passwort eingeben
+Nutzer->>Frontend (React): „Registrieren“ klicken
+Frontend (React)->>Frontend (React): Eingaben prüfen
+Frontend (React)->>Backend (tRPC): auth.register(credentials)
+Backend (tRPC)->>Backend (tRPC): Rate-Limit prüfen\nmax. 5 Versuche pro IP / Stunde
+Backend (tRPC)->>Backend (tRPC): Eingaben serverseitig validieren
+Backend (tRPC)->>Better Auth: signUpEmail(Platzhalter-E-Mail, Passwort, Benutzername)
+Better Auth->>MySQL (Prisma): Nutzer und Authentifizierungsdaten anlegen
+MySQL (Prisma)-->>Better Auth: Nutzer
+Better Auth-->>Backend (tRPC): Nutzer und Sitzungscookie

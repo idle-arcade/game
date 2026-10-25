@@ -1,0 +1,43 @@
+title Anmeldung und Abmeldung eines Nutzers
+
+actor Nutzer
+participant Frontend (React)
+participant Backend (tRPC)
+participant Better Auth
+participant MySQL (Prisma)
+
+
+Nutzer->>Frontend (React): „Anmelden“ klicken oder Enter drücken
+Frontend (React)->>Frontend (React): Prüfen, ob beide Felder ausgefüllt sind
+Frontend (React)->>Backend (tRPC): auth.login(credentials)
+Backend (tRPC)->>Backend (tRPC): Rate-Limit prüfen\nmax. 10 Versuche pro IP / 5 Min.
+Backend (tRPC)->>Better Auth: signInUsername(Benutzername, Passwort)
+Better Auth->>MySQL (Prisma): Zugangsdaten prüfen und Sitzung anlegen
+MySQL (Prisma)-->>Better Auth: Nutzer und Sitzung
+Better Auth-->>Backend (tRPC): Nutzer und Sitzungscookie
+
+
+Backend (tRPC)-->>Frontend (React): Nutzer + Set-Cookie
+Frontend (React)->>Frontend (React): Nutzerstatus speichern
+Frontend (React)-->>Nutzer: Weiterleitung zu /darts
+
+note over Frontend (React): Bei späteren Anfragen wird das Sitzungscookie mitgesendet.
+
+Frontend (React)->>Backend (tRPC): auth.me (Sitzungscookie)
+Backend (tRPC)->> Better Auth: Sitzung prüfen
+Better Auth->>MySQL (Prisma): Sitzung und Nutzer nachschlagen
+MySQL (Prisma)-->>Better Auth: Nutzer oder keine Sitzung
+Better Auth-->>Backend (tRPC): Sitzung/Nutzer oder null
+Backend (tRPC)-->>Frontend (React): Nutzer oder null
+
+note over Nutzer: Abmeldung
+
+        Nutzer->>Frontend (React): Abmelden klicken
+        Frontend (React)->>Backend (tRPC): auth.logout (Sitzungscookie)
+        Backend (tRPC)->>Better Auth: signOut
+        Better Auth->>MySQL (Prisma): Sitzung beenden
+        Better Auth-->>Backend (tRPC): Cookie zum Beenden der Sitzung
+        Backend (tRPC)-->>Frontend (React): Abmeldung bestätigt
+        Frontend (React)->>Frontend (React): Cache leeren
+        Frontend (React)-->>Nutzer: Weiterleitung zur Startseite
+
