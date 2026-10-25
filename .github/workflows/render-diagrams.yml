@@ -59,6 +59,7 @@ jobs:
           format: svg
           output: .drawio-export
           remove-page-suffix: true
+          border: 20
 
       - name: Export .drawio files to PNG
         uses: rlespinasse/drawio-export-action@v2
@@ -66,10 +67,14 @@ jobs:
           format: png
           output: .drawio-export
           remove-page-suffix: true
+          border: 20
           scale: 2
 
+      # draw.io always exports SVGs with a transparent background, which is unreadable in dark mode.
       - name: Move draw.io exports next to their sources
         run: |
+          find . -type f -path '*/.drawio-export/*.svg' -not -path './node_modules/*' -print0 |
+            xargs -0 -r sudo sed -i '0,/background: transparent; background-color: transparent;/s//background: #ffffff; background-color: #ffffff;/'
           find . -type f -path '*/.drawio-export/*' -not -path './node_modules/*' -print0 |
             while IFS= read -r -d '' f; do sudo mv -f -- "$f" "$(dirname "$(dirname "$f")")/"; done
           find . -type d -name .drawio-export -not -path './node_modules/*' -prune -exec sudo rm -rf {} +
