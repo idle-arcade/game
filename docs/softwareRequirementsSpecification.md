@@ -23,7 +23,13 @@ IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können ve
 
 #### 2.2 Projektsetup
 - User Story: https://github.com/idle-arcade/game/issues/20
-- Ziel: Benutzer können sich registrieren
+- Anmelde-Sequenzdiagramm: ![Bild der Anmeldesequenz](https://raw.githubusercontent.com/idle-arcade/game/0098824115b0840e538b0bd79b8fc1ccd5bdfa22/docs/login-sequence-diagramm.svg)
+  Das Sequenzdiagramm zeigt den Ablauf der An- und Abmeldung eines Nutzers. Bei der Anmeldung werden die eingegebenen Zugangsdaten geprüft und eine Sitzung erstellt, die über ein Sitzungs-Cookie gespeichert wird. Dieses Cookie wird bei späteren Anfragen zur Authentifizierung verwendet. Bei der Abmeldung wird die Sitzung beendet, das Cookie gelöscht und der Nutzer auf die Startseite weitergeleitet.
+- Login-Sequenzdiagramm: ![Bild der Loginsequenz](https://raw.githubusercontent.com/idle-arcade/game/0098824115b0840e538b0bd79b8fc1ccd5bdfa22/docs/registration-sequence_diagramm.svg)
+  Das Sequenzdiagramm zeigt den Registrierungsprozess eines neuen Nutzers. Nach der Eingabe der Registrierungsdaten werden die Eingaben zunächst im Frontend und anschließend serverseitig geprüft. Anschließend legt Better Auth den Nutzer und die zugehörigen Authentifizierungsdaten in der Datenbank an. Nach erfolgreicher Registrierung wird direkt eine Sitzung erstellt und ein Sitzungs-Cookie an den Nutzer zurückgegeben.
+- Aktivitätsdiagramm (Anmelden/Registrieren): 
+  - docs/activity-diagrams.png
+  - Das Aktivitätsdiagramm beschreibt den Ablauf der Anmeldung und Registrierung eines Spielers. Nach der Validierung der Eingaben werden die Zugangsdaten geprüft oder ein neues Benutzerkonto angelegt, anschließend wird eine Sitzung erstellt und der Spieler in den Darts-Raum weitergeleitet.
 - Voraussetzungen:  
   - Das Git-Repository wurde erstellt.
   - Die Entwicklungsumgebung ist eingerichtet.
@@ -48,6 +54,12 @@ IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können ve
 
 #### 2.4 Benutzeroberfläche der Spielräume
 - User Story: https://github.com/idle-arcade/game/issues/26
+- Aktivitätsdiagramm (Darts werfen und nachladen): 
+  - docs/activity-diagrams.png
+  - Das Aktivitätsdiagramm zeigt den Spielablauf beim Werfen von Darts. Nach jedem Wurf wird geprüft, ob ein Ziel getroffen wurde und die entsprechenden Münzen werden gutgeschrieben; sind alle Darts verbraucht, werden diese nach einer kurzen Wartezeit automatisch nachgeladen.
+- Aktivitätsdiagramm (Upgrade kaufen(x1/x10)): 
+  - docs/activity-diagrams.png
+  - Das Aktivitätsdiagramm beschreibt den Kauf von Upgrades im Spiel. Dabei wird geprüft, ob genügend Münzen vorhanden sind, die Kosten werden vom Budget abgezogen und das Upgrade-Level entsprechend erhöht.
 - Voraussetzungen: Es kann zu den einzelnen Spielräumen navigiert werden.
   - Der Benutzer befindet sich in einem Spielraum.
   - Die erforderlichen Spieldaten wurden geladen.
