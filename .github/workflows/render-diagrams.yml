@@ -1,0 +1,94 @@
+name: Render diagrams
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.excalidraw"
+      - "**/*.drawio"
+      - ".github/workflows/render-diagrams.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-diagrams-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    # Fork PRs get a read-only token and cannot receive the render commit.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+          fetch-depth: 0
+
+      # Only drawings changed in the PR or missing a render; re-rendering untouched files
+      # can produce byte-different PNGs and would cause pointless commits.
+      - name: Render .excalidraw files to SVG and PNG
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          files=()
+          while IFS= read -r -d '' f; do
+            rel="${f#./}"
+            base="${rel%.excalidraw}"
+            if [ -z "$BASE_SHA" ] || [ ! -f "$base.svg" ] || [ ! -f "$base.png" ] ||
+              ! git diff --quiet "$BASE_SHA" HEAD -- "$rel"; then
+              files+=("$rel")
+            fi
+          done < <(find . -type f -name '*.excalidraw' -not -path './.git/*' -not -path './node_modules/*' -print0)
+          echo "Rendering ${#files[@]} excalidraw file(s)"
+          for rel in "${files[@]}"; do
+            base="${rel%.excalidraw}"
+            echo "Rendering $rel -> $base.svg, $base.png"
+            docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/data" -w /data jonarc06/excalirender "$rel" -o "$base.svg"
+            docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/data" -w /data jonarc06/excalirender "$rel" -o "$base.png" -s 2
+          done
+
+      # Exports only the .drawio files changed in the PR (action-mode auto -> recent).
+      - name: Export .drawio files to SVG
+        uses: rlespinasse/drawio-export-action@v2
+        with:
+          format: svg
+          output: .drawio-export
+          remove-page-suffix: true
+
+      - name: Export .drawio files to PNG
+        uses: rlespinasse/drawio-export-action@v2
+        with:
+          format: png
+          output: .drawio-export
+          remove-page-suffix: true
+          scale: 2
+
+      - name: Move draw.io exports next to their sources
+        run: |
+          find . -type f -path '*/.drawio-export/*' -not -path './node_modules/*' -print0 |
+            while IFS= read -r -d '' f; do sudo mv -f -- "$f" "$(dirname "$(dirname "$f")")/"; done
+          find . -type d -name .drawio-export -not -path './node_modules/*' -prune -exec sudo rm -rf {} +
+          sudo chown -R "$(id -u):$(id -g)" .
+
+      - name: Commit and push renders
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          find . \( -name '*.excalidraw' -o -name '*.drawio' \) -type f -not -path './.git/*' -not -path './node_modules/*' -print0 |
+            while IFS= read -r -d '' f; do
+              base="${f%.*}"
+              for ext in svg png; do
+                if [ -f "$base.$ext" ]; then git add -- "$base.$ext"; fi
+              done
+            done
+          if git diff --staged --quiet; then
+            echo "No render changes to commit."
+          else
+            git commit -m "chore: render diagrams to SVG and PNG"
+            git push
+          fi
