@@ -6,6 +6,7 @@ on:
     paths:
       - "**/*.excalidraw"
       - "**/*.drawio"
+      - "**/*.mmd"
       - ".github/workflows/render-diagrams.yml"
   workflow_dispatch:
 
@@ -52,6 +53,40 @@ jobs:
             docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/data" -w /data jonarc06/excalirender "$rel" -o "$base.png" -s 2
           done
 
+      # Mermaid CLI 12.0.0; pin the image so local and CI exports use the same renderer.
+      - name: Render .mmd files to SVG and PNG
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MERMAID_IMAGE: ghcr.io/mermaid-js/mermaid-cli/mermaid-cli@sha256:fa995339034aae7e5cd4f61482248b7f5c51be355b1a6f6eda11a2bbf8401f5f
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' f; do
+            rel="${f#./}"
+            base="${rel%.mmd}"
+            render=false
+            for ext in svg png; do
+              # On manual runs compare the source with each export's last commit.
+              # A render committed with/after its source needs no rewrite.
+              comparison="${BASE_SHA:-$(git log -1 --format=%H -- "$base.$ext")}"
+              if [ ! -f "$base.$ext" ] || [ -z "$comparison" ] ||
+                ! git diff --quiet "$comparison" -- "$rel"; then
+                render=true
+              fi
+            done
+            if [ "$render" = false ]; then
+              echo "Skipping unchanged $rel"
+              continue
+            fi
+            for ext in svg png; do
+              echo "Rendering $rel -> $base.$ext"
+              if ! docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/data" -w /data \
+                "$MERMAID_IMAGE" -i "$rel" -o "$base.$ext" -b white -t neutral -s 2; then
+                echo "::error file=$rel::Mermaid $ext rendering failed: $rel"
+                exit 1
+              fi
+            done
+          done < <(find . -type f -name '*.mmd' -not -path './.git/*' -not -path '*/node_modules/*' -print0)
+
       # Exports only the .drawio files changed in the PR (action-mode auto -> recent).
       - name: Export .drawio files to SVG
         uses: rlespinasse/drawio-export-action@v2
@@ -84,7 +119,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          find . \( -name '*.excalidraw' -o -name '*.drawio' \) -type f -not -path './.git/*' -not -path './node_modules/*' -print0 |
+          find . \( -name '*.excalidraw' -o -name '*.drawio' -o -name '*.mmd' \) -type f -not -path './.git/*' -not -path './node_modules/*' -print0 |
             while IFS= read -r -d '' f; do
               base="${f%.*}"
               for ext in svg png; do
