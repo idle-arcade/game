@@ -91,22 +91,15 @@ jobs:
           border: 20
           scale: 2
 
-      # draw.io always exports SVGs with a transparent background, which is unreadable in dark mode.
+      # Give draw.io SVGs a white background and a stable root ID (including CSS references).
       - name: Move draw.io exports next to their sources
         run: |
           find . -type f -path '*/.drawio-export/*.svg' -not -path './node_modules/*' -print0 |
-            xargs -0 -r sudo sed -i '0,/background: transparent; background-color: transparent;/s//background: #ffffff; background-color: #ffffff;/'
+            xargs -0 -r sudo sed -E -i \
+              -e '0,/background: transparent; background-color: transparent;/s//background: #ffffff; background-color: #ffffff;/' \
+              -e 's/ge-svg-[A-Za-z0-9_-]+/ge-svg/g'
           find . -type f -path '*/.drawio-export/*' -not -path './node_modules/*' -print0 |
-            while IFS= read -r -d '' f; do
-              target="$(dirname "$(dirname "$f")")/$(basename "$f")"
-              # draw.io randomizes its root SVG ID even when the drawing is unchanged.
-              if [[ "$f" == *.svg ]] && [ -f "$target" ] &&
-                cmp -s <(sed -E 's/ge-svg-[A-Za-z0-9_-]+/ge-svg-STABLE/g' "$f") \
-                  <(sed -E 's/ge-svg-[A-Za-z0-9_-]+/ge-svg-STABLE/g' "$target"); then
-                continue
-              fi
-              sudo mv -f -- "$f" "$target"
-            done
+            while IFS= read -r -d '' f; do sudo mv -f -- "$f" "$(dirname "$(dirname "$f")")/"; done
           find . -type d -name .drawio-export -not -path './node_modules/*' -prune -exec sudo rm -rf {} +
           sudo chown -R "$(id -u):$(id -g)" .
 
