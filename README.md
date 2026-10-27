@@ -27,3 +27,5 @@ fill in the passwords and a `BETTER_AUTH_SECRET` of at least 32 characters.
 | `npm run db:migrate -- --name <change>`   | Create and apply a migration after editing the Prisma schema |
 | `npm run db:generate`                     | Regenerate the Prisma client                                 |
 | `npm run db:studio`                       | Open Prisma Studio                                           |
+
+API documentation: [idle-arcade.craftingservices.de/docs](https://idle-arcade.craftingservices.de/docs).
