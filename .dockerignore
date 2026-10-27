@@ -4,3 +4,4 @@
 backend/src/generated
 .git
 docs
+**/.cache

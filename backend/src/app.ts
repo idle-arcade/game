@@ -1,4 +1,5 @@
 import express from "express";
+import { createDocsRouter } from "./docs.js";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { createContext } from "./trpc/init.js";
 import { appRouter } from "./trpc/router.js";
@@ -22,5 +23,6 @@ export function createApp() {
       },
     }),
   );
+  app.use("/docs", createDocsRouter());
   return app;
 }

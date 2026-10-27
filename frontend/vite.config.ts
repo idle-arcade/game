@@ -7,6 +7,6 @@ export default defineConfig({
   plugins: [tanstackRouter({ target: "react", autoCodeSplitting: true }), react(), tailwindcss()],
   server: {
     port: 5173,
-    proxy: { "/trpc": "http://localhost:3000" },
+    proxy: { "/trpc": "http://localhost:3000", "/docs": "http://localhost:3000" },
   },
 });

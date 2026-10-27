@@ -10,7 +10,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "dev": "concurrently -n backend,frontend -c blue,magenta \"npm run dev -w @idle-arcade/backend\" \"npm run dev -w @idle-arcade/frontend\"",
+    "dev": "concurrently -n backend,frontend,docs -c blue,magenta,green \"npm run dev -w @idle-arcade/backend\" \"npm run dev -w @idle-arcade/frontend\" \"npm run docs:generate -w @idle-arcade/backend\"",
     "build": "npm run build --workspaces",
     "typecheck": "npm run typecheck --workspaces",
     "lint": "eslint .",

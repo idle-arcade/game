@@ -3,6 +3,7 @@ set -eu
 
 mkdir -p /etc/nginx/otel
 : > /etc/nginx/otel/http.conf
+: > /etc/nginx/otel/docs.conf
 cat > /etc/nginx/otel/trpc.conf <<'NGINX'
 proxy_set_header traceparent "";
 proxy_set_header tracestate "";
@@ -27,6 +28,10 @@ printf '%s' "$endpoint" | grep -Eq '^(https?://)?[A-Za-z0-9][A-Za-z0-9._-]*:[0-9
   exit 1
 }
 printf '%s' "$service" | grep -Eq '^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$' || exit 1
+
+# The module requires an exporter even for explicit off directives.
+# Emit this only when telemetry is configured; otherwise tracing defaults off.
+printf 'otel_trace off;\n' > /etc/nginx/otel/docs.conf
 
 cat > /etc/nginx/otel/http.conf <<NGINX
 otel_exporter { endpoint $endpoint; }
