@@ -73,24 +73,30 @@ export function HighscoresMenu() {
           <table className="w-full text-sm">
             <caption className="sr-only">{t("shell.highscores")}</caption>
             <thead>
-            <tr className="border-b border-neutral-200 text-left text-neutral-500">
-              <th scope="col" className="w-8 py-1 font-normal">#</th>
-              <th scope="col" className="py-1 font-normal">{t("highscores.name")}</th>
-              <th scope="col" className="py-1 text-right font-normal">{t("highscores.score")}</th>
-            </tr>
+              <tr className="border-b border-neutral-200 text-left text-neutral-500">
+                <th scope="col" className="w-8 py-1 font-normal">
+                  #
+                </th>
+                <th scope="col" className="py-1 font-normal">
+                  {t("highscores.name")}
+                </th>
+                <th scope="col" className="py-1 text-right font-normal">
+                  {t("highscores.score")}
+                </th>
+              </tr>
             </thead>
             <tbody>
-            {MOCK_SCORES.map((e, i) => (
-              <tr
-                key={e.name}
-                aria-current={e.isYou ? "true" : undefined}
-                className={e.isYou ? "bg-amber-50 outline outline-1 outline-amber-400" : ""}
-              >
-                <td className="px-1 py-0.5">{i + 1}</td>
-                <td className="py-0.5">{e.isYou ? t("highscores.you") : e.name}</td>
-                <td className="px-1 py-0.5 text-right tabular-nums">{format.format(e.score)}</td>
-              </tr>
-            ))}
+              {MOCK_SCORES.map((e, i) => (
+                <tr
+                  key={e.name}
+                  aria-current={e.isYou ? "true" : undefined}
+                  className={e.isYou ? "bg-amber-50 outline outline-1 outline-amber-400" : ""}
+                >
+                  <td className="px-1 py-0.5">{i + 1}</td>
+                  <td className="py-0.5">{e.isYou ? t("highscores.you") : e.name}</td>
+                  <td className="px-1 py-0.5 text-right tabular-nums">{format.format(e.score)}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
