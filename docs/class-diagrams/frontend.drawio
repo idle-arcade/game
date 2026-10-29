@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device" version="24.7.17">
+  <diagram id="auth-frontend" name="Frontend">
+    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1450" pageHeight="980" math="0" shadow="0" background="#FFFFFF">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Authentication structure" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=28;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="50" y="28" width="1350" height="42" />
+        </mxCell>
+        <mxCell id="screen" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../frontend/src/features/auth/EntryScreen.tsx" tooltip="frontend/src/features/auth/EntryScreen.tsx">
+          <mxGeometry as="geometry" x="60" y="140" width="300" height="107" />
+        </mxCell>
+        <mxCell id="screen-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="screen" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="300" height="60" />
+        </mxCell>
+        <mxCell id="screen-name" value="«component»&#10;EntryScreen" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="screen" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="272" height="48" />
+        </mxCell>
+        <mxCell id="screen-operations-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="screen" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="300" height="0" />
+        </mxCell>
+        <mxCell id="screen-operations" value="EntryScreen(): JSX" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="screen" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="272" height="35" />
+        </mxCell>
+        <mxCell id="form-hook" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../frontend/src/features/auth/useEntryForm.ts" tooltip="frontend/src/features/auth/useEntryForm.ts">
+          <mxGeometry as="geometry" x="510" y="140" width="400" height="269" />
+        </mxCell>
+        <mxCell id="form-hook-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="form-hook" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="400" height="60" />
+        </mxCell>
+        <mxCell id="form-hook-name" value="«hook»&#10;useEntryForm" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="form-hook" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="372" height="48" />
+        </mxCell>
+        <mxCell id="form-hook-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="form-hook" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="400" height="0" />
+        </mxCell>
+        <mxCell id="form-hook-attributes" value="values: Credentials&#10;fieldErrors: FieldErrors&#10;formError: AuthErrorKey | null&#10;pending: boolean" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="form-hook" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="372" height="104" />
+        </mxCell>
+        <mxCell id="form-hook-operations-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="form-hook" connectable="0">
+          <mxGeometry as="geometry" x="0" y="176" width="400" height="0" />
+        </mxCell>
+        <mxCell id="form-hook-operations" value="setValue(field, value): void&#10;login(): void&#10;register(): void" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="form-hook" connectable="0">
+          <mxGeometry as="geometry" x="14" y="188" width="372" height="81" />
+        </mxCell>
+        <mxCell id="form" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../frontend/src/features/auth/EntryForm.tsx" tooltip="frontend/src/features/auth/EntryForm.tsx">
+          <mxGeometry as="geometry" x="60" y="430" width="300" height="154" />
+        </mxCell>
+        <mxCell id="form-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="form" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="300" height="60" />
+        </mxCell>
+        <mxCell id="form-name" value="«component»&#10;EntryForm" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="form" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="272" height="48" />
+        </mxCell>
+        <mxCell id="form-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="form" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="300" height="0" />
+        </mxCell>
+        <mxCell id="form-attributes" value="props: EntryFormProps" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="form" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="272" height="35" />
+        </mxCell>
+        <mxCell id="form-operations-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="form" connectable="0">
+          <mxGeometry as="geometry" x="0" y="107" width="300" height="0" />
+        </mxCell>
+        <mxCell id="form-operations" value="EntryForm(props): JSX" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="form" connectable="0">
+          <mxGeometry as="geometry" x="14" y="119" width="272" height="35" />
+        </mxCell>
+        <mxCell id="props" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../frontend/src/features/auth/EntryForm.tsx" tooltip="frontend/src/features/auth/EntryForm.tsx">
+          <mxGeometry as="geometry" x="60" y="700" width="300" height="222" />
+        </mxCell>
+        <mxCell id="props-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="props" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="300" height="60" />
+        </mxCell>
+        <mxCell id="props-name" value="«type»&#10;EntryFormProps" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="props" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="272" height="48" />
+        </mxCell>
+        <mxCell id="props-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="props" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="300" height="0" />
+        </mxCell>
+        <mxCell id="props-attributes" value="values: Credentials&#10;fieldErrors: FieldErrors&#10;formError: AuthErrorKey | null&#10;pending: boolean&#10;onChange(field, value): void&#10;onLogin(), onRegister(): void" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="props" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="272" height="150" />
+        </mxCell>
+        <mxCell id="validation" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../frontend/src/features/auth/validation.ts" tooltip="frontend/src/features/auth/validation.ts">
+          <mxGeometry as="geometry" x="510" y="500" width="400" height="177" />
+        </mxCell>
+        <mxCell id="validation-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="validation" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="400" height="60" />
+        </mxCell>
+        <mxCell id="validation-name" value="«module»&#10;validation" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="validation" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="372" height="48" />
+        </mxCell>
+        <mxCell id="validation-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="validation" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="400" height="0" />
+        </mxCell>
+        <mxCell id="validation-attributes" value="FieldErrors: partial error record" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="validation" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="372" height="35" />
+        </mxCell>
+        <mxCell id="validation-operations-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="validation" connectable="0">
+          <mxGeometry as="geometry" x="0" y="107" width="400" height="0" />
+        </mxCell>
+        <mxCell id="validation-operations" value="validateLogin(values): FieldErrors&#10;validateRegistration(values): FieldErrors" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="validation" connectable="0">
+          <mxGeometry as="geometry" x="14" y="119" width="372" height="58" />
+        </mxCell>
+        <mxCell id="credentials" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/src/schemas/auth.ts" tooltip="backend/src/schemas/auth.ts">
+          <mxGeometry as="geometry" x="1110" y="500" width="280" height="130" />
+        </mxCell>
+        <mxCell id="credentials-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="credentials" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="280" height="60" />
+        </mxCell>
+        <mxCell id="credentials-name" value="«type»&#10;Credentials" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="credentials" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="252" height="48" />
+        </mxCell>
+        <mxCell id="credentials-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="credentials" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="280" height="0" />
+        </mxCell>
+        <mxCell id="credentials-attributes" value="username: string&#10;password: string" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="credentials" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="252" height="58" />
+        </mxCell>
+        <mxCell id="client" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../frontend/src/lib/trpc.ts" tooltip="frontend/src/lib/trpc.ts">
+          <mxGeometry as="geometry" x="1110" y="140" width="280" height="130" />
+        </mxCell>
+        <mxCell id="client-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="client" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="280" height="60" />
+        </mxCell>
+        <mxCell id="client-name" value="«module»&#10;trpc" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="client" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="252" height="48" />
+        </mxCell>
+        <mxCell id="client-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="client" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="280" height="0" />
+        </mxCell>
+        <mxCell id="client-attributes" value="trpc: API query options&#10;queryClient: QueryClient" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="client" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="252" height="58" />
+        </mxCell>
+        <mxCell id="cache" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1110" y="790" width="280" height="130" />
+        </mxCell>
+        <mxCell id="cache-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="cache" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="280" height="60" />
+        </mxCell>
+        <mxCell id="cache-name" value="«external»&#10;QueryClient" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="cache" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="252" height="48" />
+        </mxCell>
+        <mxCell id="cache-operations-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="cache" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="280" height="0" />
+        </mxCell>
+        <mxCell id="cache-operations" value="clear(): void&#10;setQueryData(key, user): void" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="cache" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="252" height="58" />
+        </mxCell>
+        <mxCell id="router-type" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/src/trpc/router.ts" tooltip="backend/src/trpc/router.ts">
+          <mxGeometry as="geometry" x="510" y="790" width="400" height="107" />
+        </mxCell>
+        <mxCell id="router-type-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="router-type" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="400" height="60" />
+        </mxCell>
+        <mxCell id="router-type-name" value="«type»&#10;AppRouter" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="router-type" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="372" height="48" />
+        </mxCell>
+        <mxCell id="router-type-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="router-type" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="400" height="0" />
+        </mxCell>
+        <mxCell id="router-type-attributes" value="typeof appRouter" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="router-type" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="372" height="35" />
+        </mxCell>
+        <mxCell id="screen-hook" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=1.0;exitY=0.5607476635514018;exitPerimeter=0;entryX=0.0;entryY=0.22304832713754646;entryPerimeter=0;" edge="1" parent="1" source="screen" target="form-hook">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="screen-hook-label" value="uses" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="415" y="171" width="80" height="44" />
+        </mxCell>
+        <mxCell id="screen-form" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="screen" target="form">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="screen-form-label" value="renders" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="224" y="324" width="110" height="44" />
+        </mxCell>
+        <mxCell id="form-props" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="form" target="props">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="form-props-label" value="uses" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="224" y="626" width="80" height="44" />
+        </mxCell>
+        <mxCell id="hook-validation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="form-hook" target="validation">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="hook-validation-label" value="validates" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="725" y="447" width="120" height="44" />
+        </mxCell>
+        <mxCell id="validation-credentials" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=1.0;exitY=0.3954802259887006;exitPerimeter=0;entryX=0.0;entryY=0.5384615384615384;entryPerimeter=0;" edge="1" parent="1" source="validation" target="credentials">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="validation-credentials-label" value="uses" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="982" y="539" width="90" height="44" />
+        </mxCell>
+        <mxCell id="hook-client" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=1.0;exitY=0.26022304832713755;exitPerimeter=0;entryX=0.0;entryY=0.5384615384615384;entryPerimeter=0;" edge="1" parent="1" source="form-hook" target="client">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="hook-client-label" value="login / register" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="931" y="179" width="170" height="44" />
+        </mxCell>
+        <mxCell id="client-type" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=0.0;exitY=0.8461538461538461;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="client" target="router-type">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="1020" y="250" />
+              <mxPoint x="1020" y="740" />
+              <mxPoint x="710" y="740" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="client-type-label" value="imports type" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="765" y="710" width="170" height="44" />
+        </mxCell>
+        <mxCell id="client-cache" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=1.0;exitY=0.6153846153846154;exitPerimeter=0;entryX=1.0;entryY=0.46153846153846156;entryPerimeter=0;" edge="1" parent="1" source="client" target="cache">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="1420" y="220" />
+              <mxPoint x="1420" y="850" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="client-cache-label" value="uses" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="1352" y="700" width="60" height="44" />
+        </mxCell>
+        <mxCell id="hook-cache" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=1.0;exitY=0.7806691449814126;exitPerimeter=0;entryX=0.0;entryY=0.46153846153846156;entryPerimeter=0;" edge="1" parent="1" source="form-hook" target="cache">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="970" y="350" />
+              <mxPoint x="970" y="850" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hook-cache-label" value="updates" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="985" y="816" width="100" height="44" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

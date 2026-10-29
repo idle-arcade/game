@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1650" height="1100" viewBox="0 0 1650 1100" role="img" aria-labelledby="title desc">
+<title id="title">Authentication UML backend</title>
+<desc id="desc">Class-like structural model of the existing IDLE Arcade authentication subsystem. Code paths are linked in the editable Draw.io source.</desc>
+<defs><marker id="open" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M 1 1 L 11 6 L 1 11" fill="none" stroke="#596B82" stroke-width="1.2"/></marker></defs>
+<rect width="1650" height="1100" fill="white"/>
+<rect x="60" y="170" width="350" height="177" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="60" y="170" width="350" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="640" y="170" width="400" height="246" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="640" y="170" width="400" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="1240" y="170" width="350" height="246" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="1240" y="170" width="350" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="60" y="570" width="350" height="177" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="60" y="570" width="350" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="640" y="570" width="400" height="176" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="640" y="570" width="400" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="1240" y="570" width="350" height="176" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="1240" y="570" width="350" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="60" y="870" width="350" height="176" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="60" y="870" width="350" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="640" y="870" width="400" height="177" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="640" y="870" width="400" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="1240" y="870" width="350" height="130" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="1240" y="870" width="350" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<polyline points="60,230 410,230" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="60,300 410,300" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="640,230 1040,230" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="640,300 1040,300" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="1240,230 1590,230" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="1240,300 1590,300" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="60,630 410,630" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="60,700 410,700" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="640,630 1040,630" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="1240,630 1590,630" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="60,930 410,930" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="640,930 1040,930" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="640,1000 1040,1000" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="1240,930 1590,930" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="640,240 410,240" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="1040,280 1240,280" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="235,170 235,125 1415,125 1415,170" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="700,416 700,480 235,480 235,570" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="150,570 150,347" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="840,416 840,570" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="1040,350 1140,350 1140,640 1240,640" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="60,300 25,300 25,950 60,950" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="1590,350 1625,350 1625,940 1590,940" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="640,920 520,920 520,340 640,340" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="640,1000 470,1000 470,320 410,320" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="50" y="56.0" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#203047">Authentication structure</text>
+<text x="74" y="197.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«module»</text>
+<text x="74" y="219.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">trpc/init</text>
+<text x="74" y="258.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">publicProcedure: procedure builder</text>
+<text x="74" y="278.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">protectedProcedure: auth required</text>
+<text x="74" y="328.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">createContext(opts): Promise&lt;Context&gt;</text>
+<text x="654" y="197.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«module»</text>
+<text x="654" y="219.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">authRouter</text>
+<text x="654" y="258.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">registerLimit: middleware</text>
+<text x="654" y="278.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">loginLimit: middleware</text>
+<text x="654" y="328.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">register(credentials): public user</text>
+<text x="654" y="348.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">login(credentials): public user</text>
+<text x="654" y="369.6" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">logout(): { success: true }</text>
+<text x="654" y="390.4" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">me(): public user | null</text>
+<text x="1254" y="197.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«external»</text>
+<text x="1254" y="219.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">Better Auth</text>
+<text x="1254" y="258.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">database: Prisma adapter</text>
+<text x="1254" y="278.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">plugins: username</text>
+<text x="1254" y="328.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">api.signUpEmail(...)</text>
+<text x="1254" y="348.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">api.signInUsername(...)</text>
+<text x="1254" y="369.6" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">api.signOut(...)</text>
+<text x="1254" y="390.4" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">api.getSession(...)</text>
+<text x="74" y="597.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«module»</text>
+<text x="74" y="619.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">rateLimit</text>
+<text x="74" y="658.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">windows: Map&lt;IP, Window&gt;</text>
+<text x="74" y="678.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">Window: { count, resetAt }</text>
+<text x="74" y="728.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">rateLimit(options): middleware</text>
+<text x="654" y="597.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«module»</text>
+<text x="654" y="619.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">auth schemas</text>
+<text x="654" y="658.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">credentialsSchema: Zod object</text>
+<text x="654" y="678.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">loginSchema: Zod object</text>
+<text x="654" y="699.6" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">usernameSchema, passwordSchema</text>
+<text x="654" y="720.4" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">Credentials: inferred type</text>
+<text x="1254" y="597.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«module»</text>
+<text x="1254" y="619.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">auth glue</text>
+<text x="1254" y="658.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">placeholderEmail(username): string</text>
+<text x="1254" y="678.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">forwardAuthHeaders(res, headers): void</text>
+<text x="1254" y="699.6" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">toTRPCError(error): TRPCError</text>
+<text x="1254" y="720.4" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">toLoginTRPCError(error): TRPCError</text>
+<text x="74" y="897.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«type»</text>
+<text x="74" y="919.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">Context</text>
+<text x="74" y="958.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">req: Express request</text>
+<text x="74" y="978.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">res: Express response</text>
+<text x="74" y="999.6" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">session: session | null</text>
+<text x="74" y="1020.4" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">user: auth user | null</text>
+<text x="654" y="897.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«modules»</text>
+<text x="654" y="919.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">Express / appRouter</text>
+<text x="654" y="958.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">appRouter: { auth, health }</text>
+<text x="654" y="978.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">AppRouter = typeof appRouter</text>
+<text x="654" y="1028.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">createApp(): Express app</text>
+<text x="1254" y="897.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«module»</text>
+<text x="1254" y="919.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">db</text>
+<text x="1254" y="958.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">prisma: PrismaClient</text>
+<text x="1254" y="978.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">adapter: PrismaMariaDb</text>
+<rect x="502" y="208" width="39.8" height="23.5" fill="white"/>
+<text x="505" y="225.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">uses</text>
+<rect x="1117" y="248" width="47.75" height="23.5" fill="white"/>
+<text x="1120" y="265.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">calls</text>
+<rect x="737" y="93" width="103.4" height="23.5" fill="white"/>
+<text x="740" y="110.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">getSession()</text>
+<rect x="427" y="448" width="39.8" height="23.5" fill="white"/>
+<text x="430" y="465.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">uses</text>
+<rect x="162" y="423" width="39.8" height="23.5" fill="white"/>
+<text x="165" y="440.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">uses</text>
+<rect x="852" y="485" width="79.55" height="23.5" fill="white"/>
+<text x="855" y="502.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">validates</text>
+<rect x="1147" y="608" width="39.8" height="23.5" fill="white"/>
+<text x="1150" y="625.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">uses</text>
+<rect x="67" y="803" width="63.650000000000006" height="23.5" fill="white"/>
+<text x="70" y="820.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">returns</text>
+<rect x="1507" y="808" width="39.8" height="23.5" fill="white"/>
+<text x="1510" y="825.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">uses</text>
+<rect x="527" y="793" width="55.7" height="23.5" fill="white"/>
+<text x="530" y="810.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">mounts</text>
+<rect x="472" y="1018" width="39.8" height="23.5" fill="white"/>
+<text x="475" y="1035.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">uses</text>
+</svg>

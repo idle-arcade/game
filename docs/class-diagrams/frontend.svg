@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1450" height="980" viewBox="0 0 1450 980" role="img" aria-labelledby="title desc">
+<title id="title">Authentication UML frontend</title>
+<desc id="desc">Class-like structural model of the existing IDLE Arcade authentication subsystem. Code paths are linked in the editable Draw.io source.</desc>
+<defs><marker id="open" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M 1 1 L 11 6 L 1 11" fill="none" stroke="#596B82" stroke-width="1.2"/></marker></defs>
+<rect width="1450" height="980" fill="white"/>
+<rect x="60" y="140" width="300" height="107" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="60" y="140" width="300" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="510" y="140" width="400" height="269" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="510" y="140" width="400" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="60" y="430" width="300" height="154" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="60" y="430" width="300" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="60" y="700" width="300" height="222" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="60" y="700" width="300" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="510" y="500" width="400" height="177" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="510" y="500" width="400" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="1110" y="500" width="280" height="130" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="1110" y="500" width="280" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="1110" y="140" width="280" height="130" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="1110" y="140" width="280" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="1110" y="790" width="280" height="130" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="1110" y="790" width="280" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="510" y="790" width="400" height="107" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="510" y="790" width="400" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<polyline points="60,200 360,200" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="510,200 910,200" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="510,316 910,316" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="60,490 360,490" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="60,537 360,537" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="60,760 360,760" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="510,560 910,560" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="510,607 910,607" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="1110,560 1390,560" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="1110,200 1390,200" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="1110,850 1390,850" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="510,850 910,850" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="360,200 510,200" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="210,247 210,430" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="210,584 210,700" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="710,409 710,500" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="910,570 1110,570" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="910,210 1110,210" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="1110,250 1020,250 1020,740 710,740 710,790" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="1390,220 1420,220 1420,850 1390,850" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<polyline points="910,350 970,350 970,850 1110,850" fill="none" stroke="#596B82" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="50" y="56.0" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#203047">Authentication structure</text>
+<text x="74" y="167.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«component»</text>
+<text x="74" y="189.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">EntryScreen</text>
+<text x="74" y="228.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">EntryScreen(): JSX</text>
+<text x="524" y="167.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«hook»</text>
+<text x="524" y="189.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">useEntryForm</text>
+<text x="524" y="228.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">values: Credentials</text>
+<text x="524" y="248.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">fieldErrors: FieldErrors</text>
+<text x="524" y="269.6" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">formError: AuthErrorKey | null</text>
+<text x="524" y="290.4" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">pending: boolean</text>
+<text x="524" y="344.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">setValue(field, value): void</text>
+<text x="524" y="364.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">login(): void</text>
+<text x="524" y="385.6" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">register(): void</text>
+<text x="74" y="457.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«component»</text>
+<text x="74" y="479.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">EntryForm</text>
+<text x="74" y="518.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">props: EntryFormProps</text>
+<text x="74" y="565.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">EntryForm(props): JSX</text>
+<text x="74" y="727.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«type»</text>
+<text x="74" y="749.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">EntryFormProps</text>
+<text x="74" y="788.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">values: Credentials</text>
+<text x="74" y="808.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">fieldErrors: FieldErrors</text>
+<text x="74" y="829.6" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">formError: AuthErrorKey | null</text>
+<text x="74" y="850.4" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">pending: boolean</text>
+<text x="74" y="871.2" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">onChange(field, value): void</text>
+<text x="74" y="892.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">onLogin(), onRegister(): void</text>
+<text x="524" y="527.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«module»</text>
+<text x="524" y="549.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">validation</text>
+<text x="524" y="588.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">FieldErrors: partial error record</text>
+<text x="524" y="635.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">validateLogin(values): FieldErrors</text>
+<text x="524" y="655.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">validateRegistration(values): FieldErrors</text>
+<text x="1124" y="527.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«type»</text>
+<text x="1124" y="549.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">Credentials</text>
+<text x="1124" y="588.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">username: string</text>
+<text x="1124" y="608.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">password: string</text>
+<text x="1124" y="167.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«module»</text>
+<text x="1124" y="189.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">trpc</text>
+<text x="1124" y="228.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">trpc: API query options</text>
+<text x="1124" y="248.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">queryClient: QueryClient</text>
+<text x="1124" y="817.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«external»</text>
+<text x="1124" y="839.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">QueryClient</text>
+<text x="1124" y="878.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">clear(): void</text>
+<text x="1124" y="898.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">setQueryData(key, user): void</text>
+<text x="524" y="817.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«type»</text>
+<text x="524" y="839.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">AppRouter</text>
+<text x="524" y="878.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">typeof appRouter</text>
+<rect x="412" y="169" width="39.8" height="23.5" fill="white"/>
+<text x="415" y="186.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">uses</text>
+<rect x="221" y="322" width="63.650000000000006" height="23.5" fill="white"/>
+<text x="224" y="339.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">renders</text>
+<rect x="221" y="624" width="39.8" height="23.5" fill="white"/>
+<text x="224" y="641.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">uses</text>
+<rect x="722" y="445" width="79.55" height="23.5" fill="white"/>
+<text x="725" y="462.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">validates</text>
+<rect x="979" y="537" width="39.8" height="23.5" fill="white"/>
+<text x="982" y="554.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">uses</text>
+<rect x="928" y="177" width="135.2" height="23.5" fill="white"/>
+<text x="931" y="194.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">login / register</text>
+<rect x="762" y="708" width="103.4" height="23.5" fill="white"/>
+<text x="765" y="725.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">imports type</text>
+<rect x="1349" y="698" width="39.8" height="23.5" fill="white"/>
+<text x="1352" y="715.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">uses</text>
+<rect x="982" y="814" width="63.650000000000006" height="23.5" fill="white"/>
+<text x="985" y="831.0" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#596B82">updates</text>
+</svg>

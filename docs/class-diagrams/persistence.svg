@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1350" height="430" viewBox="0 0 1350 430" role="img" aria-labelledby="title desc">
+<title id="title">Authentication UML persistence</title>
+<desc id="desc">Class-like structural model of the existing IDLE Arcade authentication subsystem. Code paths are linked in the editable Draw.io source.</desc>
+<defs><marker id="open" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M 1 1 L 11 6 L 1 11" fill="none" stroke="#596B82" stroke-width="1.2"/></marker></defs>
+<rect width="1350" height="430" fill="white"/>
+<rect x="510" y="150" width="330" height="199" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="510" y="150" width="330" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="60" y="150" width="330" height="199" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="60" y="150" width="330" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<rect x="960" y="150" width="330" height="222" fill="#FFFFDF" stroke="#59636D" stroke-width="1.5"/>
+<rect x="960" y="150" width="330" height="60" fill="#FFFFDF" stroke="none" stroke-width="1.5"/>
+<polyline points="510,210 840,210" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="60,210 390,210" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="960,210 1290,210" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="510,260 390,260" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<polyline points="840,260 960,260" fill="none" stroke="#596B82" stroke-width="1.5"/>
+<text x="50" y="56.0" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#203047">Authentication structure</text>
+<text x="524" y="177.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«entity»</text>
+<text x="524" y="199.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">User</text>
+<text x="524" y="238.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">id: String</text>
+<text x="524" y="258.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">name: String</text>
+<text x="524" y="279.6" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">username: String?</text>
+<text x="524" y="300.4" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">sessions: Session[]</text>
+<text x="524" y="321.2" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">accounts: Account[]</text>
+<text x="74" y="177.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«entity»</text>
+<text x="74" y="199.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">Session</text>
+<text x="74" y="238.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">id: String</text>
+<text x="74" y="258.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">token: String</text>
+<text x="74" y="279.6" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">expiresAt: DateTime</text>
+<text x="74" y="300.4" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">userId: String</text>
+<text x="74" y="321.2" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">user: User</text>
+<text x="974" y="177.0" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">«entity»</text>
+<text x="974" y="199.1" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#203047">Account</text>
+<text x="974" y="238.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">id: String</text>
+<text x="974" y="258.8" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">accountId: String</text>
+<text x="974" y="279.6" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">providerId: String</text>
+<text x="974" y="300.4" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">userId: String</text>
+<text x="974" y="321.2" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">user: User</text>
+<text x="974" y="342.0" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#203047">password: String?</text>
+<text x="483" y="246.0" font-family="Arial, sans-serif" font-size="17" font-weight="400" fill="#203047">1</text>
+<text x="402" y="246.0" font-family="Arial, sans-serif" font-size="17" font-weight="400" fill="#203047">0..*</text>
+<text x="853" y="246.0" font-family="Arial, sans-serif" font-size="17" font-weight="400" fill="#203047">1</text>
+<text x="905" y="246.0" font-family="Arial, sans-serif" font-size="17" font-weight="400" fill="#203047">0..*</text>
+</svg>

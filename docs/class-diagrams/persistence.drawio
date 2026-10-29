@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device" version="24.7.17">
+  <diagram id="auth-persistence" name="Persistence">
+    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1350" pageHeight="430" math="0" shadow="0" background="#FFFFFF">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Authentication structure" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=28;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="50" y="28" width="1250" height="42" />
+        </mxCell>
+        <mxCell id="user" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/prisma/schema.prisma" tooltip="backend/prisma/schema.prisma">
+          <mxGeometry as="geometry" x="510" y="150" width="330" height="199" />
+        </mxCell>
+        <mxCell id="user-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="user" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="330" height="60" />
+        </mxCell>
+        <mxCell id="user-name" value="«entity»&#10;User" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="user" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="302" height="48" />
+        </mxCell>
+        <mxCell id="user-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="user" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="330" height="0" />
+        </mxCell>
+        <mxCell id="user-attributes" value="id: String&#10;name: String&#10;username: String?&#10;sessions: Session[]&#10;accounts: Account[]" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="user" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="302" height="127" />
+        </mxCell>
+        <mxCell id="session" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/prisma/schema.prisma" tooltip="backend/prisma/schema.prisma">
+          <mxGeometry as="geometry" x="60" y="150" width="330" height="199" />
+        </mxCell>
+        <mxCell id="session-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="session" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="330" height="60" />
+        </mxCell>
+        <mxCell id="session-name" value="«entity»&#10;Session" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="session" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="302" height="48" />
+        </mxCell>
+        <mxCell id="session-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="session" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="330" height="0" />
+        </mxCell>
+        <mxCell id="session-attributes" value="id: String&#10;token: String&#10;expiresAt: DateTime&#10;userId: String&#10;user: User" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="session" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="302" height="127" />
+        </mxCell>
+        <mxCell id="account" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/prisma/schema.prisma" tooltip="backend/prisma/schema.prisma">
+          <mxGeometry as="geometry" x="960" y="150" width="330" height="222" />
+        </mxCell>
+        <mxCell id="account-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="account" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="330" height="60" />
+        </mxCell>
+        <mxCell id="account-name" value="«entity»&#10;Account" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="account" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="302" height="48" />
+        </mxCell>
+        <mxCell id="account-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="account" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="330" height="0" />
+        </mxCell>
+        <mxCell id="account-attributes" value="id: String&#10;accountId: String&#10;providerId: String&#10;userId: String&#10;user: User&#10;password: String?" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="account" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="302" height="150" />
+        </mxCell>
+        <mxCell id="user-session" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=0;dashPattern=6 4;endArrow=none;endFill=0;exitX=0.0;exitY=0.5527638190954773;exitPerimeter=0;entryX=1.0;entryY=0.5527638190954773;entryPerimeter=0;" edge="1" parent="1" source="user" target="session">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="session-user-one" value="1" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="483" y="229" width="25" height="25" />
+        </mxCell>
+        <mxCell id="sessions-many" value="0..*" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="402" y="229" width="55" height="25" />
+        </mxCell>
+        <mxCell id="user-account" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=0;dashPattern=6 4;endArrow=none;endFill=0;exitX=1.0;exitY=0.5527638190954773;exitPerimeter=0;entryX=0.0;entryY=0.4954954954954955;entryPerimeter=0;" edge="1" parent="1" source="user" target="account">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="account-user-one" value="1" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="853" y="229" width="25" height="25" />
+        </mxCell>
+        <mxCell id="accounts-many" value="0..*" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="905" y="229" width="55" height="25" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device" version="24.7.17">
+  <diagram id="auth-backend" name="Backend">
+    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1650" pageHeight="1100" math="0" shadow="0" background="#FFFFFF">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Authentication structure" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=28;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="50" y="28" width="1550" height="42" />
+        </mxCell>
+        <mxCell id="init" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/src/trpc/init.ts" tooltip="backend/src/trpc/init.ts">
+          <mxGeometry as="geometry" x="60" y="170" width="350" height="177" />
+        </mxCell>
+        <mxCell id="init-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="init" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="350" height="60" />
+        </mxCell>
+        <mxCell id="init-name" value="«module»&#10;trpc/init" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="init" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="322" height="48" />
+        </mxCell>
+        <mxCell id="init-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="init" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="350" height="0" />
+        </mxCell>
+        <mxCell id="init-attributes" value="publicProcedure: procedure builder&#10;protectedProcedure: auth required" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="init" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="322" height="58" />
+        </mxCell>
+        <mxCell id="init-operations-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="init" connectable="0">
+          <mxGeometry as="geometry" x="0" y="130" width="350" height="0" />
+        </mxCell>
+        <mxCell id="init-operations" value="createContext(opts): Promise&lt;Context&gt;" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="init" connectable="0">
+          <mxGeometry as="geometry" x="14" y="142" width="322" height="35" />
+        </mxCell>
+        <mxCell id="router" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/src/routers/auth.ts" tooltip="backend/src/routers/auth.ts">
+          <mxGeometry as="geometry" x="640" y="170" width="400" height="246" />
+        </mxCell>
+        <mxCell id="router-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="router" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="400" height="60" />
+        </mxCell>
+        <mxCell id="router-name" value="«module»&#10;authRouter" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="router" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="372" height="48" />
+        </mxCell>
+        <mxCell id="router-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="router" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="400" height="0" />
+        </mxCell>
+        <mxCell id="router-attributes" value="registerLimit: middleware&#10;loginLimit: middleware" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="router" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="372" height="58" />
+        </mxCell>
+        <mxCell id="router-operations-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="router" connectable="0">
+          <mxGeometry as="geometry" x="0" y="130" width="400" height="0" />
+        </mxCell>
+        <mxCell id="router-operations" value="register(credentials): public user&#10;login(credentials): public user&#10;logout(): { success: true }&#10;me(): public user | null" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="router" connectable="0">
+          <mxGeometry as="geometry" x="14" y="142" width="372" height="104" />
+        </mxCell>
+        <mxCell id="auth" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/src/auth.ts" tooltip="backend/src/auth.ts">
+          <mxGeometry as="geometry" x="1240" y="170" width="350" height="246" />
+        </mxCell>
+        <mxCell id="auth-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="auth" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="350" height="60" />
+        </mxCell>
+        <mxCell id="auth-name" value="«external»&#10;Better Auth" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="auth" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="322" height="48" />
+        </mxCell>
+        <mxCell id="auth-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="auth" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="350" height="0" />
+        </mxCell>
+        <mxCell id="auth-attributes" value="database: Prisma adapter&#10;plugins: username" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="auth" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="322" height="58" />
+        </mxCell>
+        <mxCell id="auth-operations-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="auth" connectable="0">
+          <mxGeometry as="geometry" x="0" y="130" width="350" height="0" />
+        </mxCell>
+        <mxCell id="auth-operations" value="api.signUpEmail(...)&#10;api.signInUsername(...)&#10;api.signOut(...)&#10;api.getSession(...)" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="auth" connectable="0">
+          <mxGeometry as="geometry" x="14" y="142" width="322" height="104" />
+        </mxCell>
+        <mxCell id="limit" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/src/trpc/rate-limit.ts" tooltip="backend/src/trpc/rate-limit.ts">
+          <mxGeometry as="geometry" x="60" y="570" width="350" height="177" />
+        </mxCell>
+        <mxCell id="limit-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="limit" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="350" height="60" />
+        </mxCell>
+        <mxCell id="limit-name" value="«module»&#10;rateLimit" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="limit" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="322" height="48" />
+        </mxCell>
+        <mxCell id="limit-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="limit" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="350" height="0" />
+        </mxCell>
+        <mxCell id="limit-attributes" value="windows: Map&lt;IP, Window&gt;&#10;Window: { count, resetAt }" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="limit" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="322" height="58" />
+        </mxCell>
+        <mxCell id="limit-operations-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="limit" connectable="0">
+          <mxGeometry as="geometry" x="0" y="130" width="350" height="0" />
+        </mxCell>
+        <mxCell id="limit-operations" value="rateLimit(options): middleware" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="limit" connectable="0">
+          <mxGeometry as="geometry" x="14" y="142" width="322" height="35" />
+        </mxCell>
+        <mxCell id="schemas" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/src/schemas/auth.ts" tooltip="backend/src/schemas/auth.ts">
+          <mxGeometry as="geometry" x="640" y="570" width="400" height="176" />
+        </mxCell>
+        <mxCell id="schemas-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="schemas" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="400" height="60" />
+        </mxCell>
+        <mxCell id="schemas-name" value="«module»&#10;auth schemas" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="schemas" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="372" height="48" />
+        </mxCell>
+        <mxCell id="schemas-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="schemas" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="400" height="0" />
+        </mxCell>
+        <mxCell id="schemas-attributes" value="credentialsSchema: Zod object&#10;loginSchema: Zod object&#10;usernameSchema, passwordSchema&#10;Credentials: inferred type" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="schemas" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="372" height="104" />
+        </mxCell>
+        <mxCell id="glue" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/src/trpc/auth-glue.ts" tooltip="backend/src/trpc/auth-glue.ts">
+          <mxGeometry as="geometry" x="1240" y="570" width="350" height="176" />
+        </mxCell>
+        <mxCell id="glue-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="glue" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="350" height="60" />
+        </mxCell>
+        <mxCell id="glue-name" value="«module»&#10;auth glue" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="glue" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="322" height="48" />
+        </mxCell>
+        <mxCell id="glue-operations-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="glue" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="350" height="0" />
+        </mxCell>
+        <mxCell id="glue-operations" value="placeholderEmail(username): string&#10;forwardAuthHeaders(res, headers): void&#10;toTRPCError(error): TRPCError&#10;toLoginTRPCError(error): TRPCError" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="glue" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="322" height="104" />
+        </mxCell>
+        <mxCell id="context" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/src/trpc/init.ts" tooltip="backend/src/trpc/init.ts">
+          <mxGeometry as="geometry" x="60" y="870" width="350" height="176" />
+        </mxCell>
+        <mxCell id="context-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="context" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="350" height="60" />
+        </mxCell>
+        <mxCell id="context-name" value="«type»&#10;Context" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="context" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="322" height="48" />
+        </mxCell>
+        <mxCell id="context-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="context" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="350" height="0" />
+        </mxCell>
+        <mxCell id="context-attributes" value="req: Express request&#10;res: Express response&#10;session: session | null&#10;user: auth user | null" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="context" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="322" height="104" />
+        </mxCell>
+        <mxCell id="app" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/src/app.ts" tooltip="backend/src/app.ts">
+          <mxGeometry as="geometry" x="640" y="870" width="400" height="177" />
+        </mxCell>
+        <mxCell id="app-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="app" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="400" height="60" />
+        </mxCell>
+        <mxCell id="app-name" value="«modules»&#10;Express / appRouter" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="app" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="372" height="48" />
+        </mxCell>
+        <mxCell id="app-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="app" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="400" height="0" />
+        </mxCell>
+        <mxCell id="app-attributes" value="appRouter: { auth, health }&#10;AppRouter = typeof appRouter" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="app" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="372" height="58" />
+        </mxCell>
+        <mxCell id="app-operations-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="app" connectable="0">
+          <mxGeometry as="geometry" x="0" y="130" width="400" height="0" />
+        </mxCell>
+        <mxCell id="app-operations" value="createApp(): Express app" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="app" connectable="0">
+          <mxGeometry as="geometry" x="14" y="142" width="372" height="35" />
+        </mxCell>
+        <mxCell id="db" value="" style="rounded=0;html=0;fillColor=#FFFFDF;strokeColor=#59636D;strokeWidth=1.5;container=1;collapsible=0;" vertex="1" parent="1" link="../../backend/src/db.ts" tooltip="backend/src/db.ts">
+          <mxGeometry as="geometry" x="1240" y="870" width="350" height="130" />
+        </mxCell>
+        <mxCell id="db-header" value="" style="rounded=0;fillColor=#FFFFDF;strokeColor=none;" vertex="1" parent="db" connectable="0">
+          <mxGeometry as="geometry" x="0" y="0" width="350" height="60" />
+        </mxCell>
+        <mxCell id="db-name" value="«module»&#10;db" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=17;fontStyle=1;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="db" connectable="0">
+          <mxGeometry as="geometry" x="14" y="10" width="322" height="48" />
+        </mxCell>
+        <mxCell id="db-attributes-rule" value="" style="shape=line;strokeColor=#A8B4C3;strokeWidth=1;" vertex="1" parent="db" connectable="0">
+          <mxGeometry as="geometry" x="0" y="60" width="350" height="0" />
+        </mxCell>
+        <mxCell id="db-attributes" value="prisma: PrismaClient&#10;adapter: PrismaMariaDb" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=16;fontStyle=0;fontColor=#203047;fillColor=none;strokeColor=none;" vertex="1" parent="db" connectable="0">
+          <mxGeometry as="geometry" x="14" y="72" width="322" height="58" />
+        </mxCell>
+        <mxCell id="router-init" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=0.0;exitY=0.2845528455284553;exitPerimeter=0;entryX=1.0;entryY=0.3954802259887006;entryPerimeter=0;" edge="1" parent="1" source="router" target="init">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="router-init-label" value="uses" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="505" y="210" width="70" height="44" />
+        </mxCell>
+        <mxCell id="router-auth" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=1.0;exitY=0.44715447154471544;exitPerimeter=0;entryX=0.0;entryY=0.44715447154471544;entryPerimeter=0;" edge="1" parent="1" source="router" target="auth">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="router-auth-label" value="calls" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="1120" y="250" width="70" height="44" />
+        </mxCell>
+        <mxCell id="init-auth" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=0.5;exitY=0.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="init" target="auth">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="235" y="125" />
+              <mxPoint x="1415" y="125" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="init-auth-label" value="getSession()" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="740" y="95" width="180" height="44" />
+        </mxCell>
+        <mxCell id="router-limit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=0.15;exitY=1.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="router" target="limit">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="700" y="480" />
+              <mxPoint x="235" y="480" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="router-limit-label" value="uses" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="430" y="450" width="80" height="44" />
+        </mxCell>
+        <mxCell id="limit-init" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=0.2571428571428571;exitY=0.0;exitPerimeter=0;entryX=0.2571428571428571;entryY=1.0;entryPerimeter=0;" edge="1" parent="1" source="limit" target="init">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="limit-init-label" value="uses" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="165" y="425" width="80" height="44" />
+        </mxCell>
+        <mxCell id="router-schemas" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="router" target="schemas">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="router-schemas-label" value="validates" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="855" y="487" width="150" height="44" />
+        </mxCell>
+        <mxCell id="router-glue" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=1.0;exitY=0.7317073170731707;exitPerimeter=0;entryX=0.0;entryY=0.3977272727272727;entryPerimeter=0;" edge="1" parent="1" source="router" target="glue">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="1140" y="350" />
+              <mxPoint x="1140" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="router-glue-label" value="uses" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="1150" y="610" width="80" height="44" />
+        </mxCell>
+        <mxCell id="init-context" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=0.0;exitY=0.7344632768361582;exitPerimeter=0;entryX=0.0;entryY=0.45454545454545453;entryPerimeter=0;" edge="1" parent="1" source="init" target="context">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="25" y="300" />
+              <mxPoint x="25" y="950" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="init-context-label" value="returns" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="70" y="805" width="100" height="44" />
+        </mxCell>
+        <mxCell id="auth-db" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=1.0;exitY=0.7317073170731707;exitPerimeter=0;entryX=1.0;entryY=0.5384615384615384;entryPerimeter=0;" edge="1" parent="1" source="auth" target="db">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="1625" y="350" />
+              <mxPoint x="1625" y="940" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="auth-db-label" value="uses" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="1510" y="810" width="75" height="44" />
+        </mxCell>
+        <mxCell id="app-router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=0.0;exitY=0.2824858757062147;exitPerimeter=0;entryX=0.0;entryY=0.6910569105691057;entryPerimeter=0;" edge="1" parent="1" source="app" target="router">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="520" y="920" />
+              <mxPoint x="520" y="340" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="app-router-label" value="mounts" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="530" y="795" width="100" height="44" />
+        </mxCell>
+        <mxCell id="app-init" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#596B82;strokeWidth=1.5;dashed=1;dashPattern=6 4;endArrow=open;endFill=0;exitX=0.0;exitY=0.7344632768361582;exitPerimeter=0;entryX=1.0;entryY=0.847457627118644;entryPerimeter=0;" edge="1" parent="1" source="app" target="init">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="470" y="1000" />
+              <mxPoint x="470" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="app-init-label" value="uses" style="text;html=0;whiteSpace=wrap;overflow=hidden;align=left;verticalAlign=top;spacing=0;spacingLeft=0;spacingTop=0;fontFamily=Arial;fontSize=15;fontStyle=0;fontColor=#596B82;fillColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1" connectable="0">
+          <mxGeometry as="geometry" x="475" y="1020" width="80" height="44" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
