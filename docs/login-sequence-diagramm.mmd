@@ -1,0 +1,45 @@
+---
+title: Anmeldung und Abmeldung eines Nutzers
+---
+sequenceDiagram
+
+    actor Nutzer
+    participant Frontend as Frontend (React)
+    participant Backend as Backend (tRPC)
+    participant Auth as Better Auth
+    participant DB as MySQL (Prisma)
+
+
+    Nutzer->>Frontend: „Anmelden“ klicken oder Enter drücken
+    Frontend->>Frontend: Prüfen, ob beide Felder ausgefüllt sind
+    Frontend->>Backend: auth.login(credentials)
+    Backend->>Backend: Rate-Limit prüfen<br/>max. 10 Versuche pro IP / 5 Min.
+    Backend->>Auth: signInUsername(Benutzername, Passwort)
+    Auth->>DB: Zugangsdaten prüfen und Sitzung anlegen
+    DB-->>Auth: Nutzer und Sitzung
+    Auth-->>Backend: Nutzer und Sitzungscookie
+
+
+    Backend-->>Frontend: Nutzer + Set-Cookie
+    Frontend->>Frontend: Nutzerstatus speichern
+    Frontend-->>Nutzer: Weiterleitung zu /darts
+
+    note over Frontend: Bei späteren Anfragen wird das Sitzungscookie mitgesendet.
+
+    Frontend->>Backend: auth.me (Sitzungscookie)
+    Backend->>Auth: Sitzung prüfen
+    Auth->>DB: Sitzung und Nutzer nachschlagen
+    DB-->>Auth: Nutzer oder keine Sitzung
+    Auth-->>Backend: Sitzung/Nutzer oder null
+    Backend-->>Frontend: Nutzer oder null
+
+    note over Nutzer: Abmeldung
+
+    Nutzer->>Frontend: Abmelden klicken
+    Frontend->>Backend: auth.logout (Sitzungscookie)
+    Backend->>Auth: signOut
+    Auth->>DB: Sitzung beenden
+    Auth-->>Backend: Cookie zum Beenden der Sitzung
+    Backend-->>Frontend: Abmeldung bestätigt
+    Frontend->>Frontend: Cache leeren
+    Frontend-->>Nutzer: Weiterleitung zur Startseite

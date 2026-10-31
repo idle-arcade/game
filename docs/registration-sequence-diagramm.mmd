@@ -1,0 +1,21 @@
+---
+title: Registrierung eines Nutzers
+---
+sequenceDiagram
+
+    actor Nutzer
+    participant Frontend as Frontend (React)
+    participant Backend as Backend (tRPC)
+    participant Auth as Better Auth
+    participant DB as MySQL (Prisma)
+
+    Nutzer->>Frontend: Benutzername und Passwort eingeben
+    Nutzer->>Frontend: „Registrieren“ klicken
+    Frontend->>Frontend: Eingaben prüfen
+    Frontend->>Backend: auth.register(credentials)
+    Backend->>Backend: Rate-Limit prüfen<br/>max. 5 Versuche pro IP / Stunde
+    Backend->>Backend: Eingaben serverseitig validieren
+    Backend->>Auth: signUpEmail(Platzhalter-E-Mail, Passwort, Benutzername)
+    Auth->>DB: Nutzer und Authentifizierungsdaten anlegen
+    DB-->>Auth: Nutzer
+    Auth-->>Backend: Nutzer und Sitzungscookie
