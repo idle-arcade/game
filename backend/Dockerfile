@@ -4,9 +4,9 @@ WORKDIR /app
 COPY package.json package-lock.json tsconfig.base.json ./
 COPY backend ./backend
 COPY frontend/package.json ./frontend/package.json
-RUN npm ci
-RUN npm run build -w @idle-arcade/backend
-RUN npm prune --omit=dev
+RUN npm ci \
+    && npm run build -w @idle-arcade/backend \
+    && npm prune --omit=dev
 
 FROM node:24-alpine
 ENV NODE_ENV=production

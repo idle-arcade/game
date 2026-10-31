@@ -55,3 +55,37 @@ format_config:
   - "**/.prettierrc*"
   - "**/prettier.config.*"
   - "**/.editorconfig"
+
+markdown:
+  - "**/*.md"
+  - "**/.markdownlint*"
+  - "!**/node_modules/**"
+  - "!**/dist/**"
+  - "!backend/src/generated/**"
+  - "!.github/ISSUE_TEMPLATE/**"
+
+dockerfile:
+  - "**/Dockerfile"
+  - "**/Dockerfile.*"
+  - "**/*.Dockerfile"
+  - "**/.hadolint.yaml"
+  - "**/.hadolint.yml"
+  - "!**/node_modules/**"
+  - "!**/dist/**"
+
+compose:
+  - "**/{compose,docker-compose}{,.*}.{yml,yaml}"
+  - "!.github/**"
+  - "!**/node_modules/**"
+  - "!**/dist/**"
+
+workflow:
+  - ".github/workflows/*.{yml,yaml}"
+  - ".github/actionlint.{yml,yaml}"
+  - "**/.shellcheckrc"
+
+shell:
+  - "**/*.{sh,bash}"
+  - "**/.shellcheckrc"
+  - "!**/node_modules/**"
+  - "!**/dist/**"

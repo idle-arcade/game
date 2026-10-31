@@ -5,10 +5,11 @@ WORKDIR /app
 COPY package.json package-lock.json tsconfig.base.json ./
 COPY backend ./backend
 COPY frontend ./frontend
-RUN npm ci
-RUN npm run build -w @idle-arcade/frontend
+RUN npm ci && npm run build -w @idle-arcade/frontend
 
 FROM nginx:1.29-alpine-otel
+# Take jq security fixes from the base image's Alpine repositories.
+# hadolint ignore=DL3018
 RUN apk add --no-cache jq \
     && sed -i '1i load_module modules/ngx_otel_module.so;' /etc/nginx/nginx.conf
 COPY frontend/docker-entrypoint.d/45-observability.sh /docker-entrypoint.d/45-observability.sh

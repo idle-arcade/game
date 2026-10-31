@@ -11,6 +11,16 @@ on:
         value: ${{ jobs.changes.outputs.lint }}
       format:
         value: ${{ jobs.changes.outputs.format }}
+      markdown:
+        value: ${{ jobs.changes.outputs.markdown }}
+      dockerfile:
+        value: ${{ jobs.changes.outputs.dockerfile }}
+      compose:
+        value: ${{ jobs.changes.outputs.compose }}
+      workflow:
+        value: ${{ jobs.changes.outputs.workflow }}
+      shell:
+        value: ${{ jobs.changes.outputs.shell }}
 
 permissions:
   contents: read
@@ -25,6 +35,11 @@ jobs:
       typecheck: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.typecheck == 'true' || steps.filter.outputs.toolchain == 'true' || steps.filter.outputs.quality_config == 'true' }}
       lint: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.lint == 'true' || steps.filter.outputs.toolchain == 'true' || steps.filter.outputs.quality_config == 'true' }}
       format: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.format == 'true' || steps.filter.outputs.format_config == 'true' || steps.filter.outputs.toolchain == 'true' || steps.filter.outputs.quality_config == 'true' }}
+      markdown: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.markdown == 'true' || steps.filter.outputs.quality_config == 'true' }}
+      dockerfile: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.dockerfile == 'true' || steps.filter.outputs.quality_config == 'true' }}
+      compose: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.compose == 'true' || steps.filter.outputs.quality_config == 'true' }}
+      workflow: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.workflow == 'true' || steps.filter.outputs.quality_config == 'true' }}
+      shell: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.shell == 'true' || steps.filter.outputs.quality_config == 'true' }}
     steps:
       - uses: actions/checkout@v7
         if: github.event_name != 'workflow_dispatch'

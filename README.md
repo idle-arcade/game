@@ -17,8 +17,8 @@ fill in the passwords and a `BETTER_AUTH_SECRET` of at least 32 characters.
 | ----------------------------------------- | ------------------------------------------------------------ |
 | `npm install`                             | Install dependencies and generate the Prisma client          |
 | `docker compose up -d mysql`              | Start only MySQL, for local development                      |
-| `npm run dev`                             | Start backend (:3000) and frontend (http://localhost:5173)   |
-| `docker compose up --build`               | Run the full stack in Docker (http://localhost:8080)         |
+| `npm run dev`                             | Start backend (:3000) and frontend (<http://localhost:5173>) |
+| `docker compose up --build`               | Run the full stack in Docker (<http://localhost:8080>)       |
 | `docker compose down -v`                  | Stop Docker and delete the database volume                   |
 | `npm run build`                           | Build both workspaces                                        |
 | `npm run typecheck`                       | Type-check both workspaces                                   |
