@@ -1,0 +1,15 @@
+{
+  "globs": ["**/*.md"],
+  "gitignore": true,
+  "ignores": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "backend/src/generated/**",
+    ".github/ISSUE_TEMPLATE/**",
+  ],
+  "config": {
+    "MD004": { "style": "dash" },
+    // Wrapping prose is left to authors; Prettier owns root README formatting.
+    "MD013": false,
+  },
+}

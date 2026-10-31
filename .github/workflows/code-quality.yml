@@ -8,14 +8,20 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 concurrency:
   group: code-quality-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
+  changes:
+    uses: ./.github/workflows/changed-files.yml
+
   typecheck:
     name: npm run typecheck
+    needs: changes
+    if: needs.changes.outputs.typecheck == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -31,6 +37,8 @@ jobs:
 
   lint:
     name: npm run lint
+    needs: changes
+    if: needs.changes.outputs.lint == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -44,6 +52,8 @@ jobs:
 
   format:
     name: npm run format:check
+    needs: changes
+    if: needs.changes.outputs.format == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -55,26 +65,108 @@ jobs:
       - run: npm ci
       - run: npm run format:check
 
+  markdown:
+    name: Markdownlint
+    needs: changes
+    if: needs.changes.outputs.markdown == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - name: Lint Markdown, including docs
+        uses: DavidAnson/markdownlint-cli2-action@v25.0.0
+        with:
+          config: .markdownlint-cli2.jsonc
+          globs: "**/*.md"
+
+  dockerfile:
+    name: Hadolint
+    needs: changes
+    if: needs.changes.outputs.dockerfile == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - name: Lint Dockerfiles
+        uses: hadolint/hadolint-action@v3.5.0
+        with:
+          recursive: true
+
+  compose:
+    name: Compose validation
+    needs: changes
+    if: needs.changes.outputs.compose == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate tracked Compose configurations
+        env:
+          BACKEND_IMAGE: idle-backend:ci
+          FRONTEND_IMAGE: idle-frontend:ci
+          MYSQL_ROOT_PASSWORD: ci-root-password
+          MYSQL_PASSWORD: ci-password
+          BETTER_AUTH_SECRET: ci-only-secret-at-least-32-characters
+          PREVIEW_URL: http://127.0.0.1:8080
+        run: |
+          git ls-files -z -- ':(glob)**/compose.y*ml' ':(glob)**/compose.*.y*ml' \
+            ':(glob)**/docker-compose.y*ml' ':(glob)**/docker-compose.*.y*ml' ':(exclude).github/**' |
+            while IFS= read -r -d '' file; do
+              echo "Validating $file"
+              docker compose --env-file /dev/null -f "$file" config --quiet
+            done
+
+  workflow:
+    name: Actionlint
+    needs: changes
+    if: needs.changes.outputs.workflow == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - name: Lint GitHub workflows and inline shell
+        uses: docker://rhysd/actionlint:1.7.12
+        with:
+          args: -color
+
+  shell:
+    name: ShellCheck
+    needs: changes
+    if: needs.changes.outputs.shell == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - name: Lint shell scripts
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          # renovate: datasource=github-releases depName=koalaman/shellcheck
+          version: v0.11.0
+          ignore_paths: node_modules dist .cache backend/src/generated
+
   summary:
     name: Code quality summary
-    needs: [typecheck, lint, format]
+    needs: [changes, typecheck, lint, format, markdown, dockerfile, compose, workflow, shell]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Summarize all checks
+        shell: node {0}
         env:
-          TYPECHECK_RESULT: ${{ needs.typecheck.result }}
-          LINT_RESULT: ${{ needs.lint.result }}
-          FORMAT_RESULT: ${{ needs.format.result }}
+          CHECK_RESULTS: ${{ toJSON(needs) }}
         run: |
-          {
-            echo '## Code quality'
-            echo
-            echo '| Check | Result |'
-            echo '| --- | --- |'
-            printf '| npm run typecheck | %s |\n' "$TYPECHECK_RESULT"
-            printf '| npm run lint | %s |\n' "$LINT_RESULT"
-            printf '| npm run format:check | %s |\n' "$FORMAT_RESULT"
-          } >> "$GITHUB_STEP_SUMMARY"
-          [[ "$TYPECHECK_RESULT" == success && "$LINT_RESULT" == success && "$FORMAT_RESULT" == success ]]
+          const fs = require("node:fs");
+          const checks = JSON.parse(process.env.CHECK_RESULTS);
+          const required = checks.changes.outputs || {};
+          let passed = checks.changes.result === "success";
+          const rows = ["## Code quality", "", "| Check | Result |", "| --- | --- |"];
+          for (const [name, check] of Object.entries(checks)) {
+            rows.push(`| ${name} | ${check.result} |`);
+            if (name !== "changes") {
+              passed &&= check.result === "success" ||
+                (check.result === "skipped" && required[name] === "false");
+            }
+          }
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, rows.join("\n") + "\n");
+          process.exit(passed ? 0 : 1);
