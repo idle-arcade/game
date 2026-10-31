@@ -73,10 +73,12 @@ jobs:
             done
           done < <(find . -type f -name '*.mmd' -not -path './.git/*' -not -path '*/node_modules/*' -print0)
 
-      # Exports only the .drawio files changed in the PR (action-mode auto -> recent).
+      # Use the PR base explicitly; auto can fall back to exporting every drawing.
       - name: Export .drawio files to SVG
         uses: rlespinasse/drawio-export-action@v2
         with:
+          action-mode: ${{ github.event_name == 'pull_request' && 'reference' || 'all' }}
+          since-reference: ${{ github.event.pull_request.base.sha }}
           format: svg
           output: .drawio-export
           remove-page-suffix: true
@@ -85,6 +87,8 @@ jobs:
       - name: Export .drawio files to PNG
         uses: rlespinasse/drawio-export-action@v2
         with:
+          action-mode: ${{ github.event_name == 'pull_request' && 'reference' || 'all' }}
+          since-reference: ${{ github.event.pull_request.base.sha }}
           format: png
           output: .drawio-export
           remove-page-suffix: true
