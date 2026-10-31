@@ -13,15 +13,18 @@ Dieses Dokument beschreibt die funktionalen und nicht-funktionalen Anforderungen
 Nach aktuellem Stand haben wir bisher noch keine speziellen Begriffe, Akronyme oder Abkürzungen, welche für das Verständnis dieses Dokumentes erforderlich wären.
 
 #### 1.4 Referenzen
-* UI-Mockups [15.10.2026, GitHub]: ![Bild des Mockups](mockups.png)
+* UI-Mockups [15.10.2026, GitHub]: ![Bild des Mockups](mockups.png) 
 * UML-Verhaltensdiagramme [17.10.2026, GitHub]: ![Bild der UML-Verhaltensdiagramme](idle-arcade-use-cases.png)
 * Aktivitätsdiagramme [25.10.2026, GitHub]: ![Bild der Aktivitätsdiagramme](activity-diagrams.png)
+* UML-Klassendiagramme-Backend [29.10.2026, GitHub]: ![Bild des Backend-Klassendiagramms](class-diagrams/backend.png)
+* UML-Klassendiagramme-Frontend [29.10.2026, GitHub]: ![Bild des Frontend-Klassendiagramms](class-diagrams/frontend.png)
+* UML-Klassendiagramme-Persistence [29.10.2026, GitHub]: ![Bild des Persistence-Klassendiagramms](class-diagrams/persistence.png)
 
 ### 2. Funktionale Anforderungen
-#### 2.1 Übersicht
+#### Übersicht
 IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können verschiedene Räume freischalten, indem sie durch das Spielen Währungen verdienen. Jeder Raum enthält eigene Spielmechaniken und Highscorelisten.
 
-#### 2.2 Projektsetup
+#### 2.1 Projektsetup
 - User Story: https://github.com/idle-arcade/game/issues/20
 - Anmelde-Sequenzdiagramm: ![Bild der Anmeldesequenz](login-sequence-diagramm.svg)
   Das Sequenzdiagramm zeigt den Ablauf der An- und Abmeldung eines Nutzers. Bei der Anmeldung werden die eingegebenen Zugangsdaten geprüft und eine Sitzung erstellt, die über ein Sitzungs-Cookie gespeichert wird. Dieses Cookie wird bei späteren Anfragen zur Authentifizierung verwendet. Bei der Abmeldung wird die Sitzung beendet, das Cookie gelöscht und der Nutzer auf die Startseite weitergeleitet.
@@ -40,7 +43,7 @@ IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können ve
   - Benutzer können sich registrieren und anmelden.
 - Geschätzter Aufwand: 16 Story points
 
-#### 2.3 Raumnavigationen
+#### 2.2 Raumnavigationen
 - User Story: https://github.com/idle-arcade/game/issues/23
 - Voraussetzungen:
   - Der Benutzer ist angemeldet.
@@ -52,7 +55,7 @@ IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können ve
   - Der aktuell ausgewählte Raum wird dargestellt. 
 - Geschätzter Aufwand: gering 
 
-#### 2.4 Benutzeroberfläche der Spielräume
+#### 2.3 Benutzeroberfläche der Spielräume
 - User Story: https://github.com/idle-arcade/game/issues/26
 - Aktivitätsdiagramm (Darts werfen und nachladen): 
   - [activity-diagrams.png](activity-diagrams.png)
@@ -69,7 +72,7 @@ IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können ve
   - Spielergebnisse und Spielstände werden verarbeitet.
 - Geschätzer Aufwand: 6 Story points
 
-#### 2.5 Raumspezifische Highscores
+#### 2.4 Raumspezifische Highscores
 - User Story: https://github.com/idle-arcade/game/issues/29
 - Voraussetzungen: 
   - Die Benutzeroberfläche enthält den Highscore-Button beziehungsweise das Highscore-Dropdown für das aktuelle Spiel.
@@ -86,7 +89,7 @@ IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können ve
   - Die Highscore-Anzeige kann vom Spieler eingesehen werden, ohne die aktuelle Spielseite zu verlassen.
 - Geschätzter Aufwand: 5 Story Points
 
-#### 2.6 Mobile und Desktop Version 
+#### 2.5 Mobile und Desktop Version 
 - User Story: https://github.com/idle-arcade/game/issues/32
 - Voraussetzungen: Das Spiel ist in seiner Funktionalität fertig gestellt.
   - Die Kernfunktionalitäten des Spiels sind implementiert.
@@ -97,7 +100,7 @@ IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können ve
   - Die Benutzeroberfläche passt sich automatisch an die Bildschirmgröße an.
 - Geschätzter Aufwand: mittel
 
-#### 2.7  Telemetriedaten und Nutzungsaktivitäten
+#### 2.6 Telemetriedaten und Nutzungsaktivitäten
 - User Story: https://github.com/idle-arcade/game/issues/52
 - Voraussetzungen: 
   - Das Spiel ist bereitgestellt und lauffähig.
@@ -110,7 +113,7 @@ IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können ve
   - Entwickler können auf Telemetriedaten und Statistiken zugreifen.
 - Geschätzter Aufwand: 5 Story Points
 
-#### 2.8  Spielevorschau entwickeln
+#### 2.7 Spielevorschau entwickeln
 - User Story: https://github.com/idle-arcade/game/issues/81
 - Voraussetzungen:
   - Der aktuelle Entwicklungsstand des Spiels liegt im Repository vor.
@@ -124,7 +127,90 @@ IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können ve
   - Benutzer können die bereitgestellte Vorschau des Spiels testen.
 - Geschätzter Aufwand: 2 Story Points
 
- 
+#### 2.8 Multi-Währungssystem entwickeln
+- User Story: https://github.com/idle-arcade/game/issues/96
+- Voraussetzungen:
+  - Das bestehende Währungssystem ist im Backend implementiert.
+  - Die Datenbankstruktur für Spielerkonten und Kontostände ist vorhanden.
+  - Die verwendeten Währungstypen und deren Anforderungen sind definiert.
+  - Die Backend-API für Spielerdaten ist verfügbar.
+- Nachbedingungen:
+  - Mehrere Währungen werden vom Backend unterstützt.
+  - Kontostände können für verschiedene Währungen separat gespeichert werden.
+  - Währungsdaten sind über die API abrufbar.
+  - Die korrekte Verarbeitung und Persistierung aller Währungen wurde verifiziert.
+- Geschätzter Aufwand: viel
+
+#### 2.9 Aktives Dartspiel und Upgrades implementieren
+- User Story: https://github.com/idle-arcade/game/issues/102
+- Voraussetzungen:
+  - Das Darts-Minispiel ist konzeptionell definiert.
+  - Mockups und UI-Entwürfe für das Spiel liegen vor.
+  - Das bestehende Währungs- und Fortschrittssystem ist verfügbar.
+  - Client- und Serveranwendung können Spielzustände synchronisieren.
+- Nachbedingungen:
+  - Benutzer können aktiv Darts spielen.
+  - Upgrade-Käufe können durchgeführt und verarbeitet werden.
+  - Einnahmen und Upgrade-Kosten werden korrekt berechnet.
+  - Spielzustände werden zwischen Client und Server synchron gehalten.
+Das Balancing und die Spiellogik wurden erfolgreich getestet.
+- Geschätzter Aufwand: viel
+
+#### 2.10 Mermaid-Diagramme automatische rendern
+- User Story: https://github.com/idle-arcade/game/issues/109
+- Voraussetzungen:
+  - Eine Dokumentationspipeline ist vorhanden und funktionsfähig.
+  - Mermaid-Diagramme werden im Projekt zur Dokumentation verwendet.
+  - Die benötigten Rendering-Werkzeuge sind verfügbar und integrierbar.
+  - Änderungen an der Dokumentation können automatisiert verarbeitet werden.
+- Nachbedingungen:
+  - Mermaid-Diagramme werden während der Dokumentationspipeline automatisch gerendert.
+  - .mmd-Dateien werden in ein darstellbares Ausgabeformat umgewandelt.
+  - Generierte Diagramme stehen in der Projektdokumentation zur Verfügung.
+  - Die Rendering-Pipeline wurde erfolgreich getestet und verifiziert.
+- Geschätzter Aufwand: 2 Story Points
+
+#### 2.11 
+- User Story: https://github.com/idle-arcade/game/issues/113
+- Voraussetzungen:
+  - Das Projekt verfügt über definierte Regeln für Typecheck, Linting und Formatierung.
+  - GitHub Actions ist für das Repository verfügbar.
+  - Die erforderlichen Prüfwerkzeuge sind im Projekt eingerichtet.
+  - Das Repository besitzt eine funktionsfähige CI-Infrastruktur.
+- Nachbedingungen:
+  - Typecheck-, Lint- und Formatierungsprüfungen werden automatisch ausgeführt.
+  - Fehler werden im Rahmen der CI-Pipeline erkannt und gemeldet.
+  - Fehlgeschlagene Prüfungen werden in GitHub Actions nachvollziehbar angezeigt.
+  - Die Codequalität wird automatisiert überwacht.
+- Geschätzter Aufwand: 2 Story Points
+
+#### 2.12
+- User Story: https://github.com/idle-arcade/game/issues/116
+- Voraussetzungen:
+  - Die native tRPC-API ist implementiert und erreichbar.
+  - Die verfügbaren API-Endpunkte sind definiert.
+  - Ein Mechanismus zur Generierung von Swagger/OpenAPI-Dokumentationen ist verfügbar.
+  - Die Dokumentationsumgebung ist eingerichtet.
+- Nachbedingungen:
+  - Eine Swagger-Dokumentation für die tRPC-API wurde erstellt.
+  - API-Endpunkte und Datenstrukturen sind dokumentiert.
+  - Die Dokumentation kann über einen definierten Endpunkt aufgerufen werden.
+  - Die Generierung und Bereitstellung der Dokumentation wurden erfolgreich verifiziert.
+- Geschätzter Aufwand: 3 Story Points
+
+#### 2.13 Automatisierte Abhängigkeitsupdates einrichten
+- User Story: https://github.com/idle-arcade/game/issues/130
+- Voraussetzungen:
+  - Das Projekt verwendet externe Abhängigkeiten.
+  - Schreib- und Verwaltungsrechte für die Repository-Konfiguration liegen vor.
+  - Das Repository ist für automatisierte Pull Requests konfigurierbar.
+  - Dependabot oder Renovate kann im Repository eingesetzt werden.
+- Nachbedingungen:
+  - Automatische Abhängigkeitsupdates werden regelmäßig erstellt.
+  - Pull Requests für verfügbare Updates werden automatisch erzeugt.
+  - Aktualisierungen können durch das Entwicklungsteam geprüft werden.
+  - Der Prozess für die Wartung von Abhängigkeiten ist automatisiert.
+- Geschätzter Aufwand: wenig
 
 ### 3. Nicht-funktionale Anforderungen
 * Benuterfreundlichkeit
