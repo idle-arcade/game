@@ -1,7 +1,9 @@
 # IDLE Arcade
+
 ## Softwareanforderungen
 
 ### 1. Einleitung
+
 #### 1.1 Übersicht
 
 Die Alleinstellungsmerkmale unserer Software sind die verschiedenen Räume, die erst nach und nach mit der Währung des vorheringen Raumes freigeschaltet werden können. Zudem handelt es sich um eine Kombination aus Idle und Arcade Games. 
@@ -13,7 +15,7 @@ Dieses Dokument beschreibt die funktionalen und nicht-funktionalen Anforderungen
 Nach aktuellem Stand haben wir bisher noch keine speziellen Begriffe, Akronyme oder Abkürzungen, welche für das Verständnis dieses Dokumentes erforderlich wären.
 
 #### 1.4 Referenzen
-* UI-Mockups [15.10.2026, GitHub]: ![Bild des Mockups](mockups.png) 
+* UI-Mockups [15.10.2026, GitHub]: ![Bild des Mockups](mockups.png)
 * UML-Verhaltensdiagramme [17.10.2026, GitHub]: ![Bild der UML-Verhaltensdiagramme](idle-arcade-use-cases.png)
 * Aktivitätsdiagramme [25.10.2026, GitHub]: ![Bild der Aktivitätsdiagramme](activity-diagrams.png)
 * UML-Klassendiagramme-Backend [29.10.2026, GitHub]: ![Bild des Backend-Klassendiagramms](class-diagrams/backend.png)
@@ -21,6 +23,7 @@ Nach aktuellem Stand haben wir bisher noch keine speziellen Begriffe, Akronyme o
 * UML-Klassendiagramme-Persistence [29.10.2026, GitHub]: ![Bild des Persistence-Klassendiagramms](class-diagrams/persistence.png)
 
 ### 2. Funktionale Anforderungen
+
 #### Übersicht
 IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können verschiedene Räume freischalten, indem sie durch das Spielen Währungen verdienen. Jeder Raum enthält eigene Spielmechaniken und Highscorelisten.
 
@@ -89,7 +92,7 @@ IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können ve
   - Die Highscore-Anzeige kann vom Spieler eingesehen werden, ohne die aktuelle Spielseite zu verlassen.
 - Geschätzter Aufwand: 5 Story Points
 
-#### 2.5 Mobile und Desktop Version 
+#### 2.5 Mobile und Desktop Version
 - User Story: https://github.com/idle-arcade/game/issues/32
 - Voraussetzungen: Das Spiel ist in seiner Funktionalität fertig gestellt.
   - Die Kernfunktionalitäten des Spiels sind implementiert.
@@ -170,7 +173,7 @@ Das Balancing und die Spiellogik wurden erfolgreich getestet.
   - Die Rendering-Pipeline wurde erfolgreich getestet und verifiziert.
 - Geschätzter Aufwand: 2 Story Points
 
-#### 2.11 
+#### 2.11
 - User Story: https://github.com/idle-arcade/game/issues/113
 - Voraussetzungen:
   - Das Projekt verfügt über definierte Regeln für Typecheck, Linting und Formatierung.
@@ -235,7 +238,6 @@ Das Balancing und die Spiellogik wurden erfolgreich getestet.
     * Unbefugte Benutzer dürfen nicht auf fremde Daten zugreifen.
 
 ### 4. Technische Einschränkungen
-<!-- > Geben Sie alle wichtigen Einschränkungen, Annahmen oder Abhängigkeiten an, z. B. alle Einschränkungen darüber, welcher Servertyp verwendet werden soll, welche Art von Open-Source-Lizenz eingehalten werden muss usw. -->
 * Das Projekt setzt eine stabile Internetverbindung voraus.
 
 * Benutzer benötigen einen aktuellen Webbrowser.
