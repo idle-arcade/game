@@ -80,7 +80,9 @@ export function DartBoard({ game }: { game: DartsGame }) {
         <span aria-hidden="true">
           {Array.from({ length: maxDarts }, (_, i) => (i < dartsLeft ? "🎯" : "⚪"))}
         </span>
-        <span className="text-sm">{dartsLeft}/{maxDarts}</span>
+        <span className="text-sm">
+          {dartsLeft}/{maxDarts}
+        </span>
       </div>
 
       {reloading && (

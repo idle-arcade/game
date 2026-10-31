@@ -1,0 +1,80 @@
+name: Code quality
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: code-quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  typecheck:
+    name: npm run typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Generate Prisma types
+        run: npm run db:generate
+      - run: npm run typecheck
+
+  lint:
+    name: npm run lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+
+  format:
+    name: npm run format:check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+
+  summary:
+    name: Code quality summary
+    needs: [typecheck, lint, format]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Summarize all checks
+        env:
+          TYPECHECK_RESULT: ${{ needs.typecheck.result }}
+          LINT_RESULT: ${{ needs.lint.result }}
+          FORMAT_RESULT: ${{ needs.format.result }}
+        run: |
+          {
+            echo '## Code quality'
+            echo
+            echo '| Check | Result |'
+            echo '| --- | --- |'
+            printf '| npm run typecheck | %s |\n' "$TYPECHECK_RESULT"
+            printf '| npm run lint | %s |\n' "$LINT_RESULT"
+            printf '| npm run format:check | %s |\n' "$FORMAT_RESULT"
+          } >> "$GITHUB_STEP_SUMMARY"
+          [[ "$TYPECHECK_RESULT" == success && "$LINT_RESULT" == success && "$FORMAT_RESULT" == success ]]

@@ -203,7 +203,11 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
       sendEvent("dummy_highscores_viewed");
     },
     upgradePurchased(upgrade: UpgradeId, amount: number, level: number) {
-      sendEvent("dummy_upgrade_purchased", { upgrade, amount: String(amount), level: String(level) });
+      sendEvent("dummy_upgrade_purchased", {
+        upgrade,
+        amount: String(amount),
+        level: String(level),
+      });
     },
   };
 }
