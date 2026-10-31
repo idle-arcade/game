@@ -3,7 +3,7 @@ export const ROOMS = [
   { id: "darts", to: "/darts" },
   { id: "scratchCards" },
   { id: "fishing" },
-  { id: "gatcha" },
+  { id: "gacha" },
 ] as const satisfies readonly { id: string; to?: string }[];
 
 export type RoomId = (typeof ROOMS)[number]["id"];
