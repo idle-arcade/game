@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { OnboardingModal } from "../../features/shell/OnboardingModal";
+import { persistentStorage } from "../../lib/storage";
 import { DartBoard } from "../../features/darts/DartBoard";
 import { UpgradesTable } from "../../features/darts/UpgradesTable";
 import { LockedPanel } from "../../features/darts/LockedPanel";
@@ -17,21 +18,13 @@ function DartsRoom() {
   const { t } = useTranslation();
   const headingRef = useRef<HTMLHeadingElement>(null);
   const game = useDartsPrototype();
-  const [showOnboarding, setShowOnboarding] = useState(() => {
-    try {
-      return sessionStorage.getItem(ONBOARDING_DISMISSED_KEY) !== "true";
-    } catch {
-      return true;
-    }
-  });
+  const [showOnboarding, setShowOnboarding] = useState(
+    () => persistentStorage.getItem(ONBOARDING_DISMISSED_KEY) !== "true",
+  );
 
   function closeOnboarding() {
     setShowOnboarding(false);
-    try {
-      sessionStorage.setItem(ONBOARDING_DISMISSED_KEY, "true");
-    } catch {
-      // Dismissal still works when browser storage is unavailable.
-    }
+    persistentStorage.setItem(ONBOARDING_DISMISSED_KEY, "true");
   }
 
   return (
