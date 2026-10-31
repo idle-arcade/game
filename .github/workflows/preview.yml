@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 # Keep both image publications and deployments in order. Never cancel a rollout.
 concurrency:
@@ -15,7 +16,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  changes:
+    uses: ./.github/workflows/changed-files.yml
+
   images:
+    needs: changes
+    if: needs.changes.outputs.preview == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:

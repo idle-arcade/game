@@ -1,0 +1,57 @@
+# Used by dorny/paths-filter with some-with-excludes: any include, no excludes.
+# Keep source exclusions aligned with tsconfig, ESLint, and .prettierignore.
+preview:
+  - "**"
+  - "!docs/**"
+  - "!.github/**"
+  - "!README.md"
+
+preview_workflow:
+  - ".github/workflows/preview.yml"
+
+quality_config:
+  - ".github/workflows/code-quality.yml"
+  - ".github/workflows/changed-files.yml"
+  - ".github/ci-paths.yml"
+
+toolchain:
+  - "**/package.json"
+  - "package-lock.json"
+  - ".nvmrc"
+  - "**/.npmrc"
+
+typecheck:
+  - "{backend,frontend}/**/*.{ts,tsx,mts,cts,prisma}"
+  - "**/tsconfig*.json"
+  - "{backend,frontend}/src/**/*.json"
+  - "!**/node_modules/**"
+  - "!**/dist/**"
+  - "!**/.cache/**"
+
+lint:
+  - "**/*.{js,mjs,cjs,ts,tsx,mts,cts}"
+  - "**/eslint.config.*"
+  - "**/.eslintrc*"
+  - "**/.eslintignore"
+  - "!**/node_modules/**"
+  - "!**/dist/**"
+  - "!**/.cache/**"
+  - "!backend/src/generated/**"
+  - "!frontend/src/routeTree.gen.ts"
+
+format:
+  # Prettier supports more than TS; docs and .github are explicitly ignored.
+  - "**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,json,jsonc,json5,yml,yaml,html,htm,css,scss,less,md,mdx,markdown,vue,graphql,gql,hbs,handlebars}"
+  - "!**/docs/**"
+  - "!**/.github/**"
+  - "!**/node_modules/**"
+  - "!**/dist/**"
+  - "!backend/src/generated/**"
+  - "!frontend/src/routeTree.gen.ts"
+  - "!package-lock.json"
+
+format_config:
+  - "**/.prettierignore"
+  - "**/.prettierrc*"
+  - "**/prettier.config.*"
+  - "**/.editorconfig"

@@ -8,14 +8,20 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 concurrency:
   group: code-quality-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
+  changes:
+    uses: ./.github/workflows/changed-files.yml
+
   typecheck:
     name: npm run typecheck
+    needs: changes
+    if: needs.changes.outputs.typecheck == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -31,6 +37,8 @@ jobs:
 
   lint:
     name: npm run lint
+    needs: changes
+    if: needs.changes.outputs.lint == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -44,6 +52,8 @@ jobs:
 
   format:
     name: npm run format:check
+    needs: changes
+    if: needs.changes.outputs.format == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -57,13 +67,17 @@ jobs:
 
   summary:
     name: Code quality summary
-    needs: [typecheck, lint, format]
+    needs: [changes, typecheck, lint, format]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Summarize all checks
         env:
+          CHANGES_RESULT: ${{ needs.changes.result }}
+          TYPECHECK_REQUIRED: ${{ needs.changes.outputs.typecheck }}
+          LINT_REQUIRED: ${{ needs.changes.outputs.lint }}
+          FORMAT_REQUIRED: ${{ needs.changes.outputs.format }}
           TYPECHECK_RESULT: ${{ needs.typecheck.result }}
           LINT_RESULT: ${{ needs.lint.result }}
           FORMAT_RESULT: ${{ needs.format.result }}
@@ -73,8 +87,12 @@ jobs:
             echo
             echo '| Check | Result |'
             echo '| --- | --- |'
+            printf '| Change detection | %s |\n' "$CHANGES_RESULT"
             printf '| npm run typecheck | %s |\n' "$TYPECHECK_RESULT"
             printf '| npm run lint | %s |\n' "$LINT_RESULT"
             printf '| npm run format:check | %s |\n' "$FORMAT_RESULT"
           } >> "$GITHUB_STEP_SUMMARY"
-          [[ "$TYPECHECK_RESULT" == success && "$LINT_RESULT" == success && "$FORMAT_RESULT" == success ]]
+          [[ "$CHANGES_RESULT" == success ]] &&
+          [[ "$TYPECHECK_RESULT" == success || ( "$TYPECHECK_REQUIRED" == false && "$TYPECHECK_RESULT" == skipped ) ]] &&
+          [[ "$LINT_RESULT" == success || ( "$LINT_REQUIRED" == false && "$LINT_RESULT" == skipped ) ]] &&
+          [[ "$FORMAT_RESULT" == success || ( "$FORMAT_REQUIRED" == false && "$FORMAT_RESULT" == skipped ) ]]
