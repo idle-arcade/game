@@ -119,6 +119,10 @@
     "locked": "Not unlocked yet",
     "highscores": "Highscores"
   },
+  "lockedRoom": {
+    "unlock": "Unlock for {{price}} 🪙",
+    "comingSoon": "Unlocking is coming soon"
+  },
   "highscores": {
     "title": "Highscores",
     "name": "Name",

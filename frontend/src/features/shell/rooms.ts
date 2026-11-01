@@ -1,12 +1,13 @@
-/** Rooms in navigation order. Only rooms with a route can ever be opened. */
+/** Rooms in navigation order. Locked rooms are still navigable and show an unlock placeholder. */
 export const ROOMS = [
   { id: "darts", to: "/darts" },
-  { id: "scratchCards" },
-  { id: "fishing" },
-  { id: "gacha" },
-] as const satisfies readonly { id: string; to?: string }[];
+  { id: "scratchCards", to: "/scratch-cards", unlockPrice: 5000 },
+  { id: "fishing", to: "/fishing", unlockPrice: 25000 },
+  { id: "gacha", to: "/gacha", unlockPrice: 100000 },
+] as const satisfies readonly { id: string; to: string; unlockPrice?: number }[];
 
 export type RoomId = (typeof ROOMS)[number]["id"];
+export type LockableRoomId = Extract<(typeof ROOMS)[number], { unlockPrice: number }>["id"];
 export type RoomStatus = "available" | "locked";
 
 /**

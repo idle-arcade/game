@@ -12,11 +12,7 @@ export function RoomNav() {
         <ul className="flex">
           {ROOMS.map((room) => (
             <li key={room.id}>
-              <RoomTab
-                label={t(`rooms.${room.id}`)}
-                status={roomStatus(room.id)}
-                to={"to" in room ? room.to : undefined}
-              />
+              <RoomTab label={t(`rooms.${room.id}`)} status={roomStatus(room.id)} to={room.to} />
             </li>
           ))}
         </ul>
