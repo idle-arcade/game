@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GameRouteImport } from './routes/_game'
 import { Route as GameDartsRouteImport } from './routes/_game/darts'
+import { Route as GameFishingRouteImport } from './routes/_game/fishing'
+import { Route as GameGachaRouteImport } from './routes/_game/gacha'
+import { Route as GameScratchCardsRouteImport } from './routes/_game/scratch-cards'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -27,27 +30,58 @@ const GameDartsRoute = GameDartsRouteImport.update({
   path: '/darts',
   getParentRoute: () => GameRoute,
 } as any)
+const GameFishingRoute = GameFishingRouteImport.update({
+  id: '/fishing',
+  path: '/fishing',
+  getParentRoute: () => GameRoute,
+} as any)
+const GameGachaRoute = GameGachaRouteImport.update({
+  id: '/gacha',
+  path: '/gacha',
+  getParentRoute: () => GameRoute,
+} as any)
+const GameScratchCardsRoute = GameScratchCardsRouteImport.update({
+  id: '/scratch-cards',
+  path: '/scratch-cards',
+  getParentRoute: () => GameRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/darts': typeof GameDartsRoute
+  '/fishing': typeof GameFishingRoute
+  '/gacha': typeof GameGachaRoute
+  '/scratch-cards': typeof GameScratchCardsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/darts': typeof GameDartsRoute
+  '/fishing': typeof GameFishingRoute
+  '/gacha': typeof GameGachaRoute
+  '/scratch-cards': typeof GameScratchCardsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_game': typeof GameRouteWithChildren
   '/_game/darts': typeof GameDartsRoute
+  '/_game/fishing': typeof GameFishingRoute
+  '/_game/gacha': typeof GameGachaRoute
+  '/_game/scratch-cards': typeof GameScratchCardsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/darts'
+  fullPaths: '/' | '/darts' | '/fishing' | '/gacha' | '/scratch-cards'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/darts'
-  id: '__root__' | '/' | '/_game' | '/_game/darts'
+  to: '/' | '/darts' | '/fishing' | '/gacha' | '/scratch-cards'
+  id:
+    | '__root__'
+    | '/'
+    | '/_game'
+    | '/_game/darts'
+    | '/_game/fishing'
+    | '/_game/gacha'
+    | '/_game/scratch-cards'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -78,15 +112,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GameDartsRouteImport
       parentRoute: typeof GameRoute
     }
+    '/_game/fishing': {
+      id: '/_game/fishing'
+      path: '/fishing'
+      fullPath: '/fishing'
+      preLoaderRoute: typeof GameFishingRouteImport
+      parentRoute: typeof GameRoute
+    }
+    '/_game/gacha': {
+      id: '/_game/gacha'
+      path: '/gacha'
+      fullPath: '/gacha'
+      preLoaderRoute: typeof GameGachaRouteImport
+      parentRoute: typeof GameRoute
+    }
+    '/_game/scratch-cards': {
+      id: '/_game/scratch-cards'
+      path: '/scratch-cards'
+      fullPath: '/scratch-cards'
+      preLoaderRoute: typeof GameScratchCardsRouteImport
+      parentRoute: typeof GameRoute
+    }
   }
 }
 
 interface GameRouteChildren {
   GameDartsRoute: typeof GameDartsRoute
+  GameFishingRoute: typeof GameFishingRoute
+  GameGachaRoute: typeof GameGachaRoute
+  GameScratchCardsRoute: typeof GameScratchCardsRoute
 }
 
 const GameRouteChildren: GameRouteChildren = {
   GameDartsRoute: GameDartsRoute,
+  GameFishingRoute: GameFishingRoute,
+  GameGachaRoute: GameGachaRoute,
+  GameScratchCardsRoute: GameScratchCardsRoute,
 }
 
 const GameRouteWithChildren = GameRoute._addFileChildren(GameRouteChildren)

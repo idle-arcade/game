@@ -118,6 +118,10 @@
     "locked": "Noch nicht freigeschaltet",
     "highscores": "Highscores"
   },
+  "lockedRoom": {
+    "unlock": "Freischalten für {{price}} 🪙",
+    "comingSoon": "Freischalten folgt bald"
+  },
   "highscores": {
     "title": "Highscores",
     "name": "Name",
