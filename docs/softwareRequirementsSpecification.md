@@ -34,9 +34,9 @@ IDLE Arcade ist eine Kombination aus Idle- und Arcade-Spiel. Benutzer können ve
 #### 2.1 Projektsetup
 
 - User Story: <https://github.com/idle-arcade/game/issues/20>
-- Anmelde-Sequenzdiagramm: ![Bild der Anmeldesequenz](login-sequence-diagramm.svg)
+- Anmelde-Sequenzdiagramm: ![Bild der Anmeldesequenz](login-sequence-diagram.svg)
   Das Sequenzdiagramm zeigt den Ablauf der An- und Abmeldung eines Nutzers. Bei der Anmeldung werden die eingegebenen Zugangsdaten geprüft und eine Sitzung erstellt, die über ein Sitzungs-Cookie gespeichert wird. Dieses Cookie wird bei späteren Anfragen zur Authentifizierung verwendet. Bei der Abmeldung wird die Sitzung beendet, das Cookie gelöscht und der Nutzer auf die Startseite weitergeleitet.
-- Registrierungs-Sequenzdiagramm: ![Bild der Registrierungssequenz](registration-sequence-diagramm.svg)
+- Registrierungs-Sequenzdiagramm: ![Bild der Registrierungssequenz](registration-sequence-diagram.svg)
   Das Sequenzdiagramm zeigt den Registrierungsprozess eines neuen Nutzers. Nach der Eingabe der Registrierungsdaten werden die Eingaben zunächst im Frontend und anschließend serverseitig geprüft. Anschließend legt Better Auth den Nutzer und die zugehörigen Authentifizierungsdaten in der Datenbank an. Nach erfolgreicher Registrierung wird direkt eine Sitzung erstellt und ein Sitzungs-Cookie an den Nutzer zurückgegeben.
 - Aktivitätsdiagramm (Anmelden/Registrieren):
   - [activity-diagrams.png](activity-diagrams.png)

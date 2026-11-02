@@ -1,5 +1,5 @@
 ---
-title Registrierung eines Nutzers
+title: Registrierung eines Nutzers
 ---
 sequenceDiagram
 
@@ -17,7 +17,7 @@ sequenceDiagram
         FE-->>Nutzer: Feldfehler anzeigen
     else Eingaben im Frontend gültig
         FE->>BE: auth.register(credentials)
-        note over BE: Der tRPC-Kontext prüft das Sitzungscookie; ohne Cookie ist der Nutzer anonym.
+        note over BE: Der tRPC-Kontext prüft das Sitzungscookie. Ohne Cookie ist der Nutzer anonym.
         BE->>BE: Rate-Limit prüfen (max. 5 Versuche pro IP und Stunde)
 
         alt Rate-Limit überschritten
