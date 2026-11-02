@@ -1,0 +1,49 @@
+---
+title: Registrierung eines Nutzers
+---
+sequenceDiagram
+
+    actor Nutzer
+    participant FE as Frontend (React)
+    participant BE as Backend (tRPC)
+    participant BA as Better Auth
+    participant DB as MySQL Database
+
+    Nutzer->>FE: Benutzername und Passwort eingeben
+    Nutzer->>FE: „Registrieren“ klicken
+    FE->>FE: Registrierungseingaben prüfen
+
+    alt Eingaben im Frontend ungültig
+        FE-->>Nutzer: Feldfehler anzeigen
+    else Eingaben im Frontend gültig
+        FE->>BE: auth.register(credentials)
+        note over BE: Der tRPC-Kontext prüft das Sitzungscookie. Ohne Cookie ist der Nutzer anonym.
+        BE->>BE: Rate-Limit prüfen (max. 5 Versuche pro IP und Stunde)
+
+        alt Rate-Limit überschritten
+            BE-->>FE: TOO_MANY_REQUESTS
+            FE-->>Nutzer: Hinweis auf zu viele Versuche anzeigen
+        else Rate-Limit nicht überschritten
+            BE->>BE: credentialsSchema serverseitig prüfen
+
+            alt Servervalidierung schlägt fehl
+                BE-->>FE: BAD_REQUEST mit Validierungsfehler
+                FE-->>Nutzer: Fehlermeldung anzeigen
+            else Eingaben serverseitig gültig
+                BE->>BA: signUpEmail(username, Passwort, Platzhalter-E-Mail)
+                BA->>DB: User, Account mit Passwort-Hash und Session speichern
+                DB-->>BA: Gespeicherte Nutzerdaten und Sitzung
+
+                alt Benutzername bereits vergeben
+                    BA-->>BE: Fehler „Username bereits vergeben“
+                    BE-->>FE: CONFLICT
+                    FE-->>Nutzer: Hinweis „Benutzername bereits vergeben“
+                else Registrierung erfolgreich
+                    BA-->>BE: Nutzer und Set-Cookie-Header
+                    BE-->>FE: Nutzer und weitergeleiteter Set-Cookie-Header
+                    FE->>FE: Query-Cache leeren und Nutzerstatus setzen
+                    FE-->>Nutzer: Zu /darts weiterleiten
+                end
+            end
+        end
+    end

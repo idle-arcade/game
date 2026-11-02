@@ -7,6 +7,7 @@
 - **Backend:** Express, tRPC, Zod, Better Auth
 - **Database:** MySQL 8.4, Prisma
 - **Tooling:** ESLint, Prettier, Docker Compose, nginx
+- **CI/CD:** GitHub Actions, Docker Buildx, GHCR, Dokploy, markdownlint, Hadolint, actionlint, ShellCheck
 
 ## Commands
 
