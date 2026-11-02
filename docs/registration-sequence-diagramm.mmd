@@ -13,7 +13,7 @@ title Registrierung eines Nutzers
     alt Eingaben im Frontend ungültig
         Frontend (React)-->>Nutzer: Feldfehler anzeigen
     else Eingaben im Frontend gültig
-        Frontend (React)->>Backend (tRPC): Better Auth.register(credentials)
+        Frontend (React)->>Backend (tRPC): auth.register(credentials)
         note over Backend (tRPC): Der tRPC-Kontext prüft das Sitzungscookie; ohne Cookie ist der Nutzer anonym.
         Backend (tRPC)->>Backend (tRPC): Rate-Limit prüfen (max. 5 Versuche pro IP und Stunde)
 
