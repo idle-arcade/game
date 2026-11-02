@@ -1,21 +1,46 @@
----
-title: Registrierung eines Nutzers
----
-sequenceDiagram
+title Registrierung eines Nutzers
 
     actor Nutzer
-    participant Frontend as Frontend (React)
-    participant Backend as Backend (tRPC)
-    participant Auth as Better Auth
-    participant DB as MySQL (Prisma)
+    participant Frontend (React)
+    participant Backend (tRPC)
+    participant Better Auth
+    participant MySQL Database
 
-    Nutzer->>Frontend: Benutzername und Passwort eingeben
-    Nutzer->>Frontend: „Registrieren“ klicken
-    Frontend->>Frontend: Eingaben prüfen
-    Frontend->>Backend: auth.register(credentials)
-    Backend->>Backend: Rate-Limit prüfen<br/>max. 5 Versuche pro IP / Stunde
-    Backend->>Backend: Eingaben serverseitig validieren
-    Backend->>Auth: signUpEmail(Platzhalter-E-Mail, Passwort, Benutzername)
-    Auth->>DB: Nutzer und Authentifizierungsdaten anlegen
-    DB-->>Auth: Nutzer
-    Auth-->>Backend: Nutzer und Sitzungscookie
+    Nutzer->>Frontend (React): Benutzername und Passwort eingeben
+    Nutzer->>Frontend (React): „Registrieren“ klicken
+    Frontend (React)->>Frontend (React): Registrierungseingaben prüfen
+
+    alt Eingaben im Frontend ungültig
+        Frontend (React)-->>Nutzer: Feldfehler anzeigen
+    else Eingaben im Frontend gültig
+        Frontend (React)->>Backend (tRPC): Better Auth.register(credentials)
+        note over Backend (tRPC): Der tRPC-Kontext prüft das Sitzungscookie; ohne Cookie ist der Nutzer anonym.
+        Backend (tRPC)->>Backend (tRPC): Rate-Limit prüfen (max. 5 Versuche pro IP und Stunde)
+
+        alt Rate-Limit überschritten
+            Backend (tRPC)-->>Frontend (React): TOO_MANY_REQUESTS
+            Frontend (React)-->>Nutzer: Hinweis auf zu viele Versuche anzeigen
+        else Rate-Limit nicht überschritten
+            Backend (tRPC)->>Backend (tRPC): credentialsSchema serverseitig prüfen
+
+            alt Servervalidierung schlägt fehl
+                Backend (tRPC)-->>Frontend (React): BAD_REQUEST mit Validierungsfehler
+                Frontend (React)-->>Nutzer: Fehlermeldung anzeigen
+            else Eingaben serverseitig gültig
+                Backend (tRPC)->>Better Auth: signUpEmail(username, Passwort, Platzhalter-E-Mail)
+                Better Auth->>MySQL Database: User, Account mit Passwort-Hash und Session speichern
+                MySQL Database-->>Better Auth: Gespeicherte Nutzerdaten und Sitzung
+
+                alt Benutzername bereits vergeben
+                    Better Auth-->>Backend (tRPC): Fehler „Username bereits vergeben“
+                    Backend (tRPC)-->>Frontend (React): CONFLICT
+                    Frontend (React)-->>Nutzer: Hinweis „Benutzername bereits vergeben“
+                else Registrierung erfolgreich
+                    Better Auth-->>Backend (tRPC): Nutzer und Set-Cookie-Header
+                    Backend (tRPC)-->>Frontend (React): Nutzer und weitergeleiteter Set-Cookie-Header
+                    Frontend (React)->>Frontend (React): Query-Cache leeren und Nutzerstatus setzen
+                    Frontend (React)-->>Nutzer: Zu /darts weiterleiten
+                end
+            end
+        end
+    end

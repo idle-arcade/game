@@ -1,45 +1,94 @@
----
-title: Anmeldung und Abmeldung eines Nutzers
----
-sequenceDiagram
+title Anmeldung und Abmeldung eines Nutzers
 
     actor Nutzer
-    participant Frontend as Frontend (React)
-    participant Backend as Backend (tRPC)
-    participant Auth as Better Auth
-    participant DB as MySQL (Prisma)
+    participant Frontend (React)
+    participant Backend (tRPC)
+    participant Better Auth
+    participant MySQL Database
 
 
-    Nutzer->>Frontend: „Anmelden“ klicken oder Enter drücken
-    Frontend->>Frontend: Prüfen, ob beide Felder ausgefüllt sind
-    Frontend->>Backend: auth.login(credentials)
-    Backend->>Backend: Rate-Limit prüfen<br/>max. 10 Versuche pro IP / 5 Min.
-    Backend->>Auth: signInUsername(Benutzername, Passwort)
-    Auth->>DB: Zugangsdaten prüfen und Sitzung anlegen
-    DB-->>Auth: Nutzer und Sitzung
-    Auth-->>Backend: Nutzer und Sitzungscookie
 
+    Nutzer->>Frontend (React): Benutzername und Passwort eingeben
+    Nutzer->>Frontend (React): „Anmelden“ klicken oder Enter drücken
+    Frontend (React)->>Frontend (React): Prüfen, ob beide Felder ausgefüllt sind
 
-    Backend-->>Frontend: Nutzer + Set-Cookie
-    Frontend->>Frontend: Nutzerstatus speichern
-    Frontend-->>Nutzer: Weiterleitung zu /darts
+    alt Eingaben im Frontend unvollständig
+        Frontend (React)-->>Nutzer: Feldfehler anzeigen
+    else Eingaben im Frontend vorhanden
+        Frontend (React)->>Backend (tRPC): Better Auth.login(credentials)
+        note over Backend (tRPC): Das Backend prüft vor der Anfrage ein vorhandenes Sitzungscookie.
+        Backend (tRPC)->>Backend (tRPC): Rate-Limit prüfen (max. 10 Versuche pro IP und 5 Minuten)
 
-    note over Frontend: Bei späteren Anfragen wird das Sitzungscookie mitgesendet.
+        alt Rate-Limit überschritten
+            Backend (tRPC)-->>Frontend (React): TOO_MANY_REQUESTS
+            Frontend (React)-->>Nutzer: Hinweis auf zu viele Versuche anzeigen
+        else Rate-Limit nicht überschritten
+            Backend (tRPC)->>Backend (tRPC): loginSchema serverseitig prüfen
 
-    Frontend->>Backend: auth.me (Sitzungscookie)
-    Backend->>Auth: Sitzung prüfen
-    Auth->>DB: Sitzung und Nutzer nachschlagen
-    DB-->>Auth: Nutzer oder keine Sitzung
-    Auth-->>Backend: Sitzung/Nutzer oder null
-    Backend-->>Frontend: Nutzer oder null
+            alt Eingaben serverseitig ungültig
+                Backend (tRPC)-->>Frontend (React): UNBetter AuthORIZED
+                Frontend (React)-->>Nutzer: Allgemeine Fehlermeldung anzeigen
+            else Eingaben serverseitig gültig
+                Backend (tRPC)->>Better Auth: signInUsername(Benutzername, Passwort)
+                Better Auth->>MySQL Database: Nutzer und Better Authentifizierungsdaten prüfen
 
-    note over Nutzer: Abmeldung
+                alt Zugangsdaten ungültig
+                    MySQL Database-->>Better Auth: Kein passender Nutzer oder Passwort-Hash
+                    Better Auth-->>Backend (tRPC): Fehler bei den Zugangsdaten
+                    Backend (tRPC)-->>Frontend (React): UNBetter AuthORIZED
+                    Frontend (React)-->>Nutzer: Allgemeine Fehlermeldung anzeigen
+                else Zugangsdaten gültig
+                    MySQL Database-->>Better Auth: Nutzer und Better Authentifizierungsdaten
+                    Better Auth->>MySQL Database: Sitzung anlegen
+                    MySQL Database-->>Better Auth: Gespeicherte Sitzung
+                    Better Auth-->>Backend (tRPC): Nutzer und Set-Cookie-Header
+                    Backend (tRPC)-->>Frontend (React): Nutzer und weitergeleiteter Set-Cookie-Header
+                    Frontend (React)->>Frontend (React): Query-Cache leeren und Nutzerstatus setzen
+                    Frontend (React)-->>Nutzer: Zu /darts weiterleiten
+                end
+            end
+        end
+    end
 
-    Nutzer->>Frontend: Abmelden klicken
-    Frontend->>Backend: auth.logout (Sitzungscookie)
-    Backend->>Auth: signOut
-    Auth->>DB: Sitzung beenden
-    Auth-->>Backend: Cookie zum Beenden der Sitzung
-    Backend-->>Frontend: Abmeldung bestätigt
-    Frontend->>Frontend: Cache leeren
-    Frontend-->>Nutzer: Weiterleitung zur Startseite
+    opt Späterer Seitenaufruf mit Sitzungscookie
+        Frontend (React)->>Backend (tRPC): Better Auth.me (Sitzungscookie)
+        Backend (tRPC)->>Better Auth: getSession(Request-Cookie prüfen)
+        Better Auth->>MySQL Database: Sitzung und Nutzer nachschlagen
+
+        alt Sitzung gültig
+            MySQL Database-->>Better Auth: Sitzung und Nutzer
+            Better Auth-->>Backend (tRPC): Nutzer und Sitzung
+            Backend (tRPC)-->>Frontend (React): Nutzer
+        else Sitzung fehlt oder ist abgelaufen
+            MySQL Database-->>Better Auth: Keine gültige Sitzung
+            Better Auth-->>Backend (tRPC): Keine Sitzung
+            Backend (tRPC)-->>Frontend (React): null
+            Frontend (React)-->>Nutzer: Zur Startseite weiterleiten
+        end
+    end
+
+    opt Abmelden
+        Nutzer->>Frontend (React): Abmelden klicken
+        Frontend (React)->>Backend (tRPC): Better Auth.logout (Sitzungscookie)
+        Backend (tRPC)->>Better Auth: getSession(Request-Cookie prüfen)
+        Better Auth->>MySQL Database: Sitzung und Nutzer nachschlagen
+
+        alt Sitzung gültig
+            MySQL Database-->>Better Auth: Sitzung und Nutzer
+            Better Auth-->>Backend (tRPC): Sitzung und Nutzer
+            Backend (tRPC)->>Backend (tRPC): Geschützte Abmeldung autorisieren
+            Backend (tRPC)->>Better Auth: signOut
+            Better Auth->>MySQL Database: Sitzung beenden
+            MySQL Database-->>Better Auth: Sitzung beendet
+            Better Auth-->>Backend (tRPC): Set-Cookie-Header zum Löschen der Sitzung
+            Backend (tRPC)-->>Frontend (React): Abmeldung bestätigt und Cookie-Header weitergeleitet
+        else Sitzung fehlt oder ist abgelaufen
+            MySQL Database-->>Better Auth: Keine gültige Sitzung
+            Better Auth-->>Backend (tRPC): Keine Sitzung
+            Backend (tRPC)->>Backend (tRPC): Geschützte Abmeldung ablehnen
+            Backend (tRPC)-->>Frontend (React): UNBetter AuthORIZED
+        end
+
+        Frontend (React)->>Frontend (React): Query-Cache leeren und Nutzerstatus zurücksetzen
+        Frontend (React)-->>Nutzer: Zur Startseite weiterleiten
+    end
