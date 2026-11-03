@@ -34,6 +34,8 @@ jobs:
       - name: Render .excalidraw files to SVG and PNG
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          # renovate: datasource=docker depName=jonarc06/excalirender
+          EXCALIRENDER_IMAGE: jonarc06/excalirender:1.10.5@sha256:28606f319329764d7574742544f6763d1b1592ec4abe58f8905064d3af29daca
         run: |
           set -euo pipefail
           files=()
@@ -49,15 +51,16 @@ jobs:
           for rel in "${files[@]}"; do
             base="${rel%.excalidraw}"
             echo "Rendering $rel -> $base.svg, $base.png"
-            docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/data" -w /data jonarc06/excalirender "$rel" -o "$base.svg"
-            docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/data" -w /data jonarc06/excalirender "$rel" -o "$base.png" -s 2
+            docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/data" -w /data "$EXCALIRENDER_IMAGE" "$rel" -o "$base.svg"
+            docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/data" -w /data "$EXCALIRENDER_IMAGE" "$rel" -o "$base.png" -s 2
           done
 
-      # Mermaid CLI 12.0.0; pin the image so local and CI exports use the same renderer.
+      # Pin the Mermaid CLI image so local and CI exports use the same renderer.
       # Render all sources; the final staged diff suppresses commits for unchanged exports.
       - name: Render .mmd files to SVG and PNG
         env:
-          MERMAID_IMAGE: ghcr.io/mermaid-js/mermaid-cli/mermaid-cli@sha256:fa995339034aae7e5cd4f61482248b7f5c51be355b1a6f6eda11a2bbf8401f5f
+          # renovate: datasource=docker depName=ghcr.io/mermaid-js/mermaid-cli/mermaid-cli
+          MERMAID_IMAGE: ghcr.io/mermaid-js/mermaid-cli/mermaid-cli:12.0.0@sha256:fa995339034aae7e5cd4f61482248b7f5c51be355b1a6f6eda11a2bbf8401f5f
         run: |
           set -euo pipefail
           while IFS= read -r -d '' f; do

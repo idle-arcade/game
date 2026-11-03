@@ -1,0 +1,57 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  // Covers npm workspaces + lockfile, .nvmrc, Dockerfiles, Compose files and GitHub Actions.
+  // Auto-merge stays off; every update goes through normal review and CI.
+  extends: ["config:recommended", ":disableDependencyDashboard"],
+  timezone: "Europe/Berlin",
+  schedule: ["* 0-11 * * 6"],
+  prConcurrentLimit: 5,
+  minimumReleaseAge: "3 days",
+  customManagers: [
+    {
+      // Versions annotated with "# renovate: datasource=… depName=…" in workflows
+      // (shellcheck, Mermaid CLI and excalirender images).
+      customType: "regex",
+      managerFilePatterns: ["/^\\.github/workflows/.+\\.ya?ml$/"],
+      matchStrings: [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+[\\w-]+:\\s*(?:\\S+?:)?(?<currentValue>[^\\s@]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\\s",
+      ],
+    },
+    {
+      // Keep reviewed npm install-script approvals in step with the Prisma version.
+      // esbuild@… is left alone: it is transitive (vite, tsx) and follows the lockfile.
+      customType: "regex",
+      managerFilePatterns: ["/^package\\.json$/"],
+      matchStrings: ['"(?<depName>prisma|@prisma/engines)@(?<currentValue>[^"]+)":\\s*true'],
+      datasourceTemplate: "npm",
+    },
+  ],
+  packageRules: [
+    {
+      // prisma, @prisma/client, @prisma/adapter-mariadb and allowScripts entries must match.
+      matchPackageNames: ["prisma", "@prisma/**"],
+      groupName: "Prisma",
+    },
+    {
+      // Only LTS Node majors (node versioning already applies to .nvmrc and node images).
+      matchPackageNames: ["@types/node"],
+      versioning: "node",
+    },
+    {
+      // Runtime majors land together: .nvmrc, node Docker images and @types/node.
+      matchPackageNames: ["node", "@types/node"],
+      matchUpdateTypes: ["major"],
+      groupName: "Node.js",
+    },
+    {
+      matchPackageNames: ["eslint", "@eslint/**", "eslint-plugin-*", "typescript-eslint", "globals", "prettier"],
+      matchUpdateTypes: ["minor", "patch"],
+      groupName: "lint and format tooling",
+    },
+    {
+      matchManagers: ["github-actions"],
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      groupName: "GitHub Actions",
+    },
+  ],
+}
