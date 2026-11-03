@@ -21,4 +21,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           PR_URL: ${{ github.event.pull_request.html_url }}
-        run: gh pr review --approve "$PR_URL" --body "Renovate update: merge once CI is green."
+        run: gh pr review --approve "$PR_URL" --body "Renovate update, merge once CI is green."
