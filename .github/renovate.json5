@@ -7,6 +7,9 @@
   schedule: ["* 0-11 * * 6"],
   prConcurrentLimit: 5,
   minimumReleaseAge: "3 days",
+  // Renovate cannot read hoisted workspace entries in package-lock.json, so in-range
+  // updates of backend/frontend deps only arrive through this weekly lockfile refresh.
+  lockFileMaintenance: { enabled: true, schedule: ["* 0-11 * * 6"] },
   customManagers: [
     {
       // Versions annotated with "# renovate: datasource=… depName=…" in workflows
