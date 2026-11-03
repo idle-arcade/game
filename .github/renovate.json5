@@ -7,6 +7,8 @@
   schedule: ["* 0-11 * * 6"],
   prConcurrentLimit: 5,
   minimumReleaseAge: "3 days",
+  // Match the npm bundled with Node; npm 12 rejects the lockfile regeneration (EALLOWREMOTE).
+  constraints: { npm: "<12" },
   // Renovate cannot read hoisted workspace entries in package-lock.json, so in-range
   // updates of backend/frontend deps only arrive through this weekly lockfile refresh.
   lockFileMaintenance: { enabled: true, schedule: ["* 0-11 * * 6"] },
