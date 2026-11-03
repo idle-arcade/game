@@ -1,0 +1,24 @@
+name: Approve Renovate PRs
+
+# Satisfies the required review on main for Renovate updates; merging stays manual.
+# Needs "Allow GitHub Actions to create and approve pull requests" in repo settings.
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+permissions: {}
+
+jobs:
+  approve:
+    # No checkout: pull_request_target must never run PR code.
+    if: github.event.pull_request.user.login == 'renovate[bot]' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Approve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr review --approve "$PR_URL" --body "Renovate update: merge once CI is green."
