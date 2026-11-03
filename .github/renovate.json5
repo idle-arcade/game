@@ -4,7 +4,7 @@
   // Auto-merge stays off; every update goes through normal review and CI.
   extends: ["config:recommended", ":disableDependencyDashboard"],
   timezone: "Europe/Berlin",
-  schedule: ["* * * * 1"],
+  schedule: ["* 0-11 * * 6"],
   prConcurrentLimit: 5,
   minimumReleaseAge: "3 days",
   customManagers: [
@@ -31,6 +31,11 @@
       // prisma, @prisma/client, @prisma/adapter-mariadb and allowScripts entries must match.
       matchPackageNames: ["prisma", "@prisma/**"],
       groupName: "Prisma",
+    },
+    {
+      // Only LTS Node majors (node versioning already applies to .nvmrc and node images).
+      matchPackageNames: ["@types/node"],
+      versioning: "node",
     },
     {
       // Runtime majors land together: .nvmrc, node Docker images and @types/node.
