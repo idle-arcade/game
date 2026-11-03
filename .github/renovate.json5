@@ -33,6 +33,12 @@
   ],
   packageRules: [
     {
+      // The npm tool constraint above is deliberate; lift it by hand once npm 12 works.
+      matchManagers: ["renovate-config"],
+      matchDepNames: ["npm"],
+      enabled: false,
+    },
+    {
       // prisma, @prisma/client, @prisma/adapter-mariadb and allowScripts entries must match.
       matchPackageNames: ["prisma", "@prisma/**"],
       groupName: "Prisma",
