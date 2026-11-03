@@ -49,6 +49,16 @@
       versioning: "node",
     },
     {
+      // @trpc/openapi peers on one exact @trpc/server, so all tRPC packages are pinned and
+      // move together; the alpha follows npm's "latest" tag instead of canaries.
+      matchPackageNames: ["@trpc/**"],
+      groupName: "tRPC",
+    },
+    {
+      matchPackageNames: ["@trpc/openapi"],
+      followTag: "latest",
+    },
+    {
       // Runtime majors land together: .nvmrc, node Docker images and @types/node.
       matchPackageNames: ["node", "@types/node"],
       matchUpdateTypes: ["major"],
