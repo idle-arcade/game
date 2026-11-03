@@ -7,7 +7,8 @@
       "types": "./src/trpc/router.ts"
     },
     "./schemas/auth": "./src/schemas/auth.ts",
-    "./currency/amount": "./src/currency/amount.ts"
+    "./currency/amount": "./src/currency/amount.ts",
+    "./currency/format": "./src/currency/format.ts"
   },
   "scripts": {
     "predev": "prisma migrate deploy",
