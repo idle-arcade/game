@@ -12,17 +12,18 @@ datasource db {
 }
 
 model User {
-  id              String    @id
-  name            String    @db.Text
-  email           String    @unique
-  emailVerified   Boolean   @default(false)
-  image           String?   @db.Text
-  username        String?   @unique
-  displayUsername String?   @db.Text
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id              String            @id
+  name            String            @db.Text
+  email           String            @unique
+  emailVerified   Boolean           @default(false)
+  image           String?           @db.Text
+  username        String?           @unique
+  displayUsername String?           @db.Text
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
   sessions        Session[]
   accounts        Account[]
+  balances        CurrencyBalance[]
 
   @@map("user")
 }
@@ -72,4 +73,26 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+/// Stable currency ids, one per room (Darts, Scratch Cards, Fishing, Gacha). Display names live in the frontend.
+enum Currency {
+  beers
+  shamrocks
+  fish
+  coins
+}
+
+/// One balance per user and currency, stored as `digits * 10^zeros` (see src/currency/amount.ts).
+/// The composite primary key is the unique index for single-balance lookups, and its `userId`
+/// prefix serves "all balances of a user", so no separate user index is needed.
+model CurrencyBalance {
+  userId   String
+  currency Currency
+  digits   BigInt   @db.UnsignedBigInt
+  zeros    Int      @db.UnsignedInt
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, currency])
+  @@map("currency_balance")
 }
