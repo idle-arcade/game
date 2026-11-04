@@ -7,7 +7,7 @@ COPY backend ./backend
 COPY frontend ./frontend
 RUN npm ci && npm run build -w @idle-arcade/frontend
 
-FROM nginx:1.29-alpine-otel
+FROM nginx:1.31-alpine-otel
 # Take jq security fixes from the base image's Alpine repositories.
 # hadolint ignore=DL3018
 RUN apk add --no-cache jq \
