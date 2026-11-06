@@ -1,6 +1,6 @@
 # Build context: repository root (see docker-compose.yml).
 # Backend sources are needed: the frontend type-checks against the backend's AppRouter.
-FROM node:24-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json tsconfig.base.json ./
 COPY backend ./backend

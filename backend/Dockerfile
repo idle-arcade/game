@@ -1,5 +1,5 @@
 # Build context: repository root (see docker-compose.yml).
-FROM node:24-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json tsconfig.base.json ./
 COPY backend ./backend
@@ -8,7 +8,7 @@ RUN npm ci \
     && npm run build -w @idle-arcade/backend \
     && npm prune --omit=dev
 
-FROM node:24-alpine
+FROM node:26-alpine
 ENV NODE_ENV=production
 ENV NPM_CONFIG_UPDATE_NOTIFIER=false
 ENV PRISMA_HIDE_UPDATE_MESSAGE=1
