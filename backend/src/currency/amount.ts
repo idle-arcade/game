@@ -78,7 +78,7 @@ export function compare(a: Amount, b: Amount): -1 | 0 | 1 {
  * alignment shift at most MAX_DIGITS digits, however far apart the exponents are.
  */
 function clampBelowPrecision(big: Amount, small: Amount): Amount {
-  const lowestKept = topExponent(big) - (MAX_DIGITS - 1);
+  const lowestKept = topExponent(big) - MAX_DIGITS;
   return topExponent(small) < lowestKept ? { digits: 1n, zeros: lowestKept - 1 } : small;
 }
 
