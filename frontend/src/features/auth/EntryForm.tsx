@@ -6,6 +6,7 @@ import { TextField } from "../../components/ui/TextField";
 import type { AuthErrorKey } from "./authErrors";
 import type { CredentialField, FieldError, FieldErrors } from "./validation";
 import { AnalyticsOptIn } from "../analytics/AnalyticsOptIn";
+import { AlertCircleIcon } from "../../components/icons";
 
 type EntryFormProps = {
   values: Credentials;
@@ -41,8 +42,9 @@ export function EntryForm({
   };
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
+    <form className="flex flex-col gap-5" onSubmit={handleSubmit} noValidate>
       <TextField
+        appearance="arcade"
         ref={usernameRef}
         label={t("entry.username")}
         name="username"
@@ -52,6 +54,7 @@ export function EntryForm({
         onChange={(event) => onChange("username", event.target.value)}
       />
       <TextField
+        appearance="arcade"
         ref={passwordRef}
         label={t("entry.password")}
         name="password"
@@ -63,17 +66,26 @@ export function EntryForm({
       />
 
       {formError && (
-        <p role="alert" className="rounded bg-red-50 px-3 py-2 text-sm text-red-700">
-          {t(formError)}
-        </p>
+        <div
+          role="alert"
+          className="flex items-start gap-3 rounded-xl border border-rose-300/25 bg-rose-400/10 px-4 py-3 text-sm leading-relaxed text-rose-100 shadow-[inset_3px_0_0_#fb7185]"
+        >
+          <AlertCircleIcon className="mt-0.5 size-5 shrink-0 text-rose-300" />
+          <p className="min-w-0">{t(formError)}</p>
+        </div>
       )}
 
       <AnalyticsOptIn />
-      <div className="flex gap-3">
-        <Button variant="secondary" className="flex-1" disabled={pending} onClick={onRegister}>
+      <div className="mt-2 flex gap-3 sm:gap-4">
+        <Button
+          variant="arcade-register"
+          className="flex-1"
+          disabled={pending}
+          onClick={onRegister}
+        >
           {t("entry.register")}
         </Button>
-        <Button type="submit" className="flex-1" disabled={pending}>
+        <Button variant="arcade-login" type="submit" className="flex-1" disabled={pending}>
           {t("entry.login")}
         </Button>
       </div>
