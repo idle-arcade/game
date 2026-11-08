@@ -8,7 +8,7 @@ type ButtonProps = ComponentProps<"button"> & {
 
 const defaultClasses = "rounded px-4 py-2 font-medium focus-visible:outline-blue-600";
 const arcadeClasses =
-  "min-h-14 min-w-0 appearance-none select-none rounded-[1.4rem] border-2 px-3 py-3 text-lg font-extrabold text-white sm:min-h-16 sm:text-2xl focus-visible:outline-cyan-100 enabled:cursor-pointer enabled:active:brightness-95 disabled:shadow-none motion-safe:transition-[filter,box-shadow,translate] motion-safe:duration-150 motion-safe:enabled:hover:-translate-y-0.5 motion-safe:enabled:active:translate-y-0.5";
+  "min-h-14 min-w-0 appearance-none select-none rounded-[1.4rem] border-2 px-3 py-3 text-lg font-extrabold text-white sm:min-h-16 sm:text-2xl sm:compact-desktop:min-h-12 sm:compact-desktop:py-2 sm:compact-desktop:text-lg focus-visible:outline-cyan-100 enabled:cursor-pointer enabled:active:brightness-95 disabled:shadow-none motion-safe:transition-[filter,box-shadow,translate] motion-safe:duration-150 motion-safe:enabled:hover:-translate-y-0.5 motion-safe:enabled:active:translate-y-0.5";
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary: `${defaultClasses} bg-neutral-900 text-white hover:bg-neutral-700`,

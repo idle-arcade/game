@@ -42,7 +42,7 @@ export function EntryForm({
   };
 
   return (
-    <form className="flex flex-col gap-5" onSubmit={handleSubmit} noValidate>
+    <form className="flex flex-col gap-5 compact-desktop:gap-3" onSubmit={handleSubmit} noValidate>
       <TextField
         appearance="arcade"
         ref={usernameRef}
@@ -76,7 +76,7 @@ export function EntryForm({
       )}
 
       <AnalyticsOptIn />
-      <div className="mt-2 flex gap-3 sm:gap-4">
+      <div className="mt-2 flex gap-3 sm:gap-4 compact-desktop:mt-0">
         <Button
           variant="arcade-register"
           className="flex-1"

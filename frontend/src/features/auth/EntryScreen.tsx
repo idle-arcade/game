@@ -17,7 +17,7 @@ export function EntryScreen() {
   const [backgroundUnavailable, setBackgroundUnavailable] = useState(false);
 
   return (
-    <div className="relative isolate flex min-h-svh flex-col items-center bg-[#080f30] px-4 pt-20 pb-8 text-violet-50">
+    <div className="relative isolate flex min-h-svh flex-col items-center bg-[#080f30] px-4 pt-20 pb-8 text-violet-50 compact-desktop:pt-16 compact-desktop:pb-3">
       {!backgroundUnavailable && (
         <img
           src={backgroundImage}
@@ -28,7 +28,7 @@ export function EntryScreen() {
       )}
       <div className="pointer-events-none fixed inset-0 -z-10 bg-linear-to-b from-[#05091f]/10 to-[#05091f]/35" />
       <LanguageSelect appearance="arcade" className="absolute top-4 right-4" />
-      <main className="my-auto flex w-full max-w-4xl flex-col items-center gap-5 sm:gap-7">
+      <main className="my-auto flex w-full max-w-4xl flex-col items-center gap-5 sm:gap-7 sm:compact-desktop:max-w-[clamp(20rem,calc((100svh-27rem)*2),52rem)] sm:compact-desktop:gap-3">
         <h1 className="m-0 w-full max-w-[52rem] text-center leading-none">
           <span
             className={
@@ -51,8 +51,8 @@ export function EntryScreen() {
             />
           )}
         </h1>
-        <div className="w-full max-w-[40rem] rounded-[1.75rem] bg-linear-to-br from-cyan-300 via-blue-500 to-violet-500 p-0.5 shadow-[0_0_1.25rem_#21c8ff3b,0_1rem_3rem_#02051a99] max-sm:rounded-3xl">
-          <div className="rounded-[calc(1.75rem-2px)] bg-linear-to-br from-[#171a3b] to-[#10132e] px-[clamp(1.25rem,6vw,4rem)] pt-[clamp(1.75rem,5vw,3rem)] pb-[clamp(1.25rem,4vw,2.25rem)] max-sm:rounded-[calc(1.5rem-2px)]">
+        <div className="w-full max-w-[40rem] rounded-[1.75rem] bg-linear-to-br from-cyan-300 via-blue-500 to-violet-500 p-0.5 shadow-[0_0_1.25rem_#21c8ff3b,0_1rem_3rem_#02051a99] max-sm:rounded-3xl compact-desktop:max-w-md">
+          <div className="rounded-[calc(1.75rem-2px)] bg-linear-to-br from-[#171a3b] to-[#10132e] px-[clamp(1.25rem,6vw,4rem)] pt-[clamp(1.75rem,5vw,3rem)] pb-[clamp(1.25rem,4vw,2.25rem)] max-sm:rounded-[calc(1.5rem-2px)] compact-desktop:px-6 compact-desktop:pt-5 compact-desktop:pb-3">
             <EntryForm
               values={form.values}
               fieldErrors={form.fieldErrors}

@@ -13,7 +13,7 @@ export function AnalyticsOptIn() {
   const [privacyOpen, setPrivacyOpen] = useState(false);
   if (!analytics.available || consentedBefore) return null;
   return (
-    <div className="rounded-xl border border-indigo-200/10 bg-white/3 px-3.5 py-3 text-sm leading-relaxed text-indigo-100">
+    <div className="rounded-xl border border-indigo-200/10 bg-white/3 px-3.5 py-3 text-sm leading-relaxed text-indigo-100 compact-desktop:px-3 compact-desktop:py-2 compact-desktop:text-xs compact-desktop:leading-4.5">
       <div className="flex items-start gap-3">
         <span className="relative mt-0.5 flex size-5.5 shrink-0 items-center justify-center">
           <input
