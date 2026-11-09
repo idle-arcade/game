@@ -49,3 +49,20 @@ export function ChevronDownIcon(props: IconProps) {
     </Icon>
   );
 }
+
+export function AlertCircleIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v6M12 17h.01" />
+    </Icon>
+  );
+}
+
+export function CheckIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="m5 12 4 4L19 6" />
+    </Icon>
+  );
+}

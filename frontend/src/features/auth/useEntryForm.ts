@@ -60,6 +60,7 @@ export function useEntryForm() {
   const pending = login.isPending || register.isPending;
 
   function setValue(field: CredentialField, value: string) {
+    setFormError(null);
     setValues((current) => ({ ...current, [field]: value }));
     setFieldErrors((current) => ({ ...current, [field]: undefined }));
   }
