@@ -1,7 +1,7 @@
 import { amount, multiplyRatio, type Amount } from "../currency/amount.js";
 
 /** Bump on any rule or simulation change, so outdated clients stop instead of desyncing. */
-export const RULES_VERSION = "darts-1";
+export const RULES_VERSION = "darts-2";
 
 export const UPGRADE_IDS = ["betterDarts", "moreDarts", "lessCooldown", "biggerTargets"] as const;
 export type UpgradeId = (typeof UPGRADE_IDS)[number];
@@ -16,27 +16,40 @@ export const ZERO_LEVELS: Levels = Object.freeze({
 
 export type ThrowResult = "board" | "target";
 
-type UpgradeDef = { maxLevel: number; baseCost: Amount; growthNum: bigint; growthDen: bigint };
-
-// PLACEHOLDER until #104, except the max levels of lessCooldown and biggerTargets.
-export const UPGRADES: Record<UpgradeId, UpgradeDef> = {
-  betterDarts: { maxLevel: 100, baseCost: amount(100), growthNum: 3n, growthDen: 2n },
-  moreDarts: { maxLevel: 20, baseCost: amount(2000), growthNum: 3n, growthDen: 2n },
-  lessCooldown: { maxLevel: 50, baseCost: amount(50), growthNum: 11n, growthDen: 10n },
-  biggerTargets: { maxLevel: 10, baseCost: amount(500), growthNum: 2n, growthDen: 1n },
+/** `maxLevel: null` means the upgrade has no limit. */
+type UpgradeDef = {
+  maxLevel: number | null;
+  baseCost: Amount;
+  growthNum: bigint;
+  growthDen: bigint;
 };
 
-// PLACEHOLDER until #104.
+// Values from docs/balancing.ods.
+export const UPGRADES: Record<UpgradeId, UpgradeDef> = {
+  betterDarts: { maxLevel: null, baseCost: amount(8), growthNum: 141n, growthDen: 100n },
+  moreDarts: { maxLevel: null, baseCost: amount(20), growthNum: 3n, growthDen: 2n },
+  lessCooldown: { maxLevel: 50, baseCost: amount(75), growthNum: 7n, growthDen: 5n },
+  biggerTargets: { maxLevel: 10, baseCost: amount(40), growthNum: 5n, growthDen: 1n },
+};
+
 const BASE_REWARD: Record<ThrowResult, Amount> = { board: amount(1), target: amount(10) };
+/** Each Better Darts level multiplies rewards by 5/4. */
+const REWARD_GROWTH_NUM = 5n;
+const REWARD_GROWTH_DEN = 4n;
 const BASE_DARTS = 3;
 
 const BASE_RELOAD_MS = 5000;
 const RELOAD_MS_PER_LEVEL = 100;
 
+export function isMaxLevel(id: UpgradeId, level: number) {
+  const { maxLevel } = UPGRADES[id];
+  return maxLevel !== null && level >= maxLevel;
+}
+
 /** Price of going from `level` to `level + 1`. */
 export function upgradeCost(id: UpgradeId, level: number): Amount {
   const def = UPGRADES[id];
-  if (!Number.isInteger(level) || level < 0 || level >= def.maxLevel) {
+  if (!Number.isInteger(level) || level < 0 || isMaxLevel(id, level)) {
     throw new RangeError(`${id} has no level after ${level}`);
   }
   const n = BigInt(level);
@@ -44,7 +57,8 @@ export function upgradeCost(id: UpgradeId, level: number): Amount {
 }
 
 export function rewardFor(result: ThrowResult, levels: Levels): Amount {
-  return multiplyRatio(BASE_REWARD[result], BigInt(1 + levels.betterDarts), 1n);
+  const n = BigInt(levels.betterDarts);
+  return multiplyRatio(BASE_REWARD[result], REWARD_GROWTH_NUM ** n, REWARD_GROWTH_DEN ** n);
 }
 
 export const maxDarts = (levels: Levels) => BASE_DARTS + levels.moreDarts;

@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import {
   compare,
   formatAmount,
+  isMaxLevel,
   UPGRADE_IDS,
   UPGRADES,
   upgradeCost,
@@ -20,7 +21,7 @@ export function UpgradesTable({ game }: { game: DartsGame }) {
           {UPGRADE_IDS.map((id) => {
             const level = levels[id];
             const { maxLevel } = UPGRADES[id];
-            const maxed = level >= maxLevel;
+            const maxed = isMaxLevel(id, level);
             const cost = maxed ? null : upgradeCost(id, level);
             const disabled = status !== "running" || !cost || compare(balance, cost) < 0;
             return (
@@ -39,7 +40,11 @@ export function UpgradesTable({ game }: { game: DartsGame }) {
                 ))}
                 <td className="p-1">
                   {t(`darts.upgrade.${id}`)}{" "}
-                  <span className="text-xs">{t("darts.level", { level, max: maxLevel })}</span>
+                  <span className="text-xs">
+                    {maxLevel === null
+                      ? t("darts.levelNoMax", { level })
+                      : t("darts.level", { level, max: maxLevel })}
+                  </span>
                 </td>
                 <td className="p-1 text-right">
                   {cost ? `🍺 ${formatAmount(cost)}` : t("darts.max")}
