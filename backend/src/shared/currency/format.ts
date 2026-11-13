@@ -1,5 +1,3 @@
-// Shared with the frontend: keep this module free of server-only imports.
-//
 // Display format: 1-3 integer digits plus up to 2 truncated fractional digits without trailing
 // zeros, and a suffix per factor of 1,000: "", k, M, B, T, then AA..ZZ, AAA..ZZZ, and so on.
 // Examples: 1, 100, 1k, 1.1k, 123.24k, 999.99k, 1M. Only bigint math is used.

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { trpc } from "../../lib/trpc";
 import { analytics } from "../analytics/analytics";
+import { endDartsSession } from "../darts/useDarts";
 
 /** Ends the session and drops all cached player data, then returns to the entry screen. */
 export function useLogout() {
@@ -13,6 +14,7 @@ export function useLogout() {
       onSuccess: () => analytics.logout(),
       // Also on error (e.g. an already expired session): the UI must end up logged out.
       onSettled: async () => {
+        endDartsSession();
         queryClient.clear();
         queryClient.setQueryData(trpc.auth.me.queryKey(), null);
         await navigate({ to: "/" });

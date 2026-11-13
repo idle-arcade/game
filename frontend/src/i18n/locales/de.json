@@ -102,15 +102,28 @@
     "gacha": "Gacha"
   },
   "darts": {
-    "hintClick": "Klicken für 1 🪙",
-    "hintHit": "Triff den 🔴 für 10 🪙",
+    "hintClick": "Klicken für {{amount}} 🍺",
+    "hintHit": "Triff den 🔴 für {{amount}} 🍺",
     "throw": "Dart werfen",
     "reloading": "Darts werden nachgeladen…",
     "upgrades": "Upgrades",
     "locked": "Noch nicht freigeschaltet",
     "upgrade": {
       "betterDarts": "Bessere Darts",
-      "moreDarts": "Mehr Darts"
+      "moreDarts": "Mehr Darts",
+      "lessCooldown": "Weniger Abklingzeit",
+      "biggerTargets": "Größere Ziele"
+    },
+    "balance": "Biere",
+    "max": "MAX",
+    "level": "Lv {{level}}/{{max}}",
+    "loading": "Wird geladen…",
+    "resynced": "Mit dem Server synchronisiert.",
+    "stopped": {
+      "title": "Spiel pausiert",
+      "elsewhere": "Darts wurde in einem anderen Tab oder Fenster geöffnet. Lade diese Seite neu, um hier weiterzuspielen.",
+      "generic": "Dein Spiel konnte nicht mit dem Server synchronisiert werden. Lade die Seite neu, um weiterzuspielen.",
+      "reload": "Seite neu laden"
     }
   },
   "shell": {

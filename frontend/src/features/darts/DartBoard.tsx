@@ -1,5 +1,8 @@
 import { useTranslation } from "react-i18next";
-import { COOLDOWN_MS, type DartsGame } from "./useDartsPrototype";
+import { formatAmount, rewardFor } from "@idle-arcade/backend/shared";
+import type { DartsGame } from "./useDarts";
+
+const MAX_DART_ICONS = 6;
 
 // Segmentreihenfolge ab 12 Uhr im Uhrzeigersinn (echtes Dartboard)
 const NUMBERS = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5];
@@ -29,19 +32,21 @@ const RINGS: [number, number, string, string][] = [
 
 export function DartBoard({ game }: { game: DartsGame }) {
   const { t } = useTranslation();
-  const { coins, dartsLeft, maxDarts, reloading, targets, throwDart } = game;
+  const { status, levels, dartsLeft, maxDarts, reloading, reloadMs, targets, targetRadius } = game;
+  const disabled = status !== "running" || reloading;
+  const throwDart = (targetId?: number) => !disabled && game.throwDart(targetId);
 
   return (
     <div className="flex flex-col items-center gap-2">
       <p className="text-center text-xs leading-tight">
-        {t("darts.hintClick")}
+        {t("darts.hintClick", { amount: formatAmount(rewardFor("board", levels)) })}
         <br />
-        {t("darts.hintHit")}
+        {t("darts.hintHit", { amount: formatAmount(rewardFor("target", levels)) })}
       </p>
 
       <svg
         viewBox="-180 -180 360 360"
-        className={`w-full max-w-60 ${reloading ? "opacity-50" : "cursor-crosshair"}`}
+        className={`w-full max-w-60 ${disabled ? "opacity-50" : "cursor-crosshair"}`}
         onClick={() => throwDart()}
         aria-hidden="true"
       >
@@ -58,7 +63,7 @@ export function DartBoard({ game }: { game: DartsGame }) {
             key={tg.id}
             cx={tg.x}
             cy={tg.y}
-            r="12"
+            r={targetRadius}
             fill="#f87171"
             stroke="#fff"
             strokeWidth="2"
@@ -72,32 +77,32 @@ export function DartBoard({ game }: { game: DartsGame }) {
       </svg>
 
       {/* Tastatur-/Screenreader-Alternative zum Klick aufs Board */}
-      <button type="button" className="sr-only" disabled={reloading} onClick={() => throwDart()}>
+      <button type="button" className="sr-only" disabled={disabled} onClick={() => throwDart()}>
         {t("darts.throw")}
       </button>
 
       <div className="flex items-center gap-2" aria-live="polite">
         <span aria-hidden="true">
-          {Array.from({ length: maxDarts }, (_, i) => (i < dartsLeft ? "🎯" : "⚪"))}
+          {Array.from({ length: Math.min(maxDarts, MAX_DART_ICONS) }, (_, i) =>
+            i < Math.min(dartsLeft, MAX_DART_ICONS) ? "🎯" : "⚪",
+          )}
         </span>
         <span className="text-sm">
           {dartsLeft}/{maxDarts}
         </span>
       </div>
 
-      {reloading && (
+      {reloading && reloadMs > 0 && (
         <div className="w-full">
           <p className="text-xs">{t("darts.reloading")}</p>
           <div className="h-1 w-full overflow-hidden rounded bg-gray-700">
             <div
               className="h-full origin-left bg-amber-400"
-              style={{ animation: `darts-reload ${COOLDOWN_MS}ms linear forwards` }}
+              style={{ animation: `darts-reload ${reloadMs}ms linear forwards` }}
             />
           </div>
         </div>
       )}
-
-      <p className="text-sm font-medium">🪙 {coins}</p>
     </div>
   );
 }

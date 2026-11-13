@@ -102,18 +102,30 @@
     "gacha": "Gacha"
   },
   "darts": {
-    "hintClick": "Click to gain 1 🪙",
-    "hintHit": "Hit the 🔴 to gain 10 🪙",
+    "hintClick": "Click to gain {{amount}} 🍺",
+    "hintHit": "Hit the 🔴 to gain {{amount}} 🍺",
     "throw": "Throw dart",
     "reloading": "Reloading darts…",
     "upgrades": "Upgrades",
     "locked": "Not unlocked yet",
     "upgrade": {
       "betterDarts": "Better Darts",
-      "moreDarts": "More Darts"
+      "moreDarts": "More Darts",
+      "lessCooldown": "Less cooldown",
+      "biggerTargets": "Bigger targets"
+    },
+    "balance": "Beers",
+    "max": "MAX",
+    "level": "Lv {{level}}/{{max}}",
+    "loading": "Loading…",
+    "resynced": "Synchronized with the server.",
+    "stopped": {
+      "title": "Game paused",
+      "elsewhere": "Darts was opened in another tab or window. Reload this page to continue playing here.",
+      "generic": "Your game could not be synchronized with the server. Reload the page to continue.",
+      "reload": "Reload page"
     }
   },
-
   "shell": {
     "navLabel": "Rooms",
     "locked": "Not unlocked yet",

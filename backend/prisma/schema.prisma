@@ -24,6 +24,7 @@ model User {
   sessions        Session[]
   accounts        Account[]
   balances        CurrencyBalance[]
+  dartsRoom       DartsRoom?
 
   @@map("user")
 }
@@ -83,7 +84,7 @@ enum Currency {
   coins
 }
 
-/// One balance per user and currency, stored as `digits * 10^zeros` (see src/currency/amount.ts).
+/// One balance per user and currency, stored as `digits * 10^zeros` (see src/shared/currency/amount.ts).
 /// The composite primary key is the unique index for single-balance lookups, and its `userId`
 /// prefix serves "all balances of a user", so no separate user index is needed.
 model CurrencyBalance {
@@ -95,4 +96,21 @@ model CurrencyBalance {
 
   @@id([userId, currency])
   @@map("currency_balance")
+}
+
+model DartsRoom {
+  userId       String @id
+  /// Upgrade levels by upgrade id, e.g. `{"betterDarts": 3, "moreDarts": 1}`. JSON so upgrades can
+  /// be added or removed without a migration; missing ids count as level 0 (`sanitizeLevels`).
+  levels       Json
+  /// Game time (ms) of the last committed simulation step.
+  t            BigInt @db.UnsignedBigInt
+  /// Sync session, renewed on each page load; batches from older sessions are rejected.
+  epoch        String @db.VarChar(64)
+  lastSeq      Int    @db.UnsignedInt
+  /// Response to batch `lastSeq`, returned again when the client retries it.
+  lastResponse Json?
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("darts_room")
 }
