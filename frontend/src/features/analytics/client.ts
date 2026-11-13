@@ -1,5 +1,5 @@
 import type { Language } from "../../i18n";
-import type { UpgradeId } from "../darts/useDartsPrototype";
+import type { UpgradeId } from "@idle-arcade/backend/shared";
 
 export type AnalyticsChoice = "unset" | "accepted" | "rejected";
 export const CHOICE_KEY = "idle-arcade.analytics.v1";

@@ -1,5 +1,3 @@
-// Shared with the frontend: keep this module free of server-only imports.
-//
 // A currency amount is `digits * 10^zeros` with at most MAX_DIGITS significant digits. All math is
 // done on bigint; amounts never pass through a floating-point number.
 //
@@ -101,6 +99,17 @@ export function subtract(a: Amount, b: Amount): Amount {
   if (order === 0) return ZERO;
   if (isZero(b)) return a;
   return combine(a, b, -1n);
+}
+
+/** `a * num / den`, truncated. Multipliers are fractions, never floats. */
+export function multiplyRatio(a: Amount, num: bigint, den: bigint): Amount {
+  if (den <= 0n) throw new RangeError(`den must be positive, got ${den}`);
+  if (num < 0n) throw new RangeError(`num must be non-negative, got ${num}`);
+  if (isZero(a) || num === 0n) return ZERO;
+  // Enough extra digits that the division can't truncate below the kept precision.
+  const shift = Math.min(a.zeros, MAX_DIGITS + digitCount(den));
+  const scaled = (a.digits * pow10(shift) * num) / den;
+  return amount(scaled, a.zeros - shift);
 }
 
 /** Exact decimal string of the represented value, e.g. `{ digits: 12324n, zeros: 1 }` -> "123240". */

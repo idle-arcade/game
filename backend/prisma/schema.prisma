@@ -24,6 +24,8 @@ model User {
   sessions        Session[]
   accounts        Account[]
   balances        CurrencyBalance[]
+  roomSyncs       RoomSync[]
+  dartsRoom       DartsRoom?
 
   @@map("user")
 }
@@ -83,7 +85,7 @@ enum Currency {
   coins
 }
 
-/// One balance per user and currency, stored as `digits * 10^zeros` (see src/currency/amount.ts).
+/// One balance per user and currency, stored as `digits * 10^zeros` (see src/shared/currency/amount.ts).
 /// The composite primary key is the unique index for single-balance lookups, and its `userId`
 /// prefix serves "all balances of a user", so no separate user index is needed.
 model CurrencyBalance {
@@ -95,4 +97,38 @@ model CurrencyBalance {
 
   @@id([userId, currency])
   @@map("currency_balance")
+}
+
+/// Rooms with a synced simulation.
+enum Room {
+  darts
+}
+
+/// Sync session of one user in one room. Its row lock serializes all changes to that room's state.
+model RoomSync {
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room    Room
+  /// Game time (ms) of the last committed simulation step.
+  t       BigInt @db.UnsignedBigInt
+  /// Renewed on each page load; batches from older sessions are rejected.
+  epoch   String @db.VarChar(64)
+  /// Last applied batch of this session.
+  lastSeq Int    @db.UnsignedInt
+
+  @@id([userId, room])
+  @@map("room_sync")
+}
+
+/// Darts upgrade levels, one column per upgrade id (see src/shared/darts/rules.ts). A missing row
+/// means all levels are 0.
+model DartsRoom {
+  userId        String @id
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  betterDarts   Int    @default(0) @db.UnsignedInt
+  moreDarts     Int    @default(0) @db.UnsignedInt
+  lessCooldown  Int    @default(0) @db.UnsignedInt
+  biggerTargets Int    @default(0) @db.UnsignedInt
+
+  @@map("darts_room")
 }

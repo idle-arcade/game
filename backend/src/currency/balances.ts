@@ -1,7 +1,7 @@
 import { prisma } from "../db.js";
 import type { Prisma } from "../generated/prisma/client.js";
 import { Currency } from "../generated/prisma/enums.js";
-import { amount, ZERO, type Amount } from "./amount.js";
+import { amount, ZERO, type Amount } from "../shared/index.js";
 
 // A missing row is a zero balance; the first change creates it. Changes lock the row
 // (SELECT ... FOR UPDATE) for the rest of their transaction, so concurrent changes to the same
