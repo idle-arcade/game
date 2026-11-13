@@ -24,6 +24,7 @@ model User {
   sessions        Session[]
   accounts        Account[]
   balances        CurrencyBalance[]
+  roomSyncs       RoomSync[]
   dartsRoom       DartsRoom?
 
   @@map("user")
@@ -98,19 +99,36 @@ model CurrencyBalance {
   @@map("currency_balance")
 }
 
-model DartsRoom {
-  userId       String @id
-  /// Upgrade levels by upgrade id, e.g. `{"betterDarts": 3, "moreDarts": 1}`. JSON so upgrades can
-  /// be added or removed without a migration; missing ids count as level 0 (`sanitizeLevels`).
-  levels       Json
+/// Rooms with a synced simulation.
+enum Room {
+  darts
+}
+
+/// Sync session of one user in one room. Its row lock serializes all changes to that room's state.
+model RoomSync {
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room    Room
   /// Game time (ms) of the last committed simulation step.
-  t            BigInt @db.UnsignedBigInt
-  /// Sync session, renewed on each page load; batches from older sessions are rejected.
-  epoch        String @db.VarChar(64)
-  lastSeq      Int    @db.UnsignedInt
-  /// Response to batch `lastSeq`, returned again when the client retries it.
-  lastResponse Json?
-  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  t       BigInt @db.UnsignedBigInt
+  /// Renewed on each page load; batches from older sessions are rejected.
+  epoch   String @db.VarChar(64)
+  /// Last applied batch of this session.
+  lastSeq Int    @db.UnsignedInt
+
+  @@id([userId, room])
+  @@map("room_sync")
+}
+
+/// Darts upgrade levels, one column per upgrade id (see src/shared/darts/rules.ts). A missing row
+/// means all levels are 0.
+model DartsRoom {
+  userId        String @id
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  betterDarts   Int    @default(0) @db.UnsignedInt
+  moreDarts     Int    @default(0) @db.UnsignedInt
+  lessCooldown  Int    @default(0) @db.UnsignedInt
+  biggerTargets Int    @default(0) @db.UnsignedInt
 
   @@map("darts_room")
 }

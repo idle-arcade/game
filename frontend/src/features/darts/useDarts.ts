@@ -25,6 +25,9 @@ const TARGET_COUNT = 4;
 const BOARD_RADIUS = 170;
 const BASE_TARGET_RADIUS = 12;
 const REQUEST_TIMEOUT_MS = 10_000;
+const LOAD_ATTEMPTS = 3;
+const LOAD_RETRY_BASE_MS = 1000;
+const LOGOUT_FLUSH_TIMEOUT_MS = 3000;
 
 export type Target = { id: number; x: number; y: number };
 
@@ -71,21 +74,46 @@ const transport: DartsTransport = {
       .catch(classify),
 };
 
+// Safe to repeat: each load starts a new sync session and the last one wins.
+async function loadRoom() {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await trpcClient.darts.load
+        .mutate(undefined, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) })
+        .catch(classify);
+    } catch (error) {
+      if (error instanceof TransportRejectedError || attempt >= LOAD_ATTEMPTS) throw error;
+      await new Promise((resolve) => setTimeout(resolve, LOAD_RETRY_BASE_MS * 2 ** (attempt - 1)));
+    }
+  }
+}
+
 // One engine per user and page load, so leaving the Darts page doesn't drop unsent actions.
 let session: { userId: string; engine: Promise<DartsEngine> } | null = null;
 
 function engineFor(userId: string) {
   if (session?.userId !== userId) {
     endDartsSession();
-    const engine = trpcClient.darts.load
-      .mutate()
-      .then((initial) => createDartsEngine(initial, transport));
+    const engine = loadRoom().then((initial) => createDartsEngine(initial, transport));
     session = { userId, engine };
     engine.catch(() => {
       if (session?.engine === engine) session = null;
     });
   }
   return session!.engine;
+}
+
+/** Call before logout, while requests are still authorized. Gives up after a few seconds. */
+export async function flushDartsSession() {
+  const engine = session?.engine;
+  if (!engine) return;
+  await Promise.race([
+    engine.then(
+      (created) => created.drain(),
+      () => {},
+    ),
+    new Promise((resolve) => setTimeout(resolve, LOGOUT_FLUSH_TIMEOUT_MS)),
+  ]);
 }
 
 /** Call on logout. */

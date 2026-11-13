@@ -49,6 +49,8 @@ export type DartsEngine = {
   getSnapshot(): EngineSnapshot;
   subscribe(listener: () => void): () => void;
   dispatch(command: DartsCommand): boolean;
+  /** Sends everything queued; resolves once the server has it or the engine no longer runs. */
+  drain(): Promise<void>;
   dispose(): void;
 };
 
@@ -74,6 +76,15 @@ export function createDartsEngine(
   let retryTimer: ReturnType<typeof setTimeout> | undefined;
   let snapshot: EngineSnapshot = { state: simStateFromDto(initial), status: "running" };
   const listeners = new Set<() => void>();
+  let drainWaiters: (() => void)[] = [];
+
+  function settleDrain() {
+    const busy =
+      !disposed && snapshot.status === "running" && (inFlight !== null || queue.length > 0);
+    if (busy) return;
+    drainWaiters.forEach((resolve) => resolve());
+    drainWaiters = [];
+  }
 
   function update(patch: Partial<EngineSnapshot>) {
     snapshot = { ...snapshot, ...patch };
@@ -85,6 +96,7 @@ export function createDartsEngine(
     inFlight = null;
     clearTimeout(retryTimer);
     update({ status: "stopped", stopReason });
+    settleDrain();
   }
 
   function flush() {
@@ -129,7 +141,12 @@ export function createDartsEngine(
           return;
         }
         lastSeq = response.seq;
-        if (queue.length >= MAX_BATCH_ACTIONS || queue.some((a) => a.type === "buy")) flush();
+        const flushNow =
+          drainWaiters.length > 0 ||
+          queue.length >= MAX_BATCH_ACTIONS ||
+          queue.some((a) => a.type === "buy");
+        if (flushNow) flush();
+        settleDrain();
       },
       (error) => {
         if (gen !== generation || inFlight !== sent) return;
@@ -151,6 +168,7 @@ export function createDartsEngine(
     inFlight = null;
     clearTimeout(retryTimer);
     update({ status: "resyncing" });
+    settleDrain();
     for (let attempt = 0; attempt < MAX_RESYNC_ATTEMPTS && !disposed; attempt++) {
       const gen = generation;
       try {
@@ -200,8 +218,16 @@ export function createDartsEngine(
       if (action.type === "buy" || queue.length >= MAX_BATCH_ACTIONS) flush();
       return true;
     },
+    drain() {
+      return new Promise((resolve) => {
+        drainWaiters.push(resolve);
+        flush();
+        settleDrain();
+      });
+    },
     dispose() {
       disposed = true;
+      settleDrain();
       generation += 1;
       clearInterval(interval);
       clearTimeout(retryTimer);

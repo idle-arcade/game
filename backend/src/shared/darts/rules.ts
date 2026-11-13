@@ -54,16 +54,3 @@ export const reloadMs = (levels: Levels) =>
 
 /** Client-side only: the server doesn't check hits. */
 export const targetScale = (levels: Levels) => ({ num: 10 + levels.biggerTargets, den: 10 });
-
-/** Tolerates stored levels from older or newer rules. */
-export function sanitizeLevels(raw: unknown): Levels {
-  const source = typeof raw === "object" && raw !== null ? (raw as Record<string, unknown>) : {};
-  const levels = { ...ZERO_LEVELS };
-  for (const id of UPGRADE_IDS) {
-    const value = source[id];
-    if (typeof value === "number" && Number.isInteger(value)) {
-      levels[id] = Math.min(Math.max(value, 0), UPGRADES[id].maxLevel);
-    }
-  }
-  return levels;
-}

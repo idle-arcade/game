@@ -6,6 +6,10 @@ import type { DartsSimState } from "./sim.js";
 /** How far a batch's `endT` may lie ahead of the server clock. */
 export const CLOCK_TOLERANCE_MS = 2000;
 export const MAX_BATCH_ACTIONS = 200;
+/** Highest average throw rate a batch may have; no player clicks this fast. */
+export const MAX_THROWS_PER_SECOND = 20;
+/** Throws allowed on top of that rate, so a short batch isn't rejected for one quick click. */
+export const THROW_BURST = 5;
 
 const gameTime = z.int().nonnegative().max(Number.MAX_SAFE_INTEGER);
 
@@ -38,7 +42,12 @@ export type DartsRoomStateDto = {
 };
 
 export type DartsFailReason =
-  "stale_epoch" | "rules_version" | "out_of_order" | "implausible_time" | "rejected";
+  | "stale_epoch"
+  | "rules_version"
+  | "out_of_order"
+  | "implausible_time"
+  | "implausible_rate"
+  | "rejected";
 
 export type DartsSyncResponse =
   | { ok: true; seq: number; state: DartsRoomStateDto }

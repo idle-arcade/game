@@ -2,52 +2,54 @@ import { randomUUID } from "node:crypto";
 import { trace } from "@opentelemetry/api";
 import { changeBalance, getBalance } from "../currency/balances.js";
 import { prisma } from "../db.js";
-import { Prisma } from "../generated/prisma/client.js";
+import type { Prisma } from "../generated/prisma/client.js";
+import { Currency, Room } from "../generated/prisma/enums.js";
 import {
   CLOCK_TOLERANCE_MS,
+  compare,
   fromAmountDto,
+  MAX_THROWS_PER_SECOND,
   replay,
   RULES_VERSION,
-  sanitizeLevels,
   SimRejectError,
+  THROW_BURST,
   toAmountDto,
-  toDecimalString,
+  UPGRADE_IDS,
+  ZERO_LEVELS,
   type Amount,
   type DartsBatch,
+  type DartsFailReason,
   type DartsRoomStateDto,
   type DartsStateResponse,
   type DartsSyncResponse,
   type Levels,
 } from "../shared/index.js";
 
-// Lock order: room row, then balance row.
+// Lock order: room_sync row, then balance row. darts_room is only read and written under the
+// room_sync lock.
 
 type Tx = Prisma.TransactionClient;
-type RoomRow = {
-  levels: unknown;
-  t: number;
-  epoch: string;
-  lastSeq: number;
-  lastResponse: unknown;
-};
-type RawRoomRow = Omit<RoomRow, "t" | "lastSeq"> & { t: bigint; lastSeq: bigint | number };
+type SyncRow = { t: number; epoch: string; lastSeq: number };
 
-async function lockRoom(tx: Tx, userId: string, now: number): Promise<RoomRow> {
+const syncKey = (userId: string) => ({ userId_room: { userId, room: Room.darts } });
+
+async function lockSync(tx: Tx, userId: string, now: number): Promise<SyncRow> {
   // Takes the exclusive lock right away, like changeBalance.
-  await tx.$executeRaw`INSERT INTO darts_room (userId, levels, t, epoch, lastSeq)
-    VALUES (${userId}, ${"{}"}, ${now}, ${""}, 0) ON DUPLICATE KEY UPDATE lastSeq = lastSeq`;
-  const [row] = await tx.$queryRaw<RawRoomRow[]>`
-    SELECT levels, t, epoch, lastSeq, lastResponse FROM darts_room WHERE userId = ${userId} FOR UPDATE`;
-  if (!row) throw new Error(`Darts room ${userId} vanished`);
-  // $queryRaw returns JSON columns as strings and integer columns as bigint.
-  const parse = (v: unknown) => (typeof v === "string" ? JSON.parse(v) : v);
-  return {
-    epoch: row.epoch,
-    t: Number(row.t),
-    lastSeq: Number(row.lastSeq),
-    levels: parse(row.levels),
-    lastResponse: parse(row.lastResponse),
-  };
+  await tx.$executeRaw`INSERT INTO room_sync (userId, room, t, epoch, lastSeq)
+    VALUES (${userId}, ${Room.darts}, ${now}, ${""}, 0) ON DUPLICATE KEY UPDATE lastSeq = lastSeq`;
+  // $queryRaw returns integer columns as bigint.
+  const [row] = await tx.$queryRaw<{ t: bigint; epoch: string; lastSeq: bigint | number }[]>`
+    SELECT t, epoch, lastSeq FROM room_sync
+    WHERE userId = ${userId} AND room = ${Room.darts} FOR UPDATE`;
+  if (!row) throw new Error(`Darts sync row ${userId} vanished`);
+  return { epoch: row.epoch, t: Number(row.t), lastSeq: Number(row.lastSeq) };
+}
+
+async function loadLevels(tx: Tx, userId: string): Promise<Levels> {
+  const row = await tx.dartsRoom.findUnique({ where: { userId } });
+  const levels = { ...ZERO_LEVELS };
+  if (row) for (const id of UPGRADE_IDS) levels[id] = row[id];
+  return levels;
 }
 
 const stateDto = (
@@ -72,35 +74,40 @@ const record = (attributes: Record<string, string | number>) =>
 export function loadRoom(userId: string): Promise<DartsRoomStateDto> {
   return prisma.$transaction(async (tx) => {
     const now = Date.now();
-    const row = await lockRoom(tx, userId, now);
+    const row = await lockSync(tx, userId, now);
     const t = Math.max(row.t, now);
-    const levels = sanitizeLevels(row.levels);
     const epoch = randomUUID();
-    await tx.dartsRoom.update({
-      where: { userId },
-      data: { epoch, lastSeq: 0, lastResponse: Prisma.DbNull, t, levels },
-    });
+    await tx.roomSync.update({ where: syncKey(userId), data: { epoch, lastSeq: 0, t } });
     record({ "darts.epoch": epoch });
-    return stateDto({ epoch, lastSeq: 0 }, t, levels, await getBalance(userId, "beers", tx));
+    return stateDto(
+      { epoch, lastSeq: 0 },
+      t,
+      await loadLevels(tx, userId),
+      await getBalance(userId, Currency.beers, tx),
+    );
   });
 }
 
 export function roomState(userId: string, epoch: string): Promise<DartsStateResponse> {
   return prisma.$transaction(async (tx) => {
     const now = Date.now();
-    const row = await lockRoom(tx, userId, now);
+    const row = await lockSync(tx, userId, now);
     if (row.epoch !== epoch) {
       record({ "darts.state.outcome": "stale_epoch" });
       return { ok: false, reason: "stale_epoch" } as const;
     }
     // The client restarts its clock at serverNow; its next actions must not precede `t`.
     const t = Math.max(row.t, now);
-    await tx.dartsRoom.update({ where: { userId }, data: { t } });
-    const levels = sanitizeLevels(row.levels);
+    await tx.roomSync.update({ where: syncKey(userId), data: { t } });
     record({ "darts.state.outcome": "ok" });
     return {
       ok: true,
-      state: stateDto(row, t, levels, await getBalance(userId, "beers", tx)),
+      state: stateDto(
+        row,
+        t,
+        await loadLevels(tx, userId),
+        await getBalance(userId, Currency.beers, tx),
+      ),
     } as const;
   });
 }
@@ -114,6 +121,14 @@ function plausibleTime(batch: DartsBatch, roomT: number, now: number) {
   return batch.endT >= last && batch.endT <= now + CLOCK_TOLERANCE_MS;
 }
 
+/** Reload times are not checked; this only stops throw rates no player can reach. */
+function plausibleRate(batch: DartsBatch, roomT: number) {
+  const throws = batch.actions.filter((action) => action.type === "throw").length;
+  return (throws - THROW_BURST) * 1000 <= MAX_THROWS_PER_SECOND * (batch.endT - roomT);
+}
+
+const traceAmount = (a: Amount) => `${a.digits}e${a.zeros}`;
+
 class BatchFailed extends Error {
   constructor(readonly response: DartsSyncResponse) {
     super("Darts batch failed");
@@ -122,26 +137,38 @@ class BatchFailed extends Error {
 
 export async function syncRoom(userId: string, batch: DartsBatch): Promise<DartsSyncResponse> {
   const { seq } = batch;
-  const fail = (reason: Extract<DartsSyncResponse, { ok: false }>["reason"]) =>
-    new BatchFailed({ ok: false, seq, reason });
+  const fail = (reason: DartsFailReason) => new BatchFailed({ ok: false, seq, reason });
   record({ "darts.sync.seq": seq, "darts.sync.actions": batch.actions.length });
   try {
     const response = await prisma.$transaction(async (tx) => {
-      const row = await lockRoom(tx, userId, Date.now());
+      const row = await lockSync(tx, userId, Date.now());
       if (row.epoch !== batch.epoch) throw fail("stale_epoch");
       if (batch.rulesVersion !== RULES_VERSION) throw fail("rules_version");
-      if (seq === row.lastSeq && row.lastResponse) {
+      if (seq === row.lastSeq) {
+        // A retry of the batch applied last, whose response got lost: answer with the state it
+        // led to instead of applying it again.
         record({ "darts.sync.outcome": "retry" });
-        return row.lastResponse as DartsSyncResponse;
+        return {
+          ok: true,
+          seq,
+          state: stateDto(
+            row,
+            row.t,
+            await loadLevels(tx, userId),
+            await getBalance(userId, Currency.beers, tx),
+          ),
+        } as const;
       }
       if (seq !== row.lastSeq + 1) throw fail("out_of_order");
       const roomT = row.t;
       if (!plausibleTime(batch, roomT, Date.now())) throw fail("implausible_time");
+      if (!plausibleRate(batch, roomT)) throw fail("implausible_rate");
 
-      let levels = sanitizeLevels(row.levels);
+      const before = await loadLevels(tx, userId);
+      let levels = before;
       const balance = await changeBalance(
         userId,
-        "beers",
+        Currency.beers,
         (current) => {
           const result = replay({ balance: current, levels, t: roomT }, batch.actions, batch.endT);
           levels = result.levels;
@@ -149,28 +176,33 @@ export async function syncRoom(userId: string, batch: DartsBatch): Promise<Darts
         },
         tx,
       );
-      const response: DartsSyncResponse = {
-        ok: true,
-        seq,
-        state: stateDto({ epoch: row.epoch, lastSeq: seq }, batch.endT, levels, balance),
-      };
-      await tx.dartsRoom.update({
-        where: { userId },
-        data: { levels, t: batch.endT, lastSeq: seq, lastResponse: response },
+      if (levels !== before) {
+        await tx.dartsRoom.upsert({
+          where: { userId },
+          create: { userId, ...levels },
+          update: levels,
+        });
+      }
+      await tx.roomSync.update({
+        where: syncKey(userId),
+        data: { t: batch.endT, lastSeq: seq },
       });
 
       const predicted = fromAmountDto(batch.predicted);
-      const matches = toDecimalString(predicted) === toDecimalString(balance);
       record(
-        matches
+        compare(predicted, balance) === 0
           ? { "darts.sync.outcome": "ok" }
           : {
               "darts.sync.outcome": "mismatch",
-              "darts.sync.predicted": toDecimalString(predicted),
-              "darts.sync.actual": toDecimalString(balance),
+              "darts.sync.predicted": traceAmount(predicted),
+              "darts.sync.actual": traceAmount(balance),
             },
       );
-      return response;
+      return {
+        ok: true,
+        seq,
+        state: stateDto({ epoch: row.epoch, lastSeq: seq }, batch.endT, levels, balance),
+      } as const;
     });
     return response;
   } catch (error) {
