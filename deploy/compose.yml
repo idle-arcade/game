@@ -2,7 +2,7 @@
 # Runtime secrets stay in Dokploy's Environment tab.
 services:
   mysql:
-    image: mysql:8.4
+    image: mysql:9.7
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set in Dokploy}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-idle_arcade}
