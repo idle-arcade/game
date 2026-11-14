@@ -117,6 +117,7 @@
     "balance": "Beers",
     "max": "MAX",
     "level": "Lv {{level}}/{{max}}",
+    "levelNoMax": "Lv {{level}}",
     "loading": "Loading…",
     "resynced": "Synchronized with the server.",
     "stopped": {

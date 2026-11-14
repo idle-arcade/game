@@ -1,8 +1,8 @@
 import { add, compare, InsufficientFundsError, subtract, type Amount } from "../currency/amount.js";
 import {
+  isMaxLevel,
   rewardFor,
   UPGRADE_IDS,
-  UPGRADES,
   upgradeCost,
   type Levels,
   type ThrowResult,
@@ -44,7 +44,7 @@ export function applyAction(s: DartsSimState, action: DartsAction): DartsSimStat
     return { ...at, balance: add(at.balance, rewardFor(action.result, at.levels)) };
   }
   const level = at.levels[action.upgrade];
-  if (level >= UPGRADES[action.upgrade].maxLevel) throw new SimRejectError("max_level");
+  if (isMaxLevel(action.upgrade, level)) throw new SimRejectError("max_level");
   let balance: Amount;
   try {
     balance = subtract(at.balance, upgradeCost(action.upgrade, level));

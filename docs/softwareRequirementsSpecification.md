@@ -24,6 +24,7 @@ Nach aktuellem Stand haben wir bisher noch keine speziellen Begriffe, Akronyme o
 - UML-Klassendiagramme-Backend [29.10.2026, GitHub]: ![Bild des Backend-Klassendiagramms](class-diagrams/backend.png)
 - UML-Klassendiagramme-Frontend [29.10.2026, GitHub]: ![Bild des Frontend-Klassendiagramms](class-diagrams/frontend.png)
 - UML-Klassendiagramme-Persistence [29.10.2026, GitHub]: ![Bild des Persistence-Klassendiagramms](class-diagrams/persistence.png)
+- Balancing-Tabelle [13.11.2026, GitHub]: [balancing.ods](balancing.ods)
 
 ### 2. Funktionale Anforderungen
 
