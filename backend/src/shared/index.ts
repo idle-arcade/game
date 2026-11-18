@@ -3,6 +3,7 @@
 export * from "./currency/amount.js";
 export * from "./currency/dto.js";
 export * from "./currency/format.js";
+export * from "./darts/milestones.js";
 export * from "./darts/players.js";
 export * from "./darts/protocol.js";
 export * from "./darts/rules.js";

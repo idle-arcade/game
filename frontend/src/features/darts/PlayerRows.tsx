@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { idleIncome, PLAYER_IDS, PLAYERS, type PlayerId } from "@idle-arcade/backend/shared";
+import { analytics } from "../analytics/analytics";
 import { formatPercent, formatRatio } from "./format";
 import type { DartsGame } from "./useDarts";
 
@@ -85,6 +86,7 @@ function PlayerRow({ id, count }: { id: PlayerId; count: number }) {
               key={slot}
               type="button"
               aria-disabled="true"
+              onClick={() => analytics.comingSoonClicked("modules")}
               title={t("darts.players.modulesSoon")}
               aria-label={t("darts.players.moduleSlot", { slot: slot + 1 })}
               className={`size-7 border-dashed ${COMING_SOON}`}
@@ -96,6 +98,7 @@ function PlayerRow({ id, count }: { id: PlayerId; count: number }) {
         <button
           type="button"
           aria-disabled="true"
+          onClick={() => analytics.comingSoonClicked("training")}
           title={t("darts.players.trainingSoon")}
           className={`px-2 py-0.5 text-sm ${COMING_SOON}`}
         >

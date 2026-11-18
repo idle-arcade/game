@@ -44,6 +44,12 @@ export type DartsRoomStateDto = {
   players: Players;
 };
 
+/** Answer to loading the room: the state plus how long the player was away before. */
+export type DartsLoadDto = DartsRoomStateDto & {
+  /** Time beyond the active window since the last activity; 0 if the player wasn't away. */
+  awayMs: number;
+};
+
 export type DartsFailReason =
   | "stale_epoch"
   | "rules_version"

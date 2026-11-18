@@ -1,5 +1,5 @@
 import type { Language } from "../../i18n";
-import type { UpgradeId } from "@idle-arcade/backend/shared";
+import { DARTS_MILESTONES, type DartsMilestone } from "@idle-arcade/backend/shared";
 
 export type AnalyticsChoice = "unset" | "accepted" | "rejected";
 export const CHOICE_KEY = "idle-arcade.analytics.v1";
@@ -42,6 +42,20 @@ export type AuthFailureReason = (typeof AUTH_FAILURE_REASONS)[number];
 const VALIDATION_REASONS = ["required", "too_short", "too_long", "invalid_format"] as const;
 export type AuthValidationReason = (typeof VALIDATION_REASONS)[number];
 
+const SYNC_STOP_REASONS = ["stale_epoch", "rules_version", "resync_failed"] as const;
+export type SyncStopReason = (typeof SYNC_STOP_REASONS)[number];
+
+const COMING_SOON_FEATURES = ["training", "modules"] as const;
+export type ComingSoonFeature = (typeof COMING_SOON_FEATURES)[number];
+
+const HOUR_MS = 60 * 60 * 1000;
+/** Coarse buckets, so the event can't identify exact visit times. */
+function awayBucket(awayMs: number) {
+  if (awayMs < HOUR_MS) return "under_1h";
+  if (awayMs < 24 * HOUR_MS) return "1h_to_24h";
+  return "over_24h";
+}
+
 /** Accepts the API base (https://host/api) or, for older settings, its /track endpoint. */
 function scriptUrl(endpoint: string) {
   try {
@@ -57,6 +71,7 @@ function scriptUrl(endpoint: string) {
 
 export function createAnalytics(config: Config, dependencies: Dependencies) {
   const listeners = new Set<() => void>();
+  const comingSoonSent = new Set<ComingSoonFeature>();
   let memoryChoice: { choice: AnalyticsChoice; expires: number } | undefined;
   let loaded = false;
   let correlationId: string | undefined;
@@ -202,12 +217,25 @@ export function createAnalytics(config: Config, dependencies: Dependencies) {
     highscoresViewed() {
       sendEvent("dummy_highscores_viewed");
     },
-    upgradePurchased(upgrade: UpgradeId, amount: number, level: number) {
-      sendEvent("dummy_upgrade_purchased", {
-        upgrade,
-        amount: String(amount),
-        level: String(level),
-      });
+    /** A progress step, sent once per account (progress never goes back). */
+    dartsMilestone(milestone: DartsMilestone) {
+      if (!DARTS_MILESTONES.includes(milestone)) return;
+      sendEvent("darts_milestone", { milestone });
+    },
+    /** Opened the Darts room after being away, i.e. beyond the active window. */
+    dartsReturned(awayMs: number) {
+      if (!(awayMs > 0)) return;
+      sendEvent("darts_returned", { away: awayBucket(awayMs) });
+    },
+    syncStopped(reason: SyncStopReason) {
+      if (!SYNC_STOP_REASONS.includes(reason)) return;
+      sendEvent("sync_stopped", { reason });
+    },
+    /** Interest in a feature that isn't available yet; once per feature and page load. */
+    comingSoonClicked(feature: ComingSoonFeature) {
+      if (!COMING_SOON_FEATURES.includes(feature) || comingSoonSent.has(feature)) return;
+      comingSoonSent.add(feature);
+      sendEvent("coming_soon_clicked", { feature });
     },
   };
 }

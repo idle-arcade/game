@@ -1,5 +1,5 @@
 import type { Attributes } from "@opentelemetry/api";
-import type { ReadableSpan, SpanExporter } from "@opentelemetry/sdk-trace";
+import type { ReadableSpan, SpanExporter, TimedEvent } from "@opentelemetry/sdk-trace";
 
 // Opt in to safe fields. HTTP instrumentation otherwise includes URLs, IPs and user agents.
 const SPAN_ATTRIBUTES = new Set([
@@ -15,13 +15,37 @@ const SPAN_ATTRIBUTES = new Set([
   "rpc.error.code",
   "error.type",
   "rybbit.correlation_id",
+  // Internal account ID; the request acts for this account.
+  "user.id",
+  // Prisma: SQL with placeholders only; parameter values are not part of the text.
+  "db.system.name",
+  "db.query.text",
 ]);
+// Game attributes and events written by our own code (src/darts/telemetry.ts).
+const OWN_PREFIX = "darts.";
+
+const isSafe = (key: string) => SPAN_ATTRIBUTES.has(key) || key.startsWith(OWN_PREFIX);
+
+function safeAttributes(attributes: Attributes | undefined, keep: (key: string) => boolean) {
+  const safe: Attributes = {};
+  for (const [key, value] of Object.entries(attributes ?? {})) {
+    if (keep(key)) safe[key] = value;
+  }
+  return safe;
+}
+
+// Raw automatic events (e.g. exception messages) may contain request inputs or database
+// parameters, so only our own events are kept.
+const safeEvents = (events: TimedEvent[]) =>
+  events
+    .filter((event) => event.name.startsWith(OWN_PREFIX))
+    .map((event) => ({
+      ...event,
+      attributes: safeAttributes(event.attributes, (key) => key.startsWith(OWN_PREFIX)),
+    }));
 
 function safeSpan(span: ReadableSpan): ReadableSpan {
-  const attributes: Attributes = {};
-  for (const [key, value] of Object.entries(span.attributes)) {
-    if (SPAN_ATTRIBUTES.has(key)) attributes[key] = value;
-  }
+  const attributes = safeAttributes(span.attributes, isSafe);
   return {
     name: span.name,
     kind: span.kind,
@@ -32,8 +56,7 @@ function safeSpan(span: ReadableSpan): ReadableSpan {
     duration: span.duration,
     status: { code: span.status.code },
     attributes,
-    // Raw automatic exception messages may contain request inputs or database parameters.
-    events: [],
+    events: safeEvents(span.events),
     links: [],
     ended: span.ended,
     resource: span.resource,

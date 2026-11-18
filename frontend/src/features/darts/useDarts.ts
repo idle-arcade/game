@@ -4,6 +4,7 @@ import {
   idleIncome,
   maxDarts as maxDartsFor,
   NO_PLAYERS,
+  reachedMilestones,
   reloadMs as reloadMsFor,
   settleIdle,
   targetScale,
@@ -25,6 +26,7 @@ import {
   TransportRejectedError,
   type DartsEngine,
   type DartsTransport,
+  type EngineHooks,
   type EngineSnapshot,
   type PurchaseCommand,
 } from "./sync/engine";
@@ -58,10 +60,10 @@ export type DartsGame = {
   targets: Target[];
   targetRadius: number;
   throwDart(targetId?: number): void;
-  /** Buys up to `count` levels, stopping at the first one that isn't possible. */
-  buy(id: UpgradeId, count: number): void;
-  /** Hires up to `count` players, stopping at the first one that isn't possible. */
-  hire(id: PlayerId, count: number): void;
+  /** Buys up to `count` levels, stopping at the first one that isn't possible; returns how many. */
+  buy(id: UpgradeId, count: number): number;
+  /** Hires up to `count` players, stopping at the first one that isn't possible; returns how many. */
+  hire(id: PlayerId, count: number): number;
 };
 
 let nextTargetId = 0;
@@ -105,13 +107,25 @@ async function loadRoom() {
   }
 }
 
+const hooks: EngineHooks = {
+  confirmed(before, after) {
+    for (const milestone of reachedMilestones(before, after)) analytics.dartsMilestone(milestone);
+  },
+};
+
+async function startEngine() {
+  const initial = await loadRoom();
+  analytics.dartsReturned(initial.awayMs);
+  return createDartsEngine(initial, transport, hooks);
+}
+
 // One engine per user and page load, so leaving the Darts page doesn't drop unsent actions.
 let session: { userId: string; engine: Promise<DartsEngine> } | null = null;
 
 function engineFor(userId: string) {
   if (session?.userId !== userId) {
     endDartsSession();
-    const engine = loadRoom().then((initial) => createDartsEngine(initial, transport));
+    const engine = startEngine();
     session = { userId, engine };
     engine.catch(() => {
       if (session?.engine === engine) session = null;
@@ -237,17 +251,12 @@ export function useDarts(): DartsGame {
   );
 
   const buy = useCallback(
-    (id: UpgradeId, count: number) => {
-      const bought = purchase({ type: "buy", upgrade: id }, count);
-      if (engine && bought > 0) {
-        analytics.upgradePurchased(id, bought, engine.getSnapshot().state.levels[id]);
-      }
-    },
-    [engine, purchase],
+    (id: UpgradeId, count: number) => purchase({ type: "buy", upgrade: id }, count),
+    [purchase],
   );
 
   const hire = useCallback(
-    (id: PlayerId, count: number) => void purchase({ type: "hire", player: id }, count),
+    (id: PlayerId, count: number) => purchase({ type: "hire", player: id }, count),
     [purchase],
   );
 

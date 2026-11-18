@@ -1,9 +1,9 @@
 import { randomUUID } from "node:crypto";
-import { trace } from "@opentelemetry/api";
 import { changeBalance, getBalance } from "../currency/balances.js";
 import { prisma } from "../db.js";
 import type { Prisma } from "../generated/prisma/client.js";
 import { Currency, Room } from "../generated/prisma/enums.js";
+import { dartsTelemetry, traceAmount, type DartsTelemetry } from "./telemetry.js";
 import {
   CLOCK_TOLERANCE_MS,
   compare,
@@ -11,6 +11,7 @@ import {
   MAX_THROWS_PER_SECOND,
   NO_PLAYERS,
   PLAYER_IDS,
+  reachedMilestones,
   replay,
   RULES_VERSION,
   settleIdle,
@@ -19,9 +20,9 @@ import {
   toAmountDto,
   UPGRADE_IDS,
   ZERO_LEVELS,
-  type Amount,
   type DartsBatch,
   type DartsFailReason,
+  type DartsLoadDto,
   type DartsRoomStateDto,
   type DartsSimState,
   type DartsStateResponse,
@@ -75,18 +76,34 @@ async function loadState(tx: Tx, userId: string, t: number): Promise<DartsSimSta
   return { balance, ...progress, t, paidT: t };
 }
 
-/** Pays the idle income since the room time `row.t` (e.g. while away) and moves it to `now`. */
-async function settleRoom(tx: Tx, userId: string, row: SyncRow, now: number) {
+/**
+ * Pays the idle income since the room time `row.t` (e.g. while away) and moves it to `now`.
+ * Records the payout under `tracePrefix`.
+ */
+async function settleRoom(
+  tx: Tx,
+  userId: string,
+  row: SyncRow,
+  now: number,
+  telemetry: DartsTelemetry,
+  tracePrefix: string,
+) {
   const progress = await loadProgress(tx, userId);
   // A batch may end slightly ahead of the server clock; time never goes back.
   const t = Math.max(row.t, now);
+  const tracer = telemetry.sim();
   const balance = await changeBalance(
     userId,
     Currency.beers,
-    (current) => settleIdle({ balance: current, ...progress, t: row.t, paidT: row.t }, t).balance,
+    (current) => {
+      const start = { balance: current, ...progress, t: row.t, paidT: row.t };
+      return settleIdle(start, t, tracer.observer).balance;
+    },
     tx,
   );
-  return { balance, ...progress, t, paidT: t };
+  const totals = tracer.finish(tracePrefix, progress.players);
+  const state: DartsSimState = { balance, ...progress, t, paidT: t };
+  return { state, awayMs: totals.awayMs + totals.longAwayMs };
 }
 
 const stateDto = (
@@ -103,34 +120,39 @@ const stateDto = (
   players: state.players,
 });
 
-const record = (attributes: Record<string, string | number>) =>
-  trace.getActiveSpan()?.setAttributes(attributes);
-
 /** Starts a new sync session, which outdates other tabs. */
-export function loadRoom(userId: string): Promise<DartsRoomStateDto> {
+export function loadRoom(userId: string): Promise<DartsLoadDto> {
+  const telemetry = dartsTelemetry();
   return prisma.$transaction(async (tx) => {
     const now = Date.now();
     const row = await lockSync(tx, userId, now);
-    const state = await settleRoom(tx, userId, row, now);
+    const { state, awayMs } = await settleRoom(tx, userId, row, now, telemetry, "darts.load.idle");
     const epoch = randomUUID();
     await tx.roomSync.update({ where: syncKey(userId), data: { epoch, lastSeq: 0, t: state.t } });
-    record({ "darts.epoch": epoch });
-    return stateDto({ epoch, lastSeq: 0 }, state);
+    telemetry.record({
+      "darts.epoch": epoch,
+      // An earlier session (another tab or an earlier visit) ends here.
+      "darts.load.replaced_session": row.epoch !== "",
+      "darts.load.since_activity_ms": now - row.t,
+      "darts.load.away_ms": awayMs,
+    });
+    return { ...stateDto({ epoch, lastSeq: 0 }, state), awayMs };
   });
 }
 
 export function roomState(userId: string, epoch: string): Promise<DartsStateResponse> {
+  const telemetry = dartsTelemetry();
   return prisma.$transaction(async (tx) => {
     const now = Date.now();
     const row = await lockSync(tx, userId, now);
     if (row.epoch !== epoch) {
-      record({ "darts.state.outcome": "stale_epoch" });
+      telemetry.record({ "darts.state.outcome": "stale_epoch" });
       return { ok: false, reason: "stale_epoch" } as const;
     }
     // The client restarts its clock at serverNow; its next actions must not precede `t`.
-    const state = await settleRoom(tx, userId, row, now);
+    const { state } = await settleRoom(tx, userId, row, now, telemetry, "darts.state.idle");
     await tx.roomSync.update({ where: syncKey(userId), data: { t: state.t } });
-    record({ "darts.state.outcome": "ok" });
+    telemetry.record({ "darts.state.outcome": "ok" });
     return { ok: true, state: stateDto(row, state) } as const;
   });
 }
@@ -150,8 +172,6 @@ function plausibleRate(batch: DartsBatch, roomT: number) {
   return (throws - THROW_BURST) * 1000 <= MAX_THROWS_PER_SECOND * (batch.endT - roomT);
 }
 
-const traceAmount = (a: Amount) => `${a.digits}e${a.zeros}`;
-
 class BatchFailed extends Error {
   constructor(readonly response: DartsSyncResponse) {
     super("Darts batch failed");
@@ -161,16 +181,17 @@ class BatchFailed extends Error {
 export async function syncRoom(userId: string, batch: DartsBatch): Promise<DartsSyncResponse> {
   const { seq } = batch;
   const fail = (reason: DartsFailReason) => new BatchFailed({ ok: false, seq, reason });
-  record({ "darts.sync.seq": seq, "darts.sync.actions": batch.actions.length });
+  const telemetry = dartsTelemetry();
   try {
     const response = await prisma.$transaction(async (tx) => {
       const row = await lockSync(tx, userId, Date.now());
+      telemetry.batch(batch, row.t, Date.now());
       if (row.epoch !== batch.epoch) throw fail("stale_epoch");
       if (batch.rulesVersion !== RULES_VERSION) throw fail("rules_version");
       if (seq === row.lastSeq) {
         // A retry of the batch applied last, whose response got lost: answer with the state it
         // led to instead of applying it again.
-        record({ "darts.sync.outcome": "retry" });
+        telemetry.syncOutcome("retry");
         return { ok: true, seq, state: stateDto(row, await loadState(tx, userId, row.t)) } as const;
       }
       if (seq !== row.lastSeq + 1) throw fail("out_of_order");
@@ -180,20 +201,25 @@ export async function syncRoom(userId: string, batch: DartsBatch): Promise<Darts
 
       const before = await loadProgress(tx, userId);
       let after = before;
+      const tracer = telemetry.sim();
       const balance = await changeBalance(
         userId,
         Currency.beers,
         (current) => {
+          telemetry.record({ "darts.sync.balance_before": traceAmount(current) });
           const start = { balance: current, ...before, t: roomT, paidT: roomT };
-          const result = replay(start, batch.actions, batch.endT);
+          const result = replay(start, batch.actions, batch.endT, tracer.observer);
           after = { levels: result.levels, players: result.players };
           return result.balance;
         },
         tx,
       );
+      tracer.finish("darts.sync.idle", after.players);
+      telemetry.record({ "darts.sync.balance_after": traceAmount(balance) });
       // The sim returns new objects only for actual purchases.
       if (after.levels !== before.levels || after.players !== before.players) {
         await saveProgress(tx, userId, after);
+        telemetry.milestones(reachedMilestones(before, after));
       }
       await tx.roomSync.update({
         where: syncKey(userId),
@@ -201,15 +227,13 @@ export async function syncRoom(userId: string, batch: DartsBatch): Promise<Darts
       });
 
       const predicted = fromAmountDto(batch.predicted);
-      record(
-        compare(predicted, balance) === 0
-          ? { "darts.sync.outcome": "ok" }
-          : {
-              "darts.sync.outcome": "mismatch",
-              "darts.sync.predicted": traceAmount(predicted),
-              "darts.sync.actual": traceAmount(balance),
-            },
-      );
+      if (compare(predicted, balance) === 0) telemetry.syncOutcome("ok");
+      else {
+        telemetry.syncOutcome("mismatch", {
+          "darts.sync.predicted": traceAmount(predicted),
+          "darts.sync.actual": traceAmount(balance),
+        });
+      }
       return {
         ok: true,
         seq,
@@ -222,11 +246,19 @@ export async function syncRoom(userId: string, batch: DartsBatch): Promise<Darts
     return response;
   } catch (error) {
     if (error instanceof SimRejectError) {
-      record({ "darts.sync.outcome": "rejected", "darts.sync.reject_reason": error.reason });
+      const index = error.actionIndex;
+      telemetry.syncOutcome("rejected", {
+        "darts.sync.reject_reason": error.reason,
+        // Without an index, the batch end itself was rejected.
+        ...(index !== undefined && {
+          "darts.sync.reject_action_index": index,
+          "darts.sync.reject_action_type": batch.actions[index]!.type,
+        }),
+      });
       return { ok: false, seq, reason: "rejected" };
     }
     if (error instanceof BatchFailed) {
-      if (error.response.ok === false) record({ "darts.sync.outcome": error.response.reason });
+      if (error.response.ok === false) telemetry.syncOutcome(error.response.reason);
       return error.response;
     }
     throw error;
