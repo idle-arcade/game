@@ -107,7 +107,6 @@
     "throw": "Throw dart",
     "reloading": "Reloading darts…",
     "upgrades": "Upgrades",
-    "locked": "Not unlocked yet",
     "upgrade": {
       "betterDarts": "Better Darts",
       "moreDarts": "More Darts",
@@ -125,6 +124,38 @@
       "elsewhere": "Darts was opened in another tab or window. Reload this page to continue playing here.",
       "generic": "Your game could not be synchronized with the server. Reload the page to continue.",
       "reload": "Reload page"
+    },
+    "perSecond": "{{amount}} /s",
+    "buyUpgrade": "Buy {{count}}x {{name}}",
+    "buyAmount": {
+      "label": "Purchase amount",
+      "max": "Max"
+    },
+    "players": {
+      "title": "Automatic players",
+      "shop": "Shop",
+      "empty": "Hire your first automatic player in the shop. Players throw on their own and earn Beers.",
+      "next": "Next player type: ???",
+      "unknown": "???",
+      "hire": "Hire {{count}}x {{name}}",
+      "owned": "Owned: {{count}}",
+      "each": "{{amount}} 🍺/s each",
+      "throws": "{{amount}} throws/s",
+      "hits": "{{percent}}% hits",
+      "requiresPlayer": "Requires 1 {{name}}",
+      "requiresEndgame": "Requires max Less cooldown and Bigger targets",
+      "train": "Train",
+      "trainingSoon": "Training is coming soon",
+      "moduleSlot": "Module slot {{slot}}",
+      "modulesSoon": "Modules are coming soon",
+      "name": {
+        "pubPlayer": "Pub player",
+        "clubPlayer": "Club player",
+        "leaguePlayer": "League player",
+        "tournamentPlayer": "Tournament player",
+        "pro": "Pro",
+        "worldChampion": "World champion"
+      }
     }
   },
   "shell": {

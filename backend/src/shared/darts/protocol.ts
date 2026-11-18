@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { amountDtoSchema, fromAmountDto, type AmountDto } from "../currency/dto.js";
+import { PLAYER_IDS, type Players } from "./players.js";
 import { UPGRADE_IDS, type Levels } from "./rules.js";
 import type { DartsSimState } from "./sim.js";
 
@@ -16,6 +17,7 @@ const gameTime = z.int().nonnegative().max(Number.MAX_SAFE_INTEGER);
 export const dartsActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("throw"), t: gameTime, result: z.enum(["board", "target"]) }),
   z.object({ type: z.literal("buy"), t: gameTime, upgrade: z.enum(UPGRADE_IDS) }),
+  z.object({ type: z.literal("hire"), t: gameTime, player: z.enum(PLAYER_IDS) }),
 ]);
 
 export const dartsBatchSchema = z.object({
@@ -39,6 +41,7 @@ export type DartsRoomStateDto = {
   lastSeq: number;
   balance: AmountDto;
   levels: Levels;
+  players: Players;
 };
 
 export type DartsFailReason =
@@ -59,5 +62,8 @@ export type DartsStateResponse =
 export const simStateFromDto = (d: DartsRoomStateDto): DartsSimState => ({
   balance: fromAmountDto(d.balance),
   levels: d.levels,
+  players: d.players,
   t: d.t,
+  // The server settles idle income whenever it sends a state.
+  paidT: d.t,
 });

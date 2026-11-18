@@ -1,5 +1,13 @@
 @import "tailwindcss";
 @custom-variant compact-desktop (@media (min-width: 48rem) and (max-height: 60rem));
+@keyframes darts-flight {
+  from {
+    left: 0;
+  }
+  to {
+    left: calc(100% - 1em);
+  }
+}
 @keyframes darts-reload {
   from {
     transform: scaleX(0);

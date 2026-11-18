@@ -1,13 +1,20 @@
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { TRPCClientError } from "@trpc/client";
 import {
+  idleIncome,
   maxDarts as maxDartsFor,
+  NO_PLAYERS,
   reloadMs as reloadMsFor,
+  settleIdle,
   targetScale,
   ZERO,
   ZERO_LEVELS,
   type Amount,
+  type DartsSimState,
   type Levels,
+  type PlayerId,
+  type Players,
+  type Ratio,
   type UpgradeId,
 } from "@idle-arcade/backend/shared";
 import { trpcClient } from "../../lib/trpc";
@@ -19,6 +26,7 @@ import {
   type DartsEngine,
   type DartsTransport,
   type EngineSnapshot,
+  type PurchaseCommand,
 } from "./sync/engine";
 
 const TARGET_COUNT = 4;
@@ -28,6 +36,8 @@ const REQUEST_TIMEOUT_MS = 10_000;
 const LOAD_ATTEMPTS = 3;
 const LOAD_RETRY_BASE_MS = 1000;
 const LOGOUT_FLUSH_TIMEOUT_MS = 3000;
+/** How often the shown balance adds idle income. Display only; nothing is sent. */
+const IDLE_TICK_MS = 250;
 
 export type Target = { id: number; x: number; y: number };
 
@@ -35,8 +45,12 @@ export type DartsGame = {
   status: "loading" | EngineSnapshot["status"];
   stopReason?: EngineSnapshot["stopReason"];
   resyncedAt?: number;
+  /** Includes the idle income earned since the last step, as the next settlement will pay it. */
   balance: Amount;
   levels: Levels;
+  players: Players;
+  /** Beers per second of all owned players while active. */
+  idleIncome: Ratio;
   dartsLeft: number;
   maxDarts: number;
   reloading: boolean;
@@ -44,7 +58,10 @@ export type DartsGame = {
   targets: Target[];
   targetRadius: number;
   throwDart(targetId?: number): void;
-  buy(id: UpgradeId, count: 1 | 10): void;
+  /** Buys up to `count` levels, stopping at the first one that isn't possible. */
+  buy(id: UpgradeId, count: number): void;
+  /** Hires up to `count` players, stopping at the first one that isn't possible. */
+  hire(id: PlayerId, count: number): void;
 };
 
 let nextTargetId = 0;
@@ -127,6 +144,22 @@ export function endDartsSession() {
 
 const noopSubscribe = () => () => {};
 
+/** Game time, refreshed every IDLE_TICK_MS while `active`; null before the first tick. */
+function useGameTime(engine: DartsEngine | null, active: boolean) {
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => {
+    if (!engine || !active) return;
+    const timer = setInterval(() => setNow(engine.now()), IDLE_TICK_MS);
+    return () => clearInterval(timer);
+  }, [engine, active]);
+  return now;
+}
+
+/** The state as of `now`, with idle income paid; shown only, never sent. */
+function project(state: DartsSimState, now: number | null) {
+  return now !== null && now > state.t ? settleIdle(state, now) : state;
+}
+
 export function useDarts(): DartsGame {
   const userId = useCurrentUser()?.id;
   const [engine, setEngine] = useState<DartsEngine | null>(null);
@@ -155,6 +188,9 @@ export function useDarts(): DartsGame {
   );
 
   const levels = snapshot?.state.levels ?? ZERO_LEVELS;
+  const players = snapshot?.state.players ?? NO_PLAYERS;
+  const income = idleIncome(players);
+  const now = useGameTime(engine, snapshot?.status === "running" && income.num > 0n);
   const maxDarts = maxDartsFor(levels);
   const reloadMs = reloadMsFor(levels);
   const darts = dartsLeft ?? maxDarts;
@@ -191,16 +227,28 @@ export function useDarts(): DartsGame {
     [engine, reloading, darts, reloadMs, maxDarts],
   );
 
+  const purchase = useCallback(
+    (command: PurchaseCommand, count: number) => {
+      let done = 0;
+      while (engine && done < count && engine.dispatch(command)) done++;
+      return done;
+    },
+    [engine],
+  );
+
   const buy = useCallback(
-    (id: UpgradeId, count: 1 | 10) => {
-      if (!engine) return;
-      let bought = 0;
-      while (bought < count && engine.dispatch({ type: "buy", upgrade: id })) bought++;
-      if (bought > 0) {
+    (id: UpgradeId, count: number) => {
+      const bought = purchase({ type: "buy", upgrade: id }, count);
+      if (engine && bought > 0) {
         analytics.upgradePurchased(id, bought, engine.getSnapshot().state.levels[id]);
       }
     },
-    [engine],
+    [engine, purchase],
+  );
+
+  const hire = useCallback(
+    (id: PlayerId, count: number) => void purchase({ type: "hire", player: id }, count),
+    [purchase],
   );
 
   const scale = targetScale(levels);
@@ -208,8 +256,10 @@ export function useDarts(): DartsGame {
     status: loadFailed ? "stopped" : (snapshot?.status ?? "loading"),
     stopReason: loadFailed ? "resync_failed" : snapshot?.stopReason,
     resyncedAt: snapshot?.resyncedAt,
-    balance: snapshot?.state.balance ?? ZERO,
+    balance: snapshot ? project(snapshot.state, now).balance : ZERO,
     levels,
+    players,
+    idleIncome: income,
     dartsLeft: darts,
     maxDarts,
     reloading,
@@ -218,5 +268,6 @@ export function useDarts(): DartsGame {
     targetRadius: (BASE_TARGET_RADIUS * scale.num) / scale.den,
     throwDart,
     buy,
+    hire,
   };
 }

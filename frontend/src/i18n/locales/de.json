@@ -107,7 +107,6 @@
     "throw": "Dart werfen",
     "reloading": "Darts werden nachgeladen…",
     "upgrades": "Upgrades",
-    "locked": "Noch nicht freigeschaltet",
     "upgrade": {
       "betterDarts": "Bessere Darts",
       "moreDarts": "Mehr Darts",
@@ -125,6 +124,38 @@
       "elsewhere": "Darts wurde in einem anderen Tab oder Fenster geöffnet. Lade diese Seite neu, um hier weiterzuspielen.",
       "generic": "Dein Spiel konnte nicht mit dem Server synchronisiert werden. Lade die Seite neu, um weiterzuspielen.",
       "reload": "Seite neu laden"
+    },
+    "perSecond": "{{amount}} /s",
+    "buyUpgrade": "{{count}}x {{name}} kaufen",
+    "buyAmount": {
+      "label": "Kaufmenge",
+      "max": "Max"
+    },
+    "players": {
+      "title": "Automatische Spieler",
+      "shop": "Shop",
+      "empty": "Stelle im Shop deinen ersten automatischen Spieler ein. Spieler werfen selbst und verdienen Beers.",
+      "next": "Nächste Spieler-Art: ???",
+      "unknown": "???",
+      "hire": "{{count}}x {{name}} einstellen",
+      "owned": "Im Besitz: {{count}}",
+      "each": "je {{amount}} 🍺/s",
+      "throws": "{{amount}} Würfe/s",
+      "hits": "{{percent}}% Treffer",
+      "requiresPlayer": "Benötigt 1 {{name}}",
+      "requiresEndgame": "Benötigt maximale Weniger Abklingzeit und Größere Ziele",
+      "train": "Trainieren",
+      "trainingSoon": "Training kommt bald",
+      "moduleSlot": "Modul-Slot {{slot}}",
+      "modulesSoon": "Module kommen bald",
+      "name": {
+        "pubPlayer": "Kneipenspieler",
+        "clubPlayer": "Vereinsspieler",
+        "leaguePlayer": "Ligaspieler",
+        "tournamentPlayer": "Turnierspieler",
+        "pro": "Profi",
+        "worldChampion": "Weltmeister"
+      }
     }
   },
   "shell": {

@@ -1,7 +1,7 @@
 import { amount, multiplyRatio, type Amount } from "../currency/amount.js";
 
 /** Bump on any rule or simulation change, so outdated clients stop instead of desyncing. */
-export const RULES_VERSION = "darts-2";
+export const RULES_VERSION = "darts-3";
 
 export const UPGRADE_IDS = ["betterDarts", "moreDarts", "lessCooldown", "biggerTargets"] as const;
 export type UpgradeId = (typeof UPGRADE_IDS)[number];
@@ -28,8 +28,8 @@ type UpgradeDef = {
 export const UPGRADES: Record<UpgradeId, UpgradeDef> = {
   betterDarts: { maxLevel: null, baseCost: amount(8), growthNum: 141n, growthDen: 100n },
   moreDarts: { maxLevel: null, baseCost: amount(20), growthNum: 3n, growthDen: 2n },
-  lessCooldown: { maxLevel: 50, baseCost: amount(75), growthNum: 7n, growthDen: 5n },
-  biggerTargets: { maxLevel: 10, baseCost: amount(40), growthNum: 5n, growthDen: 1n },
+  lessCooldown: { maxLevel: 50, baseCost: amount(75), growthNum: 33n, growthDen: 20n },
+  biggerTargets: { maxLevel: 10, baseCost: amount(1000), growthNum: 12n, growthDen: 1n },
 };
 
 const BASE_REWARD: Record<ThrowResult, Amount> = { board: amount(1), target: amount(10) };
@@ -45,6 +45,11 @@ export function isMaxLevel(id: UpgradeId, level: number) {
   const { maxLevel } = UPGRADES[id];
   return maxLevel !== null && level >= maxLevel;
 }
+
+/** Less Cooldown and Bigger Targets maxed: unlocks the top automatic players. */
+export const isEndgame = (levels: Levels) =>
+  isMaxLevel("lessCooldown", levels.lessCooldown) &&
+  isMaxLevel("biggerTargets", levels.biggerTargets);
 
 /** Price of going from `level` to `level + 1`. */
 export function upgradeCost(id: UpgradeId, level: number): Amount {

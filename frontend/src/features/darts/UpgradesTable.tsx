@@ -1,59 +1,58 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  compare,
-  formatAmount,
-  isMaxLevel,
-  UPGRADE_IDS,
-  UPGRADES,
-  upgradeCost,
-} from "@idle-arcade/backend/shared";
+import { isMaxLevel, UPGRADE_IDS, UPGRADES, upgradeCost } from "@idle-arcade/backend/shared";
+import { BuyAmountTabs } from "./BuyAmountTabs";
+import { quote, type BuyAmount } from "./bulk";
+import { PriceButton } from "./PriceButton";
 import type { DartsGame } from "./useDarts";
 
 export function UpgradesTable({ game }: { game: DartsGame }) {
   const { t } = useTranslation();
   const { status, balance, levels, buy } = game;
+  const [amount, setAmount] = useState<BuyAmount>(1);
 
   return (
-    <div>
-      <h2 className="mb-1 text-sm">{t("darts.upgrades")}</h2>
-      <table className="w-full border text-sm">
-        <tbody>
-          {UPGRADE_IDS.map((id) => {
-            const level = levels[id];
-            const { maxLevel } = UPGRADES[id];
-            const maxed = isMaxLevel(id, level);
-            const cost = maxed ? null : upgradeCost(id, level);
-            const disabled = status !== "running" || !cost || compare(balance, cost) < 0;
-            return (
-              <tr key={id} className="border-b">
-                {([1, 10] as const).map((count) => (
-                  <td key={count} className="p-1">
-                    <button
-                      type="button"
-                      disabled={disabled}
-                      onClick={() => buy(id, count)}
-                      className="rounded border px-1 disabled:opacity-40"
-                    >
-                      {count}x
-                    </button>
-                  </td>
-                ))}
-                <td className="p-1">
-                  {t(`darts.upgrade.${id}`)}{" "}
-                  <span className="text-xs">
-                    {maxLevel === null
-                      ? t("darts.levelNoMax", { level })
-                      : t("darts.level", { level, max: maxLevel })}
-                  </span>
-                </td>
-                <td className="p-1 text-right">
-                  {cost ? `🍺 ${formatAmount(cost)}` : t("darts.max")}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+    <section aria-labelledby="darts-upgrades">
+      <div className="flex items-center justify-between gap-2">
+        <h2 id="darts-upgrades" className="text-sm">
+          {t("darts.upgrades")}
+        </h2>
+        <BuyAmountTabs value={amount} onChange={setAmount} />
+      </div>
+      <ul className="mt-1 divide-y border">
+        {UPGRADE_IDS.map((id) => {
+          const level = levels[id];
+          const { maxLevel } = UPGRADES[id];
+          const name = t(`darts.upgrade.${id}`);
+          const offer = quote(
+            (i) => (isMaxLevel(id, level + i) ? null : upgradeCost(id, level + i)),
+            amount,
+            balance,
+          );
+          return (
+            <li key={id} className="flex items-center justify-between gap-2 p-1.5">
+              <div className="leading-tight">
+                <p className="text-sm">{name}</p>
+                <p className="text-xs opacity-60">
+                  {maxLevel === null
+                    ? t("darts.levelNoMax", { level })
+                    : t("darts.level", { level, max: maxLevel })}
+                </p>
+              </div>
+              {offer ? (
+                <PriceButton
+                  quote={offer}
+                  disabled={status !== "running"}
+                  label={t("darts.buyUpgrade", { count: offer.count, name })}
+                  onBuy={(count) => buy(id, count)}
+                />
+              ) : (
+                <span className="text-xs opacity-60">{t("darts.max")}</span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }

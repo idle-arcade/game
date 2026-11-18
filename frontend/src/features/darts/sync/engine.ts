@@ -13,6 +13,7 @@ import {
   type DartsSimState,
   type DartsStateResponse,
   type DartsSyncResponse,
+  type PlayerId,
   type ThrowResult,
   type UpgradeId,
 } from "@idle-arcade/backend/shared";
@@ -42,11 +43,17 @@ export type EngineSnapshot = {
   resyncedAt?: number;
 };
 
-export type DartsCommand =
-  { type: "throw"; result: ThrowResult } | { type: "buy"; upgrade: UpgradeId };
+export type PurchaseCommand =
+  { type: "buy"; upgrade: UpgradeId } | { type: "hire"; player: PlayerId };
+export type DartsCommand = { type: "throw"; result: ThrowResult } | PurchaseCommand;
+
+/** Purchases are sent right away, so the server confirms spending quickly. */
+const isPurchase = (action: DartsAction) => action.type !== "throw";
 
 export type DartsEngine = {
   getSnapshot(): EngineSnapshot;
+  /** Current game time (ms), on the clock the actions are stamped with. */
+  now(): number;
   subscribe(listener: () => void): () => void;
   dispatch(command: DartsCommand): boolean;
   /** Sends everything queued; resolves once the server has it or the engine no longer runs. */
@@ -142,9 +149,7 @@ export function createDartsEngine(
         }
         lastSeq = response.seq;
         const flushNow =
-          drainWaiters.length > 0 ||
-          queue.length >= MAX_BATCH_ACTIONS ||
-          queue.some((a) => a.type === "buy");
+          drainWaiters.length > 0 || queue.length >= MAX_BATCH_ACTIONS || queue.some(isPurchase);
         if (flushNow) flush();
         settleDrain();
       },
@@ -199,6 +204,7 @@ export function createDartsEngine(
 
   return {
     getSnapshot: () => snapshot,
+    now: () => clock(),
     subscribe(listener) {
       listeners.add(listener);
       return () => listeners.delete(listener);
@@ -215,7 +221,7 @@ export function createDartsEngine(
       }
       queue.push(action);
       update({ state });
-      if (action.type === "buy" || queue.length >= MAX_BATCH_ACTIONS) flush();
+      if (isPurchase(action) || queue.length >= MAX_BATCH_ACTIONS) flush();
       return true;
     },
     drain() {
