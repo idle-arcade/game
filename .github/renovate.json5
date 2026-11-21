@@ -1,12 +1,8 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  // Covers npm workspaces + lockfile, .nvmrc, Dockerfiles, Compose files and GitHub Actions.
-  // Auto-merge stays off; every update goes through normal review and CI.
   extends: ["config:recommended", ":disableDependencyDashboard"],
   timezone: "Europe/Berlin",
   schedule: ["* 0-11 * * 6"],
-  // No PR limits: updates that wait on upstream (e.g. tRPC on TypeScript 7.1) would otherwise
-  // hold back all others. The weekly schedule keeps the volume low.
   prConcurrentLimit: 0,
   prHourlyLimit: 0,
   minimumReleaseAge: "3 days",
@@ -52,8 +48,6 @@
       versioning: "node",
     },
     {
-      // Keep TypeScript majors open as a PR even after one was closed (TS 7 was, in #161), so the
-      // upgrade stays visible while it waits on its dependencies; tRPC updates wait on it.
       matchPackageNames: ["typescript"],
       recreateWhen: "always",
     },
