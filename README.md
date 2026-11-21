@@ -5,7 +5,7 @@
 - **Monorepo:** npm workspaces (`frontend/`, `backend/`), Node.js 24, TypeScript
 - **Frontend:** React, Vite, Tailwind CSS, TanStack Router, TanStack Query, react-i18next
 - **Backend:** Express, tRPC, Zod, Better Auth
-- **Database:** MySQL 8.4, Prisma
+- **Database:** MySQL 9.7, Prisma
 - **Tooling:** ESLint, Prettier, Docker Compose, nginx
 - **CI/CD:** GitHub Actions, Docker Buildx, GHCR, Dokploy, markdownlint, Hadolint, actionlint, ShellCheck
 
