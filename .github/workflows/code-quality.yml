@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: code-quality-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   changes:
@@ -147,7 +147,7 @@ jobs:
   summary:
     name: Code quality summary
     needs: [changes, typecheck, lint, format, markdown, dockerfile, compose, workflow, shell]
-    if: always()
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
