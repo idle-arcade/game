@@ -1,11 +1,10 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  // Covers npm workspaces + lockfile, .nvmrc, Dockerfiles, Compose files and GitHub Actions.
-  // Auto-merge stays off; every update goes through normal review and CI.
   extends: ["config:recommended", ":disableDependencyDashboard"],
   timezone: "Europe/Berlin",
   schedule: ["* 0-11 * * 6"],
-  prConcurrentLimit: 5,
+  prConcurrentLimit: 0,
+  prHourlyLimit: 0,
   minimumReleaseAge: "3 days",
   // Match the npm bundled with Node; npm 12 rejects the lockfile regeneration (EALLOWREMOTE).
   constraints: { npm: "<12" },
@@ -47,6 +46,10 @@
       // Only LTS Node majors (node versioning already applies to .nvmrc and node images).
       matchPackageNames: ["@types/node"],
       versioning: "node",
+    },
+    {
+      matchPackageNames: ["typescript"],
+      recreateWhen: "always",
     },
     {
       // @trpc/openapi peers on one exact @trpc/server, so all tRPC packages are pinned and
