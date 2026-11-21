@@ -19,14 +19,12 @@ Nach aktuellem Stand haben wir bisher noch keine speziellen Begriffe, Akronyme o
 #### 1.4 Referenzen
 
 - UI-Mockups [GitHub]: ![Bild des Mockups](mockups.png)
-  Der Darts-Idle-Mockup zeigt beispielhafte Preise, Produktionswerte und spätere Ausbaustufen.
-  Die Spielwerte stehen in der Balancing-Tabelle. Der Funktionsumfang von US17 steht in Abschnitt 2.14.
-- UML-Verhaltensdiagramme [17.10.2026, GitHub]: ![Bild der UML-Verhaltensdiagramme](idle-arcade-use-cases.png)
-- Aktivitätsdiagramme [25.10.2026, GitHub]: ![Bild der Aktivitätsdiagramme](activity-diagrams.png)
-- UML-Klassendiagramme-Backend [29.10.2026, GitHub]: ![Bild des Backend-Klassendiagramms](class-diagrams/backend.png)
-- UML-Klassendiagramme-Frontend [29.10.2026, GitHub]: ![Bild des Frontend-Klassendiagramms](class-diagrams/frontend.png)
-- UML-Klassendiagramme-Persistence [29.10.2026, GitHub]: ![Bild des Persistence-Klassendiagramms](class-diagrams/persistence.png)
-- Balancing-Tabelle [13.11.2026, GitHub]: [balancing.ods](balancing.ods)
+- UML-Verhaltensdiagramme [GitHub]: ![Bild der UML-Verhaltensdiagramme](idle-arcade-use-cases.png)
+- Aktivitätsdiagramme [GitHub]: ![Bild der Aktivitätsdiagramme](activity-diagrams.png)
+- UML-Klassendiagramme-Backend [GitHub]: ![Bild des Backend-Klassendiagramms](class-diagrams/backend.png)
+- UML-Klassendiagramme-Frontend [GitHub]: ![Bild des Frontend-Klassendiagramms](class-diagrams/frontend.png)
+- UML-Klassendiagramme-Persistence [GitHub]: ![Bild des Persistence-Klassendiagramms](class-diagrams/persistence.png)
+- Balancing-Tabelle [GitHub]: [balancing.ods](balancing.ods)
 
 ### 2. Funktionale Anforderungen
 
@@ -237,15 +235,11 @@ Das Balancing und die Spiellogik wurden erfolgreich getestet.
 
 #### 2.14 Automatische Darts-Spieler (US17)
 
-Für US17 gelten folgende Anforderungen.
-
 - User Story: <https://github.com/idle-arcade/game/issues/193>
 - Im Darts-Shop können Spieler automatische Werfer mit Beers anheuern. Die Typen reichen vom Kneipenspieler über Vereins-, Liga- und Turnierspieler bis zum Profi und Weltmeister. Der erste Typ ist sofort verfügbar. Jeder weitere Typ setzt Besitz des vorherigen Typs voraus. Profi und Weltmeister erfordern zusätzlich die maximalen Stufen der Upgrades für Abklingzeit und Zielgröße. Basispreise, Preissteigerung und Produktionsraten stehen in der [Balancing-Tabelle](balancing.ods).
 - Der Shop zeigt Preise, Besitzmengen und Produktion pro Spieler sowie die Freischaltbedingung des nächsten gesperrten Typs. Für Käufe stehen die Mengen 1, 10, 100 und Max zur Wahl. Die Kaufvorschau weist Preis und Bezahlbarkeit für die gewählte Menge aus. Die Spielerübersicht zeigt die Produktion je Typ und die Anzeige am Guthaben die Gesamtproduktion.
 - Automatische Spieler erzeugen Beers für dasselbe Guthaben, das auch manuelle Dartwürfe, Upgrade-Käufe und das Anheuern verwenden. Der Server rechnet die bisherige Produktion ab, bevor ein Kauf die Produktionsrate ändert. Besitz, bestätigtes Guthaben und Abrechnungsfortschritt sind dem Konto zugeordnet und bleiben beim Neuladen erhalten.
-- Die [Balancing-Tabelle](balancing.ods) modelliert für die ersten 24 Stunden einer Abwesenheit ein Fünfzehntel der vollen Rate und danach ein Sechzigstel. Der Beginn der Abwesenheit beim Schließen des Raums sowie bei sichtbaren inaktiven oder ausgeblendeten Tabs ist mit [PR #261](https://github.com/idle-arcade/game/pull/261) noch abzugleichen.
 - Der Server entscheidet über die Annahme von Aktionen und den gültigen Spielstand. Der Client gleicht seine Vorschau mit der Serverantwort ab. Wiederholte Anfragen dürfen bestätigte Käufe und Gutschriften nur einmal auslösen. Nach einer Unterbrechung oder einem Tabwechsel muss der Client den bestätigten Stand wiederherstellen und noch unklare Aktionen abgleichen.
-- Training, Module, Boni und Herausforderungen gehören zu späteren Ausbaustufen.
 
 ### 3. Nicht-funktionale Anforderungen
 
