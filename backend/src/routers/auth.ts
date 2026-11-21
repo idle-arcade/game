@@ -1,5 +1,6 @@
 import { fromNodeHeaders } from "better-auth/node";
 import { auth } from "../auth.js";
+import { identifyUser } from "../observability/trpc.js";
 import { credentialsSchema, loginSchema } from "../schemas/auth.js";
 import {
   forwardAuthHeaders,
@@ -33,6 +34,7 @@ export const authRouter = router({
           returnHeaders: true,
         });
         forwardAuthHeaders(ctx.res, headers);
+        identifyUser(response.user.id);
         return toPublicUser(response.user);
       } catch (error) {
         throw toTRPCError(error);
@@ -50,6 +52,7 @@ export const authRouter = router({
           returnHeaders: true,
         });
         forwardAuthHeaders(ctx.res, headers);
+        identifyUser(response.user.id);
         return toPublicUser(response.user);
       } catch (error) {
         throw toLoginTRPCError(error);

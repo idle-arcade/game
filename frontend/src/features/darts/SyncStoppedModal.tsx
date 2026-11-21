@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../components/ui/Button";
+import { analytics } from "../analytics/analytics";
 import type { DartsGame } from "./useDarts";
 
 export function SyncStoppedModal({ reason }: { reason: DartsGame["stopReason"] }) {
@@ -8,6 +9,10 @@ export function SyncStoppedModal({ reason }: { reason: DartsGame["stopReason"] }
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const descriptionId = useId();
+
+  useEffect(() => {
+    if (reason) analytics.syncStopped(reason);
+  }, [reason]);
 
   useEffect(() => {
     const dialog = dialogRef.current;

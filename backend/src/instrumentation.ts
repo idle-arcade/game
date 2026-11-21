@@ -4,6 +4,7 @@ import { IncomingMessage } from "node:http";
 import { NodeSDK } from "@opentelemetry/sdk-node";
 import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
 import { RuntimeNodeInstrumentation } from "@opentelemetry/instrumentation-runtime-node";
+import { PrismaInstrumentation } from "@prisma/instrumentation";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-proto";
 import { envDetector } from "@opentelemetry/resources";
 import { privacyExporter } from "./observability/exporter.js";
@@ -42,6 +43,8 @@ if (process.env.OTEL_ENABLED === "true" && process.env.OTEL_SDK_DISABLED !== "tr
         },
       }),
       new RuntimeNodeInstrumentation({ monitoringPrecision: 5000 }),
+      // Query and transaction spans, e.g. to see how long syncs wait for row locks.
+      new PrismaInstrumentation(),
     ],
   });
   sdk.start();

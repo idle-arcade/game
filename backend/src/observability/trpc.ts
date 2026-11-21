@@ -14,10 +14,16 @@ const duration = meter.createHistogram("trpc.server.duration", {
 
 type ProcedureResult = { ok: boolean; error?: TRPCError };
 
+/** Associates the active request span with the account it acts for. */
+export function identifyUser(userId: string) {
+  trace.getActiveSpan()?.setAttribute("user.id", userId);
+}
+
 export async function observeProcedure<T extends ProcedureResult>(
   path: string,
   type: string,
   headers: IncomingHttpHeaders,
+  userId: string | undefined,
   next: () => Promise<T>,
 ): Promise<T> {
   if (path === "health.check") return next();
@@ -25,6 +31,7 @@ export async function observeProcedure<T extends ProcedureResult>(
   return tracer.startActiveSpan(`trpc ${path}`, { attributes }, context.active(), async (span) => {
     const id = rybbitCorrelationId(headers["x-rybbit-correlation-id"]);
     if (id) span.setAttribute("rybbit.correlation_id", id);
+    if (userId) span.setAttribute("user.id", userId);
     const started = performance.now();
     let code = "OK";
     try {

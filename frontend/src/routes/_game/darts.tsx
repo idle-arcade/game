@@ -5,7 +5,9 @@ import { OnboardingModal } from "../../features/shell/OnboardingModal";
 import { persistentStorage } from "../../lib/storage";
 import { DartBoard } from "../../features/darts/DartBoard";
 import { UpgradesTable } from "../../features/darts/UpgradesTable";
-import { LockedPanel } from "../../features/darts/LockedPanel";
+import { PlayerRows } from "../../features/darts/PlayerRows";
+import { PlayerShop } from "../../features/darts/PlayerShop";
+import { formatRatio } from "../../features/darts/format";
 import { SyncStoppedModal } from "../../features/darts/SyncStoppedModal";
 import { useDarts } from "../../features/darts/useDarts";
 import { formatAmount } from "@idle-arcade/backend/shared";
@@ -37,17 +39,24 @@ function DartsRoom() {
 
       <div className="grid flex-1 grid-cols-1 divide-y md:grid-cols-[18rem_1fr_20rem] md:divide-x md:divide-y-0">
         <section aria-label={t("rooms.darts")} className="flex flex-col gap-4 p-4">
-          <p className="text-center text-lg font-semibold">
-            <span aria-hidden="true">🍺 </span>
-            <span className="sr-only">{t("darts.balance")}: </span>
-            {game.status === "loading" ? t("darts.loading") : formatAmount(game.balance)}
-          </p>
+          <div className="text-center">
+            <p className="text-lg font-semibold">
+              <span aria-hidden="true">🍺 </span>
+              <span className="sr-only">{t("darts.balance")}: </span>
+              {game.status === "loading" ? t("darts.loading") : formatAmount(game.balance)}
+            </p>
+            {game.idleIncome.num > 0n && (
+              <p className="text-xs opacity-70">
+                +{t("darts.perSecond", { amount: formatRatio(game.idleIncome) })}
+              </p>
+            )}
+          </div>
           <ResyncNotice at={game.resyncedAt} />
           <DartBoard game={game} />
           <UpgradesTable game={game} />
         </section>
-        <LockedPanel />
-        <LockedPanel />
+        <PlayerRows game={game} />
+        <PlayerShop game={game} />
       </div>
 
       {game.status === "stopped" && <SyncStoppedModal reason={game.stopReason} />}

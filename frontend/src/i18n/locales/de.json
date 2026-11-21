@@ -38,7 +38,7 @@
     "privacy": "Datenschutzerklärung",
     "close": "Schließen",
     "operator": "Diensteanbieter / Angaben gemäß § 5 DDG",
-    "updated": "Stand: 21. Oktober 2026",
+    "updated": "Stand: 18. November 2026",
     "authority": "Beschwerde bei der LDI NRW",
     "privacySections": {
       "controller": {
@@ -47,11 +47,11 @@
       },
       "hosting": {
         "title": "Bereitstellung, Hosting und Sicherheit",
-        "body": "Wir betreiben das Spiel auf deutscher Infrastruktur von netcup und Index Hosting. Diese Hosting-Dienstleister können im Rahmen der technischen Bereitstellung auf Daten zugreifen und werden, soweit erforderlich, als Auftragsverarbeiter nach Art. 28 DSGVO eingesetzt.\n\nBei Verbindungen werden insbesondere IP-Adresse, Zeitpunkt, angeforderte Ressource, HTTP-Status und Browserinformationen verarbeitet. Technische Server- und Fehlerprotokolle dienen dem sicheren Betrieb und der Fehleranalyse. Zur Begrenzung von Anmelde- und Registrierungsversuchen verwenden wir außerdem IP-bezogene Zähler im Arbeitsspeicher des Servers (Zählfenster: fünf Minuten für die Anmeldung und eine Stunde für die Registrierung).\n\nRechtsgrundlage für die Auslieferung und Nutzung des Spiels ist Art. 6 Abs. 1 lit. b DSGVO. Für die Abwehr von Missbrauch und die Betriebssicherheit ist es Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse ist ein sicheres und funktionsfähiges Angebot.\n\nBei aktivierter Betriebsüberwachung erfassen wir technische Anfrage-Traces (aufgerufene Prozedur, Dauer, Ergebnis und zufällige Trace-IDs), zusammengefasste Anfrage- und Laufzeitmetriken sowie Betriebsprotokolle zur Fehleranalyse und Sicherstellung der Verfügbarkeit. Zugriff haben nur berechtigte Projektmitglieder. Diese technische Überwachung erfolgt unabhängig von der freiwilligen Nutzungsanalyse."
+        "body": "Wir betreiben das Spiel auf deutscher Infrastruktur von netcup und Index Hosting. Diese Hosting-Dienstleister können im Rahmen der technischen Bereitstellung auf Daten zugreifen und werden, soweit erforderlich, als Auftragsverarbeiter nach Art. 28 DSGVO eingesetzt.\n\nBei Verbindungen werden insbesondere IP-Adresse, Zeitpunkt, angeforderte Ressource, HTTP-Status und Browserinformationen verarbeitet. Technische Server- und Fehlerprotokolle dienen dem sicheren Betrieb und der Fehleranalyse. Zur Begrenzung von Anmelde- und Registrierungsversuchen verwenden wir außerdem IP-bezogene Zähler im Arbeitsspeicher des Servers (Zählfenster: fünf Minuten für die Anmeldung und eine Stunde für die Registrierung).\n\nRechtsgrundlage für die Auslieferung und Nutzung des Spiels ist Art. 6 Abs. 1 lit. b DSGVO. Für die Abwehr von Missbrauch und die Betriebssicherheit ist es Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse ist ein sicheres und funktionsfähiges Angebot.\n\nBei aktivierter Betriebsüberwachung erfassen wir technische Anfrage-Traces, zusammengefasste Anfrage- und Laufzeitmetriken sowie Betriebsprotokolle zur Fehleranalyse und Sicherstellung der Verfügbarkeit. Zugriff haben nur berechtigte Projektmitglieder. Diese technische Überwachung erfolgt unabhängig von der freiwilligen Nutzungsanalyse."
       },
       "account": {
         "title": "Registrierung und Anmeldung",
-        "body": "Für ein Spielkonto benötigen wir einen frei gewählten Benutzernamen und ein Passwort. Verwende möglichst ein Pseudonym und keine Angaben über andere Personen. Wir speichern den Benutzernamen, interne Konto-IDs, einen Passwort-Hash sowie Erstellungs- und Änderungszeitpunkte. Das Passwort wird zur Prüfung verarbeitet, aber nicht im Klartext als Kontopasswort gespeichert.\n\nDie Anmeldebibliothek verwendet zusätzlich eine aus dem Benutzernamen erzeugte technische Platzhalter-E-Mail-Adresse mit der Endung .invalid. Wir fragen keine echte E-Mail-Adresse ab und versenden darüber keine Nachrichten. Sitzungsdaten umfassen eine Sitzungskennung, einen Sitzungstoken, Ablauf- und Erstellungszeitpunkte sowie gegebenenfalls IP-Adresse und User-Agent.\n\nDiese Daten ermöglichen Registrierung, Anmeldung und Zuordnung des Kontos (Art. 6 Abs. 1 lit. b DSGVO). Ohne die erforderlichen Zugangsdaten können wir kein Konto bereitstellen. Der aktuelle Prototyp enthält noch keine Speicherung von Spielständen oder öffentliche Bestenlisten. Wenn solche Funktionen hinzukommen, passen wir diese Informationen an. Es findet keine automatisierte Entscheidung mit rechtlicher oder vergleichbar erheblicher Wirkung statt."
+        "body": "Für ein Spielkonto benötigen wir einen frei gewählten Benutzernamen und ein Passwort. Verwende möglichst ein Pseudonym und keine Angaben über andere Personen. Wir speichern den Benutzernamen, interne Konto-IDs, einen Passwort-Hash sowie Erstellungs- und Änderungszeitpunkte. Das Passwort wird zur Prüfung verarbeitet, aber nicht im Klartext als Kontopasswort gespeichert.\n\nDie Anmeldebibliothek verwendet zusätzlich eine aus dem Benutzernamen erzeugte technische Platzhalter-E-Mail-Adresse mit der Endung .invalid. Wir fragen keine echte E-Mail-Adresse ab und versenden darüber keine Nachrichten. Sitzungsdaten umfassen eine Sitzungskennung, einen Sitzungstoken, Ablauf- und Erstellungszeitpunkte sowie gegebenenfalls IP-Adresse und User-Agent.\n\nDiese Daten ermöglichen Registrierung, Anmeldung und Zuordnung des Kontos (Art. 6 Abs. 1 lit. b DSGVO). Ohne die erforderlichen Zugangsdaten können wir kein Konto bereitstellen. Es findet keine automatisierte Entscheidung mit rechtlicher oder vergleichbar erheblicher Wirkung statt."
       },
       "storage": {
         "title": "Cookies und Browserspeicher",
@@ -107,7 +107,6 @@
     "throw": "Dart werfen",
     "reloading": "Darts werden nachgeladen…",
     "upgrades": "Upgrades",
-    "locked": "Noch nicht freigeschaltet",
     "upgrade": {
       "betterDarts": "Bessere Darts",
       "moreDarts": "Mehr Darts",
@@ -125,6 +124,38 @@
       "elsewhere": "Darts wurde in einem anderen Tab oder Fenster geöffnet. Lade diese Seite neu, um hier weiterzuspielen.",
       "generic": "Dein Spiel konnte nicht mit dem Server synchronisiert werden. Lade die Seite neu, um weiterzuspielen.",
       "reload": "Seite neu laden"
+    },
+    "perSecond": "{{amount}} /s",
+    "buyUpgrade": "{{count}}x {{name}} kaufen",
+    "buyAmount": {
+      "label": "Kaufmenge",
+      "max": "Max"
+    },
+    "players": {
+      "title": "Automatische Spieler",
+      "shop": "Shop",
+      "empty": "Stelle im Shop deinen ersten automatischen Spieler ein. Spieler werfen selbst und verdienen Beers.",
+      "next": "Nächste Spieler-Art: ???",
+      "unknown": "???",
+      "hire": "{{count}}x {{name}} einstellen",
+      "owned": "Im Besitz: {{count}}",
+      "each": "je {{amount}} 🍺/s",
+      "throws": "{{amount}} Würfe/s",
+      "hits": "{{percent}}% Treffer",
+      "requiresPlayer": "Benötigt 1 {{name}}",
+      "requiresEndgame": "Benötigt maximale Weniger Abklingzeit und Größere Ziele",
+      "train": "Trainieren",
+      "trainingSoon": "Training kommt bald",
+      "moduleSlot": "Modul-Slot {{slot}}",
+      "modulesSoon": "Module kommen bald",
+      "name": {
+        "pubPlayer": "Kneipenspieler",
+        "clubPlayer": "Vereinsspieler",
+        "leaguePlayer": "Ligaspieler",
+        "tournamentPlayer": "Turnierspieler",
+        "pro": "Profi",
+        "worldChampion": "Weltmeister"
+      }
     }
   },
   "shell": {

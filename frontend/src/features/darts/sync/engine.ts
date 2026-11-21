@@ -13,6 +13,7 @@ import {
   type DartsSimState,
   type DartsStateResponse,
   type DartsSyncResponse,
+  type PlayerId,
   type ThrowResult,
   type UpgradeId,
 } from "@idle-arcade/backend/shared";
@@ -42,11 +43,22 @@ export type EngineSnapshot = {
   resyncedAt?: number;
 };
 
-export type DartsCommand =
-  { type: "throw"; result: ThrowResult } | { type: "buy"; upgrade: UpgradeId };
+export type PurchaseCommand =
+  { type: "buy"; upgrade: UpgradeId } | { type: "hire"; player: PlayerId };
+export type DartsCommand = { type: "throw"; result: ThrowResult } | PurchaseCommand;
+
+/** Purchases are sent right away, so the server confirms spending quickly. */
+const isPurchase = (action: DartsAction) => action.type !== "throw";
+
+export type EngineHooks = {
+  /** The server confirmed a batch that led from `before` to `after`. */
+  confirmed?(before: DartsSimState, after: DartsSimState): void;
+};
 
 export type DartsEngine = {
   getSnapshot(): EngineSnapshot;
+  /** Current game time (ms), on the clock the actions are stamped with. */
+  now(): number;
   subscribe(listener: () => void): () => void;
   dispatch(command: DartsCommand): boolean;
   /** Sends everything queued; resolves once the server has it or the engine no longer runs. */
@@ -62,12 +74,15 @@ const MAX_RESYNC_ATTEMPTS = 3;
 export function createDartsEngine(
   initial: DartsRoomStateDto,
   transport: DartsTransport,
+  hooks: EngineHooks = {},
 ): DartsEngine {
   const epoch = initial.epoch;
   let clock: GameClock = createGameClock(initial.serverNow);
   let lastSeq = initial.lastSeq;
   // State after the last batch sent; the next batch's prediction starts here.
   let base = simStateFromDto(initial);
+  // State after the last batch the server confirmed.
+  let confirmed = base;
   let queue: DartsAction[] = [];
   let inFlight: { batch: DartsBatch; predicted: DartsSimState } | null = null;
   // Bumped on resync so answers to older requests are ignored.
@@ -141,10 +156,11 @@ export function createDartsEngine(
           return;
         }
         lastSeq = response.seq;
+        const before = confirmed;
+        confirmed = sent.predicted;
+        hooks.confirmed?.(before, confirmed);
         const flushNow =
-          drainWaiters.length > 0 ||
-          queue.length >= MAX_BATCH_ACTIONS ||
-          queue.some((a) => a.type === "buy");
+          drainWaiters.length > 0 || queue.length >= MAX_BATCH_ACTIONS || queue.some(isPurchase);
         if (flushNow) flush();
         settleDrain();
       },
@@ -178,6 +194,7 @@ export function createDartsEngine(
         lastSeq = response.state.lastSeq;
         clock = createGameClock(response.state.serverNow);
         base = simStateFromDto(response.state);
+        confirmed = base;
         update({
           state: base,
           status: "running",
@@ -199,6 +216,7 @@ export function createDartsEngine(
 
   return {
     getSnapshot: () => snapshot,
+    now: () => clock(),
     subscribe(listener) {
       listeners.add(listener);
       return () => listeners.delete(listener);
@@ -215,7 +233,7 @@ export function createDartsEngine(
       }
       queue.push(action);
       update({ state });
-      if (action.type === "buy" || queue.length >= MAX_BATCH_ACTIONS) flush();
+      if (isPurchase(action) || queue.length >= MAX_BATCH_ACTIONS) flush();
       return true;
     },
     drain() {

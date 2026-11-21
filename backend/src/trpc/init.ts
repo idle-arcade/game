@@ -52,7 +52,7 @@ const t = initTRPC.context<Context>().create({
 export const router = t.router;
 export const middleware = t.middleware;
 export const publicProcedure = t.procedure.use(({ path, type, ctx, next }) =>
-  observeProcedure(path, type, ctx.req.headers, next),
+  observeProcedure(path, type, ctx.req.headers, ctx.user?.id, next),
 );
 export const protectedProcedure = publicProcedure.use(({ ctx, next }) => {
   if (!ctx.session || !ctx.user) throw new TRPCError({ code: "UNAUTHORIZED" });
