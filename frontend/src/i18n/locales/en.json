@@ -171,7 +171,11 @@
     "title": "Highscores",
     "name": "Name",
     "score": "Score",
-    "you": "YOU"
+    "loading": "Loading…",
+    "empty": "No scores yet",
+    "error": "Highscores could not be loaded",
+    "retry": "Retry",
+    "stale": "Not up to date"
   },
   "analytics": {
     "optIn": "I am at least 16 and consent to optional usage analytics"

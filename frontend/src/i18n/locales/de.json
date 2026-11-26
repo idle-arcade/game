@@ -171,7 +171,11 @@
     "title": "Highscores",
     "name": "Name",
     "score": "Punkte",
-    "you": "DU"
+    "loading": "Lädt…",
+    "empty": "Noch keine Punkte",
+    "error": "Highscores konnten nicht geladen werden",
+    "retry": "Erneut versuchen",
+    "stale": "Nicht aktuell"
   },
   "analytics": {
     "optIn": "Ich bin mindestens 16 Jahre alt und willige in die freiwillige Nutzungsanalyse ein"
