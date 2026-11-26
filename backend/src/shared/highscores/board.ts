@@ -6,9 +6,10 @@ export type BoardEntry = { userId: string; name: string; amount: Amount };
 
 export type BoardRow = BoardEntry & { rank: number; formatted: string; own: boolean };
 
-// The database orders user ids with the case-insensitive utf8mb4_unicode_ci collation of
-// currency_balance.userId; for the alphanumeric ids Better Auth generates, comparing lowercased
-// ids gives the same order.
+type OwnEntry = BoardEntry & { serverRank: number | null };
+
+const FIRST_RANK_BELOW = HIGHSCORE_TOP_SIZE + 1;
+
 const idKey = (userId: string) => userId.toLowerCase();
 
 /** Highest score first; equal scores by user id ascending, like the server's ranking. */
@@ -18,44 +19,45 @@ const byRank = (a: BoardEntry, b: BoardEntry) => {
   return compare(b.amount, a.amount) || (ka < kb ? -1 : ka > kb ? 1 : 0);
 };
 
-/**
- * Merges the player's own live score into the server's top list. The own entry replaces the
- * player's (older) server row and is ranked against the listed players right away; ranks in the
- * list are positions. Only the top list is known, so a full list admits the player only at or
- * above its last entry: below that, an unseen player may be ahead. Outside the list, `ownBelow`
- * carries the server rank, at least the first rank below the list (live spending can drop a
- * listed player out of it). Zero scores get no row.
- */
+/** A full list admits the player only at or above its last entry; unseen players may be ahead. */
+function fitsInTop(top: BoardEntry[], own: OwnEntry): boolean {
+  const last = top.at(-1);
+  if (!last || top.length < HIGHSCORE_TOP_SIZE) return true;
+  if (last.userId === own.userId) return compare(own.amount, last.amount) >= 0;
+  return byRank(own, last) < 0;
+}
+
+/** Outside the list, the rank is at least the first one below it. */
+const rankBelow = (serverRank: number | null) =>
+  Math.max(serverRank ?? FIRST_RANK_BELOW, FIRST_RANK_BELOW);
+
+function toRow(entry: BoardEntry, rank: number, ownId: string | undefined): BoardRow {
+  return {
+    userId: entry.userId,
+    name: entry.name,
+    amount: entry.amount,
+    rank,
+    formatted: formatAmount(entry.amount),
+    own: entry.userId === ownId,
+  };
+}
+
+/** Ranks the player's live score against the server's top list; zero scores get no row. */
 export function buildBoard(
   top: BoardEntry[],
-  own: (BoardEntry & { serverRank: number | null }) | null,
+  own: OwnEntry | null,
 ): { rows: BoardRow[]; ownBelow: BoardRow | null } {
   const ownId = own?.userId;
+  const ranked = own && !isZero(own.amount) ? own : null;
+  const listed = ranked !== null && fitsInTop(top, ranked);
+
   const entries = top.filter((e) => e.userId !== ownId);
-  const last = top.at(-1);
-  const qualifies =
-    own !== null &&
-    !isZero(own.amount) &&
-    (top.length < HIGHSCORE_TOP_SIZE ||
-      !last ||
-      (last.userId === ownId ? compare(own.amount, last.amount) >= 0 : byRank(own, last) < 0));
-  if (qualifies) entries.push(own);
-  const listed = entries.sort(byRank).slice(0, HIGHSCORE_TOP_SIZE);
+  if (listed) entries.push(ranked);
+  const rows = entries
+    .sort(byRank)
+    .slice(0, HIGHSCORE_TOP_SIZE)
+    .map((e, i) => toRow(e, i + 1, ownId));
 
-  const row = (e: BoardEntry, rank: number): BoardRow => ({
-    userId: e.userId,
-    name: e.name,
-    amount: e.amount,
-    rank,
-    formatted: formatAmount(e.amount),
-    own: e.userId === ownId,
-  });
-  const rows = listed.map((e, i) => row(e, i + 1));
-
-  const below = HIGHSCORE_TOP_SIZE + 1;
-  const ownBelow =
-    own && !isZero(own.amount) && !rows.some((r) => r.own)
-      ? row(own, Math.max(own.serverRank ?? below, below))
-      : null;
+  const ownBelow = ranked && !listed ? toRow(ranked, rankBelow(ranked.serverRank), ownId) : null;
   return { rows, ownBelow };
 }

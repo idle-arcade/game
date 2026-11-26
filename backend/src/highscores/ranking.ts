@@ -14,14 +14,8 @@ import {
   type HighscoreRoom,
 } from "../shared/index.js";
 
-// Rankings read the ranking key that changeBalance stores next to each balance, through the index
-// (currency, magnitude DESC, mantissa DESC, userId). Score = current balance; zero balances are not
-// ranked. Equal scores rank by user id ascending.
-
-/** How long a room's top list is served from memory before the next request reloads it. */
 export const HIGHSCORE_CACHE_TTL_MS = 8000;
 
-// Fails to compile if the shared room map names a currency the database doesn't know.
 export const roomCurrency = (room: HighscoreRoom): Currency =>
   (ROOM_CURRENCY satisfies Record<HighscoreRoom, Currency>)[room];
 

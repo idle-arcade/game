@@ -1,8 +1,3 @@
-// In-memory cache whose entries are reloaded on request once they are older than `ttlMs`; nothing
-// refreshes in the background. Callers that arrive during a load share it. Failed loads are not
-// cached, so the next request tries again. State lives in this process: fine for a single backend
-// instance (see trpc/rate-limit.ts); use a shared store if the backend is ever scaled out.
-
 export type CacheSource = "hit" | "miss" | "joined";
 
 type Loaded<V> = { value: V; loadedAt: number };

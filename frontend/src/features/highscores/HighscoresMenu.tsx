@@ -119,7 +119,7 @@ function ScoreRow({ row }: { row: BoardRow }) {
   return (
     <tr
       aria-current={row.own ? "true" : undefined}
-      className={row.own ? "bg-amber-50 outline outline-1 outline-amber-400" : ""}
+      className={row.own ? "bg-amber-50 outline-1 outline-amber-400" : ""}
     >
       <td className="px-1 py-0.5">{row.rank}</td>
       <td className="max-w-36 truncate py-0.5">{row.name}</td>
