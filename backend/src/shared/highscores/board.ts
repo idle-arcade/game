@@ -6,9 +6,17 @@ export type BoardEntry = { userId: string; name: string; amount: Amount };
 
 export type BoardRow = BoardEntry & { rank: number; formatted: string; own: boolean };
 
+// The database orders user ids with the case-insensitive utf8mb4_unicode_ci collation of
+// currency_balance.userId; for the alphanumeric ids Better Auth generates, comparing lowercased
+// ids gives the same order.
+const idKey = (userId: string) => userId.toLowerCase();
+
 /** Highest score first; equal scores by user id ascending, like the server's ranking. */
-const byRank = (a: BoardEntry, b: BoardEntry) =>
-  compare(b.amount, a.amount) || (a.userId < b.userId ? -1 : a.userId > b.userId ? 1 : 0);
+const byRank = (a: BoardEntry, b: BoardEntry) => {
+  const ka = idKey(a.userId);
+  const kb = idKey(b.userId);
+  return compare(b.amount, a.amount) || (ka < kb ? -1 : ka > kb ? 1 : 0);
+};
 
 /**
  * Merges the player's own live score into the server's top list. The own entry replaces the
