@@ -88,14 +88,19 @@ enum Currency {
 /// One balance per user and currency, stored as `digits * 10^zeros` (see src/shared/currency/amount.ts).
 /// The composite primary key is the unique index for single-balance lookups, and its `userId`
 /// prefix serves "all balances of a user", so no separate user index is needed.
+/// The rank index orders each currency's balances for the highscores (top list and own rank).
 model CurrencyBalance {
-  userId   String
-  currency Currency
-  digits   BigInt   @db.UnsignedBigInt
-  zeros    Int      @db.UnsignedInt
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  currency  Currency
+  digits    BigInt   @db.UnsignedBigInt
+  zeros     Int      @db.UnsignedInt
+  /// Ranking key, derived from digits/zeros by rankKey() in the same write (src/shared/currency/amount.ts).
+  magnitude Int      @default(0) @db.UnsignedInt
+  mantissa  BigInt   @default(0) @db.UnsignedBigInt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, currency])
+  @@index([currency, magnitude(sort: Desc), mantissa(sort: Desc), userId], map: "currency_balance_rank_idx")
   @@map("currency_balance")
 }
 

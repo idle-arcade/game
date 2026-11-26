@@ -71,6 +71,18 @@ export function compare(a: Amount, b: Amount): -1 | 0 | 1 {
 }
 
 /**
+ * Sort key with the same order as `compare`: compare `magnitude` (number of decimal digits of the
+ * value), then `mantissa` (the significant digits padded to MAX_DIGITS). Stored next to each
+ * balance in `currency_balance` so the database can rank balances through an index. Zero is
+ * `{ magnitude: 0, mantissa: 0n }`, the only key with a zero mantissa.
+ */
+export function rankKey(a: Amount): { magnitude: number; mantissa: bigint } {
+  if (isZero(a)) return { magnitude: 0, mantissa: 0n };
+  const count = digitCount(a.digits);
+  return { magnitude: a.zeros + count, mantissa: a.digits * pow10(MAX_DIGITS - count) };
+}
+
+/**
  * Any positive amount below the last digit `big` can keep yields the same truncated sum or
  * difference, so swap such a tiny amount for a stand-in just below that digit. This keeps the
  * alignment shift at most MAX_DIGITS digits, however far apart the exponents are.
