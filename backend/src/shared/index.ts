@@ -8,3 +8,4 @@ export * from "./darts/players.js";
 export * from "./darts/protocol.js";
 export * from "./darts/rules.js";
 export * from "./darts/sim.js";
+export * from "./highscores/rooms.js";
