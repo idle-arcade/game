@@ -1,5 +1,7 @@
 # IDLE Arcade
 
+[![Code quality](https://github.com/idle-arcade/game/actions/workflows/code-quality.yml/badge.svg?branch=main&event=push)](https://github.com/idle-arcade/game/actions/workflows/code-quality.yml)
+
 ## Tech stack
 
 - **Monorepo:** npm workspaces (`frontend/`, `backend/`), Node.js 24, TypeScript
