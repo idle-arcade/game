@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { HighscoresMenu } from "./HighscoresMenu";
+import { HighscoresMenu } from "../highscores/HighscoresMenu";
 import { RoomTab } from "./RoomTab";
 import { ROOMS, roomStatus } from "./rooms";
 

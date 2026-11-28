@@ -1,11 +1,7 @@
 import { prisma } from "../db.js";
 import type { Prisma } from "../generated/prisma/client.js";
 import { Currency } from "../generated/prisma/enums.js";
-import { amount, ZERO, type Amount } from "../shared/index.js";
-
-// A missing row is a zero balance; the first change creates it. Changes lock the row
-// (SELECT ... FOR UPDATE) for the rest of their transaction, so concurrent changes to the same
-// balance queue up instead of overwriting each other.
+import { amount, rankKey, ZERO, type Amount } from "../shared/index.js";
 
 type Db = typeof prisma | Prisma.TransactionClient;
 
@@ -46,16 +42,11 @@ async function lockedChange(
   const next = change(toAmount(row));
   await tx.currencyBalance.update({
     where: { userId_currency: { userId, currency } },
-    data: { digits: next.digits, zeros: next.zeros },
+    data: { digits: next.digits, zeros: next.zeros, ...rankKey(next) },
   });
   return next;
 }
 
-/**
- * Stores `change(current)` as the new balance and returns it. Errors thrown by `change`, such as
- * InsufficientFundsError from `subtract`, abort the change. Pass `tx` to make the change part of a
- * larger transaction (e.g. paying for an upgrade and raising its level together).
- */
 export async function changeBalance(
   userId: string,
   currency: Currency,

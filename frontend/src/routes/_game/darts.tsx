@@ -10,6 +10,7 @@ import { PlayerShop } from "../../features/darts/PlayerShop";
 import { formatRatio } from "../../features/darts/format";
 import { SyncStoppedModal } from "../../features/darts/SyncStoppedModal";
 import { useDarts } from "../../features/darts/useDarts";
+import { usePublishLiveBalance } from "../../features/highscores/liveBalance";
 import { formatAmount } from "@idle-arcade/backend/shared";
 
 const ONBOARDING_DISMISSED_KEY = "idle-arcade.onboarding-dismissed";
@@ -22,6 +23,7 @@ function DartsRoom() {
   const { t } = useTranslation();
   const headingRef = useRef<HTMLHeadingElement>(null);
   const game = useDarts();
+  usePublishLiveBalance("darts", game.status === "loading" ? null : game.balance);
   const [showOnboarding, setShowOnboarding] = useState(
     () => persistentStorage.getItem(ONBOARDING_DISMISSED_KEY) !== "true",
   );
