@@ -138,7 +138,7 @@ jobs:
                 | split("${BACKEND_IMAGE:?selected by CI}") | join($backend)
                 | split("${FRONTEND_IMAGE:?selected by CI}") | join($frontend))}')"
       - name: Trigger Dokploy rollout
-        uses: benbristow/dokploy-deploy-action@0.2.2
+        uses: benbristow/dokploy-deploy-action@0.3.0
         with:
           dokploy_url: ${{ vars.DOKPLOY_URL }}
           api_token: ${{ secrets.DOKPLOY_API_KEY }}
